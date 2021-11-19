@@ -16,5 +16,3 @@ levelup(X) :-   overallLevel(X, CurrLevel),
                 asserta(maxStamina(X, CurrStamina+3)),
                 ).
 
-selamat malam pak Judhi, mohon maaf mengganggu sebalumny Pak, saya Addin Nabilal Huda(NIM 13520045).
-Mohon
