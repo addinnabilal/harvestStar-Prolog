@@ -1,0 +1,52 @@
+:- dynamic(createFarmer/1).
+createFarmer(X) :-  asserta(job(X, Farmer)),
+                    asserta(gold(X,300)),
+                    asserta(time(X,0)),
+                    asserta(overallExp(X,0)),
+                    asserta(fishingExp(X,0)),
+                    asserta(farmingExp(X,0)),
+                    asserta(ranchingExp(X,0)),
+                    asserta(overallLevel(X,0)),
+                    asserta(fishingLevel(X,0)),
+                    asserta(farmingLevel(X,0)),
+                    asserta(ranchingLevel(X,0)),
+                    asserta(maxStamina(X,3)).
+
+createFisherman(X) :-  asserta(job(X, Fisherman)),
+                    asserta(gold(X,300)),
+                    asserta(time(X,0)),
+                    asserta(overallExp(X,0)),
+                    asserta(fishingExp(X,0)),
+                    asserta(farmingExp(X,0)),
+                    asserta(ranchingExp(X,0)),
+                    asserta(overallLevel(X,0)),
+                    asserta(fishingLevel(X,0)),
+                    asserta(farmingLevel(X,0)),
+                    asserta(ranchingLevel(X,0)),
+                    asserta(maxStamina(X,3)).
+
+createRancher(X) :-  asserta(job(X, Ranncher)),
+                    asserta(gold(X,300)),
+                    asserta(time(X,0)),
+                    asserta(overallExp(X,0)),
+                    asserta(fishingExp(X,0)),
+                    asserta(farmingExp(X,0)),
+                    asserta(ranchingExp(X,0)),
+                    asserta(overallLevel(X,0)),
+                    asserta(fishingLevel(X,0)),
+                    asserta(farmingLevel(X,0)),
+                    asserta(ranchingLevel(X,0)),
+                    asserta(maxStamina(X,3)).
+                    
+checkStatus(X) :-   write('Username         :')  , write(X), nl,
+                    write('Job              :')  , job(X,Job), write(Job), nl,
+                    write('Level            :')  , overallLevel(X, Level), write(Level), nl,
+                    write('Level farming    :')  , farmingLevel(X, FarmingLevel), write(FarmingLevel), nl,
+                    write('Level fishing    :')  , fishingLevel(X, FishingLevel), write(FishingLevel), nl,
+                    write('Level ranching   :')  , ranchingLevel(X, RanchingLevel), write(RanchingLevel), nl,
+                    write('Exp              :')  , overallExp(X, Exp), write(Exp), nl,
+                    write('Exp farming      :')  , farmingExp(X, FarmingExp), write(FarmingExp), nl,
+                    write('Exp fishing      :')  , fishingExp(X, FishingExp), write(FishingExp), nl,
+                    write('Exp ranching     :')  , ranchingExp(X, RanchingExp), write(RanchingExp), nl,
+                    write('Gold             :')  , gold(X, Gold), write(Gold), nl.
+
