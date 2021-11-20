@@ -1,54 +1,84 @@
-:- dynamic(usedSpace/1).
-:- dynamic(stored/2).
+:- dynamic(used_space/1).
+:- dynamic(stored_item/2).
+:- dynamic(tool_level/2).
+
+is_tool(fishing_rod).
+is_tool(shovel).
+
 
 /* create Inventory untuk setiap speciality*/
-createFarmerInventory :-    asserta(usedSpace(7)), asserta(stored(fishing_rod_lv1, 1)),
-                            asserta(stored(shovel_lv1, 1)), asserta(stored(seeds, 5)).
+create_farmer_inventory :-
+    asserta(used_space(7)), asserta(stored_item(seeds, 5)),
+    asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
-createRancherInventory :-   asserta(usedSpace(6)), asserta(stored(fishing_rod_lv1, 1)),
-                            asserta(stored(shovel_lv1, 1)).
+create_rancher_inventory :-
+    asserta(used_space(2)),
+    asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
-createFishermanInventory :- asserta(usedSpace(7)), asserta(stored(fishing_rod_lv1, 1)),
-                            asserta(stored(shovel_lv1, 1)), asserta(stored(fish_bait, 5)).
+create_fisherman_inventory :-
+    asserta(used_space(7)), asserta(stored_item(fish_bait, 5)),
+    asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
 
 /* space untuk menandakan berapa banyak item yang ada dalam inventory */
-space(X) :- usedSpace(X).
+space(X) :- used_space(X).
 
 
-/* isInInventory, predikat untuk mengetahui apakah suatu item ada di inventory */
-isInInventory(Item) :- stored(Item, Qty), Qty > 0.
+/* store_item untuk memasukkan item ke dalam inventory */
+store_item(Item) :-
+    % Cek apakah masih ada ruang kosong, jika ada, lanjut
+    space(Used), Used < 100 ->
+        % Jika Item sudah ada, tinggal ditambah jumlahnya
+        (stored_item(Item, Qty) -> 
+            retract(stored_item(Item, Qty)), 
+            NewQty is Qty + 1, asserta(stored_item(Item, NewQty)), 
+            retract(used_space(Used)), NewUsed is Used + 1, 
+            asserta(used_space(NewUsed))
+            % Jika belum ada, dibuat baru
+            ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
+            NewUsed is Used + 1, asserta(used_space(NewUsed))),
+        % Setelah berhasil ditambahkan keluarkan pesan
+        writeln('Item stored_item to inventory.')
+    % Jika tas penuh, keluarkan pesan
+    ; writeln('Inventory full.').
 
 
-/* storeItem untuk memasukkan item ke dalam inventory */
-storeItem(Item) :-  space(Used), Used < 100 ->
-                    /* Jika Item sudah ada, tinggal ditambah jumlahnya */
-                    (stored(Item, Qty) -> retract(stored(Item, Qty)), 
-                    NewQty is Qty + 1, asserta(stored(Item, NewQty)), 
-                    retract(usedSpace(Used)), NewUsed is Used + 1, 
-                    asserta(usedSpace(NewUsed));
-                    /* Jika belum ada, dibuat baru */
-                    asserta(stored(Item, 1)), retract(usedSpace(Used)), 
-                    NewUsed is Used + 1, asserta(usedSpace(NewUsed))),
-                    /* Setelah berhasil ditambahkan keluarkan pesan */
-                    write('Item stored to inventory.'), nl;
-                    /* Jika tas penuh, keluarkan pesan */
-                    write('Inventory full.'), nl.
+/* display_inventory untuk menampilkan inventory */
+display_inventory :-
+    writeln(' _                                              '),
+    writeln('| |                        _                    '),
+    writeln('| |____ _   _ _____ ____ _| |_ ___   ____ _   _ '),
+    writeln('| |  _ \\ | | | ___ |  _ (_   _) _ \\ / ___) | | |'),
+    writeln('| | | | \\ V /| ____| | | || || |_| | |   | |_| |'),
+    writeln('|_|_| |_|\\_/ |_____)_| |_| \\__)___/|_|    \\__  |'),
+    writeln('                                         (____/ '), 
+    nl,
+    write('Load: '), space(Used), write(Used), write('/'), writeln('100'), 
+    nl,
+    writeln('-----------------  ITEMS LIST  -----------------'), 
+    nl,
+    forall(is_tool(Tool),
+        (write(Tool), write(' lv. '), tool_level(Tool, Lv), writeln(Lv))),
+    forall(stored_item(Item, Count), 
+        (write(Item), write(' : '), writeln(Count))), nl.
 
 
-/* countItem untuk menghitung jumlah tiap item dalam inventory */
-countItem(Item, Count) :- stored(Item, Count).
-
-
-/* displayInventory untuk menampilkan inventory */
-displayInventory :- write(' _                                              '), nl,
-                    write('| |                        _                    '), nl,
-                    write('| |____ _   _ _____ ____ _| |_ ___   ____ _   _ '), nl,
-                    write('| |  _ \\ | | | ___ |  _ (_   _) _ \\ / ___) | | |'), nl,
-                    write('| | | | \\ V /| ____| | | || || |_| | |   | |_| |'), nl,
-                    write('|_|_| |_|\\_/ |_____)_| |_| \\__)___/|_|    \\__  |'), nl,
-                    write('                                         (____/ '), nl, nl,
-                    write('Load: '), space(Used), write(Used), write('/'), write('100'), nl, nl,
-                    write('-----------------  ITEMS LIST  -----------------'), nl, nl,
-                    forall((isInInventory(Item)), 
-                        (countItem(Item, Count), write(Item), write(' : '), write(Count), nl)), nl.
+/* delete_item untuk menghapus item pada inventory */
+delete_item(Item, Qty) :-
+    % Cek apakah dia item atau tool
+    % Jika item, kurangi jumlahnya
+    stored_item(Item, OldQty) ->
+        NewQty is OldQty - Qty,
+        % Jika jumlahnya menjadi negatif atau nol, hapus semua item tsb
+        (NewQty =< 0 -> 
+            retract(stored_item(Item, OldQty)), retract(used_space(Used)),
+            NewUsed is Used - OldQty, asserta(used_space(NewUsed))
+            % Jika jumlahnya positif, kurangi kuantitasnya
+            ; retract(stored_item(Item, OldQty)), asserta(stored_item(Item, NewQty)), 
+            retract(used_space(Used)), NewUsed is Used - Qty, asserta(used_space(NewUsed))),
+        % Jika berhasil menghapus item, tampilkan pesan
+        writeln('Item deleted from Inventory.')
+    % Jika mencoba mendelete tool, tampilkan pesan
+    ; is_tool(Item) -> writeln('You can\'t delete a tool.')
+    % Jika tidak punya item yang mau didelete, tampilkan pesan
+    ; writeln('You don\'t have that item.').
