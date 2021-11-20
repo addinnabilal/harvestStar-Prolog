@@ -1,18 +1,90 @@
-:- dynamic(overallExp/2).
 addOverallExp(X, Value) :-  overallExp(X,Prev), retract(overallExp(X,Prev)),
                             New is Prev+Value, asserta(overallExp(X,New)),
-                            levelup(X).
+                            levelUp(X).
 
-:-dynamic(overallLevel/2)
-:-dynamic(maxStamina/2)
-levelup(X) :-   overallLevel(X, CurrLevel),
-                (overallExp(X, CurrExp)),
-
-                (CurrExp>=(CurrLevel*100 +100) -> 
+levelUp(X) :-   overallLevel(X, CurrLevel),
+                overallExp(X, CurrExp),
+                targetExp(X, CurrTargetExp),
+                (CurrExp>=CurrTargetExp -> 
                 retract(overallLevel(X,CurrLevel)),
-                asserta(overallLevel(X,CurrLevel+1)),
+                NewLevel is CurrLevel+1,
+                asserta(overallLevel(X,NewLevel)),
+
+                retract(overallExp(X,CurrExp)),
+                NewExp is CurrExp-(CurrTargetExp),
+                asserta(overallExp(X,NewExp)),
+
+                retract(targetExp(X, CurrTargetExp)),
+                NewTargetExp is CurrTargetExp+100,
+                asserta(targetExp(X, NewTargetExp)),
 
                 maxStamina(X, CurrStamina), retract(maxStamina(X, CurrStamina)),
-                asserta(maxStamina(X, CurrStamina+3)),
+                NewStamina is CurrStamina+3,
+                asserta(maxStamina(X, NewStamina))
                 ).
 
+
+addRanchingExp(X, Value):-  ranchingExp(X,Prev), retract(ranchingExp(X,Prev)),
+                            New is Prev+Value, asserta(ranchingExp(X,New)),
+                            ranchingLevelUp(X).
+
+ranchingLevelUp(X) :-   ranchingLevel(X, CurrLevel),
+                        ranchingExp(X, CurrExp),
+                        targetRanchingExp(X, CurrTargetExp),
+                        (CurrExp>=CurrTargetExp -> 
+                        retract(ranchingLevel(X,CurrLevel)),
+                        NewLevel is CurrLevel+1,
+                        asserta(ranchingLevel(X,NewLevel)),
+
+                        retract(ranchingExp(X,CurrExp)),
+                        NewExp is CurrExp-(CurrTargetExp),
+                        asserta(ranchingExp(X,NewExp)),
+
+                        retract(targetRanchingExp(X, CurrTargetExp)),
+                        NewTargetExp is CurrTargetExp+20,
+                        asserta(targetRanchingExp(X, NewTargetExp))
+                    ).
+
+addFarmingExp(X, Value):-   farmingExp(X,Prev), retract(farmingExp(X,Prev)),
+                            New is Prev+Value, asserta(farmingExp(X,New)),
+                            farmingLevelUp(X).
+
+
+farmingLevelUp(X) :-    farmingLevel(X, CurrLevel),
+                        farmingExp(X, CurrExp),
+                        targetFarmingExp(X, CurrTargetExp),
+                        (CurrExp>=CurrTargetExp -> 
+                        retract(farmingLevel(X,CurrLevel)),
+                        NewLevel is CurrLevel+1,
+                        asserta(farmingLevel(X,NewLevel)),
+
+                        retract(farmingExp(X,CurrExp)),
+                        NewExp is CurrExp-(CurrTargetExp),
+                        asserta(farmingExp(X,NewExp)),
+
+                        retract(targetFarmingExp(X, CurrTargetExp)),
+                        NewTargetExp is CurrTargetExp+20,
+                        asserta(targetFarmingExp(X, NewTargetExp))
+                    ).
+
+addFishingExp(X, Value):-   fishingExp(X,Prev), retract(fishingExp(X,Prev)),
+                            New is Prev+Value, asserta(fishingExp(X,New)),
+                            fishingLevelUp(X).
+
+
+fishingLevelUp(X) :-    fishingLevel(X, CurrLevel),
+                        fishingExp(X, CurrExp),
+                        targetFishingExp(X, CurrTargetExp),
+                        (CurrExp>=CurrTargetExp -> 
+                        retract(fishingLevel(X,CurrLevel)),
+                        NewLevel is CurrLevel+1,
+                        asserta(fishingLevel(X,NewLevel)),
+
+                        retract(fishingExp(X,CurrExp)),
+                        NewExp is CurrExp-(CurrTargetExp),
+                        asserta(fishingExp(X,NewExp)),
+
+                        retract(targetFishingExp(X, CurrTargetExp)),
+                        NewTargetExp is CurrTargetExp+20,
+                        asserta(targetFishingExp(X, NewTargetExp))
+                    ).
