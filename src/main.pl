@@ -1,2 +1,41 @@
-:- include('map.pl');
+:- include('map.pl').
+:- include('character.pl').
+:- include('leveling.pl').
+:- include('marketplace.pl').
+:- include('inventory.pl').
+
+startGame :-    write('Harvest Star!!!'), nl,
+                write('Lets play and pay our debts together!'), nl,
+                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+                write('%                          ~Harvest Star~                                      %'), nl,
+                write('% 1. start : untuk memulai petualanganmu                                       %'), nl,
+                write('% 2. map : menampilkan peta                                                    %'), nl,
+                write('% 3. status : menampilkan kondisimu terkini                                    %'), nl,
+                write('% 4. w : gerak ke utara 1 langkah                                              %'), nl,
+                write('% 5. s : gerak ke selatan 1 langkah                                            %'), nl,
+                write('% 6. d : gerak ke ke timur 1 langkah                                           %'), nl,
+                write('% 7. a : gerak ke barat 1 langkah                                              %'), nl,
+                write('% 8. help : menampilkan segala bantuan                                         %'), nl,
+                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
+
+:-dynamic(uname/1).
+start :-    write('Welcome to Harvest Star. Whats your name?'), nl, read(Username), nl, asserta(uname(Username)),
+            write('Hello, '), write(Username), write(', choose your job now!'), nl,
+            write('1. Fisherman'), nl,
+            write('2. Farmer'), nl,
+            write('3. Rancher'), nl,
+            read_integer(JobChoice),
+            (JobChoice=1 -> write('You choose Fisherman, lets start fishing'), createFisherman(Username);
+            JobChoice=2 -> write('You choose Farmer, lets start farming'), createFarmer(Username);
+            JobChoice=3 -> write('You choose Rancher, lets start ranching'), createRancher(Username)).
+
+status :-   uname(Username),
+            checkStatus(Username).
+
+quit :- write('You quit the game!'),
+        retractall(gold(_,_)), retractall(time(_,_)), retractall(overallExp(_,_)), retractall(fishingExp(_,_)), retractall(gold(_,_)),
+        retractall(overallLevel(_,_)), retractall(fishingLevel(_,_)), retractall(farmingLevel(_,_)), retractall(ranchingLevel(_,_)),
+        retractall(targetOverallExp(_,_)), retractall(targetFishingExp(_,_)), retractall(targetFarmingExp(_,_)), retractall(targetRanchingExp(_,_)),
+        retractall(currStamina(_,_)), retractall(maxStamina(_,_)), retractall(isTaken(_,_)), retractall(time(_,_)), retractall(plant(_,_)),
+        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)).     
 
