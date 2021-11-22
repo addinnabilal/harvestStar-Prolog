@@ -8,7 +8,7 @@ map :- displayMap(0,11).
 createMap(X, Y) :- (X = 0, Y = 0 -> asserta(coordinate(0, 0));
                     X = 0 -> asserta(coordinate(0, Y)), NewY is Y-1, createMap(X, NewY);
                     Y = 0 -> asserta(coordinate(X,Y)), NewY = 11, NewX is X - 1, createMap(NewX, NewY);
-                            asserta(coordinate(X, Y)), NewY is Y - 1, createMap(X, NewY)).
+                             asserta(coordinate(X, Y)), NewY is Y - 1, createMap(X, NewY)).
 
 /*deklarasi isTaken*/
 :- dynamic(isTaken/2).
@@ -41,35 +41,46 @@ wall(X, Y) :- Y =:= 0, coordinate(X, Y).
 
 
 validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> write('Welcome to the market, want to buy something?'),nl,nl, visitStore;
+
                                         quest(NewX, NewY) -> write('uncle need your help!'), nl, nl, getQuest;
+
                                         ranch(NewX, NewY) -> write('uhuk, uhuk.. This ranch stinks'), nl, nl, visitRanch;
+
                                         house(NewX, NewY) -> write('Mama, Papa, i\'m home'), nl, nl, visitHouse;
+
                                         wall(NewX, NewY), taken(NewX, NewY) ->
                                         retract(player(NewX, NewY)), asserta(player(PrevX, PrevY)),
                                         write('aaaa!!, I hit the wall. It hurts'), nl, !, fail;
+
                                         lake(NewX, NewY), taken(NewX, NewY) -> retract(player(NewX, NewY)), asserta(player(PrevX, PrevY)),
                                         write('This lake is too cold, I don\'t want to swim here'), nl, !, fail;
+                                        
                                         digged(NewX, NewY) -> write('I like farming!!'), nl, nl, visitFarm;
+
                                         lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl, fishing).
 
 /*deklarasi move*/
 :- dynamic(player/2).
-w :-    retract(player(PrevX, PrevY)), NewY is PrevY + 1, 
+w :-    retract(player(PrevX, PrevY)), 
+        NewY is PrevY + 1, 
         asserta(player(PrevX, NewY)),
         write('what\'s up in the north'), nl, write('============================'), nl,
         validMove(PrevX, PrevY, PrevX, NewY).
 
-a:-     retract(player(PrevX, PrevY)), NewX is PrevX - 1, 
+a:-     retract(player(PrevX, PrevY)), 
+        NewX is PrevX - 1, 
         asserta(player(NewX, PrevY)),
         write('what\'s up in the west'), nl, write('============================'), nl,
         validMove(PrevX, PrevY, NewX, PrevY).
 
-s :-    retract(player(PrevX, PrevY)), NewY is PrevY - 1, 
+s :-    retract(player(PrevX, PrevY)), 
+        NewY is PrevY - 1, 
         asserta(player(PrevX, NewY)),
         write('what\'s up in the south'), nl,  write('============================'), nl,
         validMove(PrevX, PrevY, PrevX, NewY).
 
-d:-     retract(player(PrevX, PrevY)), NewX is PrevX + 1, 
+d:-     retract(player(PrevX, PrevY)), 
+        NewX is PrevX + 1, 
         asserta(player(NewX, PrevY)),
         write('what\'s up in the east'), nl, write('============================'), nl,
         validMove(PrevX, PrevY, NewX, PrevY).
@@ -107,8 +118,7 @@ initMap :-  createMap(11, 11),
         asserta(lakeSide(1,4)), asserta(isTaken(1, 4)).
 
 
-diggingTile :-  retract(player(PrevX, PrevY)),
-                asserta(player(PrevX, PrevY)),
+diggingTile :-  player(PrevX,PrevY),
                 asserta(digged(PrevX, PrevY)),
                 asserta(isTaken(PrevX, PrevY)),
                 write('now you can farm here'), nl.
