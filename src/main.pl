@@ -37,5 +37,16 @@ quit :- write('You quit the game!'),
         retractall(overallLevel(_,_)), retractall(fishingLevel(_,_)), retractall(farmingLevel(_,_)), retractall(ranchingLevel(_,_)),
         retractall(targetOverallExp(_,_)), retractall(targetFishingExp(_,_)), retractall(targetFarmingExp(_,_)), retractall(targetRanchingExp(_,_)),
         retractall(currStamina(_,_)), retractall(maxStamina(_,_)), retractall(isTaken(_,_)), retractall(time(_,_)), retractall(plant(_,_)),
-        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)).     
+        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)), retractall(uname(_)),.     
 
+help :- write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+        write('%                                    ~HELP~                                    %'), nl,
+        write('% 1. start : untuk memulai petualanganmu                                       %'), nl,
+        write('% 2. map : menampilkan peta                                                    %'), nl,
+        write('% 3. status : menampilkan kondisimu terkini                                    %'), nl,
+        write('% 4. w : gerak ke utara 1 langkah                                              %'), nl,
+        write('% 5. s : gerak ke selatan 1 langkah                                            %'), nl,
+        write('% 6. d : gerak ke ke timur 1 langkah                                           %'), nl,
+        write('% 7. a : gerak ke barat 1 langkah                                              %'), nl,
+        write('% 8. help : menampilkan segala bantuan                                         %'), nl,
+        write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
