@@ -37,7 +37,7 @@ quit :- write('You quit the game!'),
         retractall(overallLevel(_,_)), retractall(fishingLevel(_,_)), retractall(farmingLevel(_,_)), retractall(ranchingLevel(_,_)),
         retractall(targetOverallExp(_,_)), retractall(targetFishingExp(_,_)), retractall(targetFarmingExp(_,_)), retractall(targetRanchingExp(_,_)),
         retractall(currStamina(_,_)), retractall(maxStamina(_,_)), retractall(isTaken(_,_)), retractall(time(_,_)), retractall(plant(_,_)),
-        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)), retractall(uname(_)),.     
+        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)), retractall(uname(_)).     
 
 help :- write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
         write('%                                    ~HELP~                                    %'), nl,

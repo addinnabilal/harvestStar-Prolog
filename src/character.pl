@@ -33,7 +33,8 @@ createFarmer(X) :-  asserta(job(X, farmer)),
                     asserta(targetRanchingExp(X,40)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
-                    asserta(maxStamina(X,3)).
+                    asserta(maxStamina(X,3)),
+                    create_farmer_inventory.
 
 :- dynamic(createFisherman/1).
 createFisherman(X) :-  asserta(job(X, fisherman)),
@@ -52,7 +53,8 @@ createFisherman(X) :-  asserta(job(X, fisherman)),
                     asserta(targetRanchingExp(X,40)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
-                    asserta(maxStamina(X,3)).
+                    asserta(maxStamina(X,3)),
+                    create_fisherman_inventory.
 
 :- dynamic(createRancher/1).
 createRancher(X) :-  asserta(job(X, rancher)),
@@ -71,7 +73,8 @@ createRancher(X) :-  asserta(job(X, rancher)),
                     asserta(targetRanchingExp(X,40)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
-                    asserta(maxStamina(X,3)).
+                    asserta(maxStamina(X,3)),
+                    create_rancher_inventory.
                     
 checkStatus(X) :-   write('Username         :')  , write(X), nl,
                     write('Job              :')  , job(X,Job), write(Job), nl,

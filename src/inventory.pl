@@ -35,7 +35,7 @@ display_inventory_full_message :- writeln('Inventory full.').
 /* store_item untuk memasukkan item ke dalam inventory */
 store_item(Item) :-
     % Cek apakah masih ada ruang kosong, jika ada, lanjut
-    \+ is_inventory_full(Used) ->
+    not(is_inventory_full(Used)) ->
         % Jika Item sudah ada, tinggal ditambah jumlahnya
         (stored_item(Item, Qty) -> 
             retract(stored_item(Item, Qty)), 
