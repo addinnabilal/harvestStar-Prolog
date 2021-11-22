@@ -8,7 +8,7 @@ is_tool(shovel).
 
 /* create Inventory untuk setiap speciality*/
 create_farmer_inventory :-
-    asserta(used_space(7)), asserta(stored_item(seeds, 5)),
+    asserta(used_space(7)), asserta(stored_item(corn_seed, 5)),
     asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
 create_rancher_inventory :-
@@ -24,10 +24,18 @@ create_fisherman_inventory :-
 space(X) :- used_space(X).
 
 
+/* predikat is_inventory_full untuk mengecek apakah inventory penuh */
+is_inventory_full(Used) :- space(Used), Used = 100.
+
+
+/* pesan jika inventory penuh */
+display_inventory_full_message :- writeln('Inventory full.').
+
+
 /* store_item untuk memasukkan item ke dalam inventory */
 store_item(Item) :-
     % Cek apakah masih ada ruang kosong, jika ada, lanjut
-    space(Used), Used < 100 ->
+    \+ is_inventory_full(Used) ->
         % Jika Item sudah ada, tinggal ditambah jumlahnya
         (stored_item(Item, Qty) -> 
             retract(stored_item(Item, Qty)), 
@@ -38,9 +46,9 @@ store_item(Item) :-
             ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
             NewUsed is Used + 1, asserta(used_space(NewUsed))),
         % Setelah berhasil ditambahkan keluarkan pesan
-        writeln('Item stored_item to inventory.')
+        writeln('Item stored to inventory.')
     % Jika tas penuh, keluarkan pesan
-    ; writeln('Inventory full.').
+    ; display_inventory_full_message.
 
 
 /* display_inventory untuk menampilkan inventory */
