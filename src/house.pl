@@ -4,9 +4,9 @@
 addTime(X, Add) :-  time(X, PrevTime), retract(time(X, PrevTime)),
                     NewTime is PrevTime + Add, asserta(time(X, NewTime)),
                     write('changing day'), nl.
-:- dynamic (stamina/2).
-updateStamina(X) :- maxStamina(X, PrevMax), retract(stamina(X, PrevStamina)),
-                    NewStamina is PrevMax, asserta(stamina(X, NewStamina)),
+:- dynamic (currStamina/2).
+updateStamina(X) :- maxStamina(X, PrevMax), retract(currStamina(X, PrevStamina)),
+                    NewStamina is PrevMax, asserta(currStamina(X, NewStamina)),
                     write('charging my energy'), nl.
 
 
@@ -28,6 +28,7 @@ visitHouse :-   write('what do you want to do?'), nl,
                     write('reading diary'), nl;
                 HouseChoice = 4 ->
                     write(' exit game'), nl).
+
 
                     
                 

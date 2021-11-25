@@ -2,12 +2,12 @@
 
 /*createMap coordinate*/
 
-map :- displayMap(0,11).
+map :- displayMap(0,16).
 
 :- dynamic(coordinate/2).
 createMap(X, Y) :- (X = 0, Y = 0 -> asserta(coordinate(0, 0));
                     X = 0 -> asserta(coordinate(0, Y)), NewY is Y-1, createMap(X, NewY);
-                    Y = 0 -> asserta(coordinate(X,Y)), NewY = 11, NewX is X - 1, createMap(NewX, NewY);
+                    Y = 0 -> asserta(coordinate(X,Y)), NewY = 16, NewX is X - 1, createMap(NewX, NewY);
                              asserta(coordinate(X, Y)), NewY is Y - 1, createMap(X, NewY)).
 
 /*deklarasi isTaken*/
@@ -17,9 +17,9 @@ taken(X, Y) :- \+(isTaken(X,Y)), asserta(isTaken(X, Y)).
 
 
 /*deklarasi wall */
-wall(X, Y) :- Y =:= 11, coordinate(X, Y).
+wall(X, Y) :- Y =:= 16, coordinate(X, Y).
 wall(X, Y) :- X =:= 0, coordinate(X, Y).
-wall(X, Y) :- X =:= 11, coordinate(X, Y).
+wall(X, Y) :- X =:= 16, coordinate(X, Y).
 wall(X, Y) :- Y =:= 0, coordinate(X, Y).
 
 
@@ -30,21 +30,24 @@ wall(X, Y) :- Y =:= 0, coordinate(X, Y).
                         quest(SX, SY) -> write('Q');
                         house(SX, SY) -> write('H');
                         ranch(SX, SY) -> write('R');
+                        alchemist(SX, SY) -> write('A');
                         digged(SX, SY) -> write('=');
                         lake(SX, SY) -> write('~');
                         lakeSide(SX, SY) -> write('o');
                         write('-')), NewX is SX + 1,
-                        (SX = 11, SY = 0 -> nl;
-                        SX = 11 -> nl, X = 0, NewY is SY - 1, displayMap(X, NewY);
+                        (SX = 16, SY = 0 -> nl;
+                        SX = 16 -> nl, X = 0, NewY is SY - 1, displayMap(X, NewY);
                         displayMap(NewX, SY)).
 
 
 
-validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> write('Welcome to the market, want to buy something?'),nl,nl, visitStore;
+validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> write('Welcome to the market, want to buy something?'),nl,nl, visit_marketplace;
 
                                         quest(NewX, NewY) -> write('uncle need your help!'), nl, nl, getQuest;
 
                                         ranch(NewX, NewY) -> write('uhuk, uhuk.. This ranch stinks'), nl, nl, visitRanch;
+
+                                        alchemist(NewX, NewY) -> write('welcome to secret'), nl, nl, visitAlchemist;
 
                                         house(NewX, NewY) -> write('Mama, Papa, i\'m home'), nl, nl, visitHouse;
 
@@ -86,12 +89,13 @@ d:-     retract(player(PrevX, PrevY)),
         validMove(PrevX, PrevY, NewX, PrevY).
 
 /*deklarasi init map*/
-initMap :-  createMap(11, 11), 
+initMap :-  createMap(16, 16), 
         asserta(player(10, 8)), asserta(isTaken(10,8)),
         asserta(quest(6, 8)), asserta(isTaken(6, 8)),
         asserta(marketplace(6, 10)), asserta(isTaken(6, 10)),
         asserta(house(8, 8)), asserta(isTaken(8,8)),
         asserta(ranch(10, 10)), asserta(isTaken(10, 10)),
+        asserta(alchemist(12, 1)), asserta(isTaken(12, 1)),
         asserta(digged(3, 3)), asserta(isTaken(3, 3)),
         asserta(lake(2,2)), asserta(isTaken(2, 2)),
         asserta(lake(1,3)), asserta(isTaken(1, 3)),
