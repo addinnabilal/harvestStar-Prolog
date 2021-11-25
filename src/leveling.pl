@@ -5,6 +5,7 @@ addOverallExp(X, Value) :-  overallExp(X,Prev), retract(overallExp(X,Prev)),
 levelUp(X) :-   overallLevel(X, CurrLevel),
                 overallExp(X, CurrExp),
                 targetExp(X, CurrTargetExp),
+
                 (CurrExp>=CurrTargetExp -> 
                 retract(overallLevel(X,CurrLevel)),
                 NewLevel is CurrLevel+1,
@@ -20,7 +21,20 @@ levelUp(X) :-   overallLevel(X, CurrLevel),
 
                 maxStamina(X, CurrStamina), retract(maxStamina(X, CurrStamina)),
                 NewStamina is CurrStamina+3,
-                asserta(maxStamina(X, NewStamina))
+                asserta(maxStamina(X, NewStamina)),
+                
+                update_item_price_per_char_level(arowana_fish, NewLevel),
+                update_item_price_per_char_level(koi_fish, NewLevel),
+                update_item_price_per_char_level(carp_fish, NewLevel),
+                update_item_price_per_char_level(pomfret_fish, NewLevel),
+                update_item_price_per_char_level(catfish, NewLevel),
+                update_item_price_per_char_level(boots, NewLevel),
+                update_item_price_per_char_level(milk, NewLevel),
+                update_item_price_per_char_level(wool, NewLevel),
+                update_item_price_per_char_level(egg, NewLevel),
+                update_item_price_per_char_level(wheat, NewLevel),
+                update_item_price_per_char_level(rice, NewLevel),
+                update_item_price_per_char_level(corn, NewLevel)
                 ).
 
 
