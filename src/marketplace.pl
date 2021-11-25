@@ -1,3 +1,11 @@
+/**
+ * File: marketplace.pl
+ * 
+ * File berisi semua predikat dan rules
+ * yang berhubungan dengan marketplace.
+ */
+
+
 :- dynamic(item_price_per_char_level/3).
 :- dynamic(tool_price_per_level/3).
 
@@ -38,12 +46,15 @@ item_price_per_char_level(wheat, 14, 1).
 item_price_per_char_level(rice, 10, 1).
 item_price_per_char_level(corn, 8, 1).
 
-
 % Harga beli tools per levelnya
 tool_price_per_level(fishing_rod, 500, 2).
 tool_price_per_level(shovel, 300, 2).
 
 
+/* 
+ * visit_marketplace untuk mengunjungi marketplace
+ * dan melakukan buy atau sell
+ */
 visit_marketplace  :-  
     display_marketplace_welcome, gold(_,Balance),
     write('Your current money : '), writeln(Balance),
@@ -90,48 +101,19 @@ visit_marketplace  :-
         % Item yang dipilih berada di inventory
         (stored_item(Item, Qty) ->
             % Item yang dipilih harga jualnya tidak pernah berubah
-            (basic_item_sell_price(Item, Price) ->
-                write('One '), write(Item), write(' is worth '), write(Price), writeln(' golds!'),
-                write('How many '), write(Item), write(' do you want to sell? '), read(Sell_qty), nl,
-                
-                New_qty is Qty - Sell_qty, 
-                (New_qty =< 0 ->
-                    New_balance is (Balance + Qty * Price), update_gold(New_balance),
-                    delete_item(Item, Qty)
-                ; New_balance is (Balance + Sell_qty * Price), update_gold(New_balance),
-                    delete_item(Item, Sell_qty))
-            
+            (basic_item_sell_price(Item, Price) -> sell_item(Balance, Item, Price, Qty)    
             % Item yang dipilih harga jualnya berubah sesuai level karakter
-            ; item_price_per_char_level(Item, Price, _) ->
-                write('One '), write(Item), write(' is worth '), write(Price), writeln(' golds!'),
-                write('How many '), write(Item), write(' do you want to sell? '), read(Sell_qty), nl,
-                
-                New_qty is Qty - Sell_qty, 
-                (New_qty =< 0 ->
-                    New_balance is (Balance + Qty * Price), update_gold(New_balance),
-                    delete_item(Item, Qty)
-                ; New_balance is (Balance + Sell_qty * Price), update_gold(New_balance),
-                    delete_item(Item, Sell_qty)))
+            ; item_price_per_char_level(Item, Price, _) -> sell_item(Balance, Item, Price, Qty))
 
         % Item yang dipilih merupakan animal di ranch
         ; stored_animal(Item, Qty) ->
-            basic_item_sell_price(Item, Qty),
-            write('One '), write(Item), write(' is worth '), write(Price), writeln(' golds!'),
-            write('How many '), write(Item), write(' do you want to sell? '), read(Sell_qty), nl,
-            
-            New_qty is Qty - Sell_qty, 
-            (New_qty =< 0 ->
-                New_balance is (Balance + Qty * Price), update_gold(New_balance),
-                delete_animal(Item, Qty)
-            ; New_balance is (Balance + Sell_qty * Price), update_gold(New_balance),
-                delete_animal(Item, Sell_qty))
+            basic_item_sell_price(Item, Price), sell_animal(Balance, Item, Price, Qty)
         
         ; Item = cancel ->
             writeln('Okay, looks like you have other interests.'), nl
 
         % Tidak mempunyai item yang dipilih
-        ; writeln('You don\'t have that item.')
-        
+        ; writeln('You don\'t have that item.'), nl
         ), 
         visit_marketplace
     
@@ -140,7 +122,7 @@ visit_marketplace  :-
         display_marketplace_exit).
 
 
-/* Prosedur ketika membeli sesuatu */
+/* Prosedur buy */
 buy_item(Balance, Item) :-
     basic_item_buy_price(Item, Price),
     (not(is_inventory_full(_)) -> 
@@ -178,6 +160,34 @@ buy_tool(Balance, Tool, Price, Level) :-
         Next_level is Level + 1, Next_price is Price + 100,
         asserta(tool_price_per_level(shovel, Next_price, Next_level))
     ; display_insufficient_gold.
+
+
+/* Prosedur sell */
+sell_item(Balance, Item, Price, Qty) :-
+    write('One '), write(Item), write(' is worth '), write(Price), writeln(' golds!'),
+    write('How many '), write(Item), write(' do you want to sell? '), read(Sell_qty), nl,
+    
+    (Sell_qty =< 0 ->
+        writeln('It seems you are not interested in selling the item.'), nl
+    ; New_qty is Qty - Sell_qty, 
+        (New_qty =< 0 ->
+            New_balance is (Balance + Qty * Price), update_gold(New_balance),
+            delete_item(Item, Qty)
+        ; New_balance is (Balance + Sell_qty * Price), update_gold(New_balance),
+            delete_item(Item, Sell_qty))).
+
+sell_animal(Balance, Animal, Price, Qty) :-
+    write('One '), write(Animal), write(' is worth '), write(Price), writeln(' golds!'),
+    write('How many '), write(Animal), write(' do you want to sell? '), read(Sell_qty), nl,
+    
+    (Sell_qty = 0 ->
+        writeln('It seems you are not interested in selling the animal.'), nl
+    ; New_qty is Qty - Sell_qty, 
+        (New_qty =< 0 ->
+            New_balance is (Balance + Qty * Price), update_gold(New_balance),
+            delete_animal(Animal, Qty)
+        ; New_balance is (Balance + Sell_qty * Price), update_gold(New_balance),
+            delete_animal(Animal, Sell_qty))).
 
 
 /* Tampilan ketika mengunjungi marketplace */
@@ -249,4 +259,3 @@ update_item_price_per_char_level(Item, New_level) :-
     retract(item_price_per_char_level(Item, Price, _)),
     New_price is ceiling(Price * 1,1),
     asserta(item_price_per_char_level(Item, New_price, New_level)).
-

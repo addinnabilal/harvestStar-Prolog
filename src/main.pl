@@ -6,17 +6,19 @@
 
 startGame :-    write('Harvest Star!!!'), nl,
                 write('Lets play and pay our debts together!'), nl,
-                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
-                write('%                          ~Harvest Star~                                      %'), nl,
-                write('% 1. start : untuk memulai petualanganmu                                       %'), nl,
-                write('% 2. map : menampilkan peta                                                    %'), nl,
-                write('% 3. status : menampilkan kondisimu terkini                                    %'), nl,
-                write('% 4. w : gerak ke utara 1 langkah                                              %'), nl,
-                write('% 5. s : gerak ke selatan 1 langkah                                            %'), nl,
-                write('% 6. d : gerak ke ke timur 1 langkah                                           %'), nl,
-                write('% 7. a : gerak ke barat 1 langkah                                              %'), nl,
-                write('% 8. help : menampilkan segala bantuan                                         %'), nl,
-                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
+                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+                write('%                          ~Harvest Star~                          %'), nl,
+                write('% 1. start : to start your journey                                 %'), nl,
+                write('% 2. map : to shows map                                            %'), nl,
+                write('% 3. status : to show your current status                          %'), nl,
+                write('% 4. inventory : to show your inventory                            %'), nl,
+                write('% 4. w : move 1 step to north                                      %'), nl,
+                write('% 5. s : move 1 step to south                                      %'), nl,
+                write('% 6. d : move 1 step to east                                       %'), nl,
+                write('% 7. a : move 1 step to west                                       %'), nl,
+                write('% 8. help : to show commands you can use                           %'), nl,
+                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+                start.
 
 :-dynamic(uname/1).
 start :-    write('Welcome to Harvest Star. Whats your name?'), nl, read(Username), nl, asserta(uname(Username)),
@@ -31,6 +33,8 @@ start :-    write('Welcome to Harvest Star. Whats your name?'), nl, read(Usernam
 
 status :-   uname(Username),
             checkStatus(Username).
+
+inventory :- display_inventory.
 
 quit :- write('You quit the game!'),
         retractall(gold(_,_)), retractall(time(_,_)), retractall(overallExp(_,_)), retractall(fishingExp(_,_)), retractall(gold(_,_)),
