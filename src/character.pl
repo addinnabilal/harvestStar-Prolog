@@ -1,4 +1,22 @@
-:- dynamic(createFarmer/1).
+:- dynamic(gold/2).
+:- dynamic(time/2).
+:- dynamic(overallExp/2).
+:- dynamic(fishingExp/2).
+:- dynamic(farmingExp/2).
+:- dynamic(ranchingExp/2).
+:- dynamic(overallLevel/2).
+:- dynamic(fishingLevel/2).
+:- dynamic(farmingLevel/2).
+:- dynamic(ranchingLevel/2).
+:- dynamic(tagetOverallExp/2).
+:- dynamic(targetFishingExp/2).
+:- dynamic(targetFarmingExp/2).
+:- dynamic(targetRanchingExp/2).
+:- dynamic(currStamina/2).
+:- dynamic(maxStamina/2).
+
+
+
 createFarmer(X) :-  asserta(job(X, farmer)),
                     asserta(gold(X,300)),
                     asserta(time(X,0)),
@@ -14,8 +32,9 @@ createFarmer(X) :-  asserta(job(X, farmer)),
                     asserta(targetFishingExp(X,40)),
                     asserta(targetRanchingExp(X,40)),
                     asserta(targetFarmingExp(X,40)),
-                    asserta(currStamina(X,0)),
-                    asserta(maxStamina(X,3)).
+                    asserta(currStamina(X,3)),
+                    asserta(maxStamina(X,3)),
+                    create_farmer_inventory.
 
 :- dynamic(createFisherman/1).
 createFisherman(X) :-  asserta(job(X, fisherman)),
@@ -33,8 +52,9 @@ createFisherman(X) :-  asserta(job(X, fisherman)),
                     asserta(targetFishingExp(X,40)),
                     asserta(targetRanchingExp(X,40)),
                     asserta(targetFarmingExp(X,40)),
-                    asserta(currStamina(X,0)),
-                    asserta(maxStamina(X,3)).
+                    asserta(currStamina(X,3)),
+                    asserta(maxStamina(X,3)),
+                    create_fisherman_inventory.
 
 :- dynamic(createRancher/1).
 createRancher(X) :-  asserta(job(X, rancher)),
@@ -52,8 +72,9 @@ createRancher(X) :-  asserta(job(X, rancher)),
                     asserta(targetFishingExp(X,40)),
                     asserta(targetRanchingExp(X,40)),
                     asserta(targetFarmingExp(X,40)),
-                    asserta(currStamina(X,0)),
-                    asserta(maxStamina(X,3)).
+                    asserta(currStamina(X,3)),
+                    asserta(maxStamina(X,3)),
+                    create_rancher_inventory.
                     
 checkStatus(X) :-   write('Username         :')  , write(X), nl,
                     write('Job              :')  , job(X,Job), write(Job), nl,
