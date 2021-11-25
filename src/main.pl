@@ -4,14 +4,20 @@
 :- include('marketplace.pl').
 :- include('inventory.pl').
 
-startGame :-    write('Harvest Star!!!'), nl,
+startGame :-    write('  _    _                           _      _____ _                    '),nl,
+                write(' | |  | |                         | |    / ____| |                                '),nl,
+                write(' | |__| | __ _ _ ____   _____  ___| |_  | (___ | |_ __ _ _ __                     '),nl,
+                write(' |  __  |/ _\` | \'__\\ \\ / / _ \\/ __| __|  \\___ \\| __/ _\` | \'__|                    '),nl,
+                write(' | |  | | (_| | |   \\ V /  __/\\__ \\ |_   ____) | || (_| | |                       '),nl,
+                write(' |_|  |_|\\__,_|_|    \\_/ \\___||___/\\__| |_____/ \\__\\__,_|_|                       '),nl,nl,
+                write('Harvest Star!!!'), nl,
                 write('Lets play and pay our debts together!'), nl,
                 write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
                 write('%                          ~Harvest Star~                          %'), nl,
-                write('% 1. start : to start your journey                                 %'), nl,
-                write('% 2. map : to shows map                                            %'), nl,
-                write('% 3. status : to show your current status                          %'), nl,
-                write('% 4. inventory : to show your inventory                            %'), nl,
+                write('% 1. start       : to start your journey                                 %'), nl,
+                write('% 2. map         : to shows map                                            %'), nl,
+                write('% 3. status      : to show your current status                          %'), nl,
+                write('% 4. inventory   : to show your inventory                            %'), nl,
                 write('% 4. w : move 1 step to north                                      %'), nl,
                 write('% 5. s : move 1 step to south                                      %'), nl,
                 write('% 6. d : move 1 step to east                                       %'), nl,
@@ -54,3 +60,14 @@ help :- write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         write('% 7. a : gerak ke barat 1 langkah                                              %'), nl,
         write('% 8. help : menampilkan segala bantuan                                         %'), nl,
         write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
+
+checkGoalState(X) :-    gold(X, CurrGold),
+                        (CurrGold >= 20000 -> goalState, quit).
+
+checkFailState(X) :-    time(X, Time),
+                        (Time is 365 -> failState, quit).
+
+failState :-    write('You have worked hard, but in the end result is all that matters.'), nl,
+                write('May God bless you in the future with kind people!').
+
+goalState :-    write('Congratulations! You have finally collected 20000 golds!'), nl.
