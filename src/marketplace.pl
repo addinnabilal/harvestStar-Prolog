@@ -9,6 +9,7 @@
 :- dynamic(item_price_per_char_level/3).
 :- dynamic(tool_price_per_level/3).
 
+stored_animal(chicken, 5).
 
 % Harga beli item-item basic
 basic_item_buy_price(fish_bait, 30).
@@ -57,7 +58,7 @@ tool_price_per_level(shovel, 300, 2).
  */
 visit_marketplace  :-  
     display_marketplace_welcome, gold(_,Balance),
-    write('Your current money : '), writeln(Balance),
+    write('Your current money : '), write(Balance), nl,
     write('Pick an option : '), read(Marketplace_option), nl,
 
     % BUY
@@ -71,7 +72,7 @@ visit_marketplace  :-
         ; Buy_option = 5 -> buy_animal(Balance, chicken)
         ; Buy_option = 6 -> buy_animal(Balance, sheep)
         ; Buy_option = 7 -> buy_animal(Balance, cow)
-        ; Buy_option = 0 -> writeln('Okay, looks like you have other interests.'), nl
+        ; Buy_option = 0 -> write('Okay, looks like you have other interests.'), nl, nl
         ; (tool_price_per_level(fishing_rod, Price_fr, Lvl_fr), tool_price_per_level(shovel, Price_s, Lvl_s),
             % Level fishing rod < 5
             (Lvl_fr =< 5 ->
@@ -95,7 +96,7 @@ visit_marketplace  :-
     % SELL
     ; Marketplace_option = 2 ->
         display_marketplace_sell,
-        writeln('Input "cancel" if you want to cancel.'),
+        write('Input "cancel" if you want to cancel.'), nl,
         write('Pick an item : '), read(Item), nl,
 
         % Item yang dipilih berada di inventory
@@ -110,10 +111,10 @@ visit_marketplace  :-
             basic_item_sell_price(Item, Price), sell_animal(Balance, Item, Price, Qty)
         
         ; Item = cancel ->
-            writeln('Okay, looks like you have other interests.'), nl
+            write('Okay, looks like you have other interests.'), nl, nl
 
         % Tidak mempunyai item yang dipilih
-        ; writeln('You don\'t have that item.'), nl
+        ; write('You don\'t have that item.'), nl, nl
         ), 
         visit_marketplace
     
@@ -125,7 +126,7 @@ visit_marketplace  :-
 /* Prosedur buy */
 buy_item(Balance, Item) :-
     basic_item_buy_price(Item, Price),
-    (not(is_inventory_full(_)) -> 
+    (\+(is_inventory_full(_)) -> 
         (Balance >= Price ->
             % Update gold
             New_balance is Balance - Price,
@@ -158,17 +159,19 @@ buy_tool(Balance, Tool, Price, Level) :-
         % Update harga beli tool pada level selanjutnya
         retract(tool_price_per_level(shovel, Price, Level)),
         Next_level is Level + 1, Next_price is Price + 100,
-        asserta(tool_price_per_level(shovel, Next_price, Next_level))
+        asserta(tool_price_per_level(shovel, Next_price, Next_level)),
+
+        write(Tool), write(' upgraded to level '), write(Level), write('!'), nl
     ; display_insufficient_gold.
 
 
 /* Prosedur sell */
 sell_item(Balance, Item, Price, Qty) :-
-    write('One '), write(Item), write(' is worth '), write(Price), writeln(' golds!'),
+    write('One '), write(Item), write(' is worth '), write(Price), write(' golds!'), nl,
     write('How many '), write(Item), write(' do you want to sell? '), read(Sell_qty), nl,
     
     (Sell_qty =< 0 ->
-        writeln('It seems you are not interested in selling the item.'), nl
+        write('It seems you are not interested in selling the item.'), nl, nl
     ; New_qty is Qty - Sell_qty, 
         (New_qty =< 0 ->
             New_balance is (Balance + Qty * Price), update_gold(New_balance),
@@ -177,11 +180,11 @@ sell_item(Balance, Item, Price, Qty) :-
             delete_item(Item, Sell_qty))).
 
 sell_animal(Balance, Animal, Price, Qty) :-
-    write('One '), write(Animal), write(' is worth '), write(Price), writeln(' golds!'),
+    write('One '), write(Animal), write(' is worth '), write(Price), write(' golds!'), nl,
     write('How many '), write(Animal), write(' do you want to sell? '), read(Sell_qty), nl,
     
     (Sell_qty = 0 ->
-        writeln('It seems you are not interested in selling the animal.'), nl
+        write('It seems you are not interested in selling the animal.'), nl, nl
     ; New_qty is Qty - Sell_qty, 
         (New_qty =< 0 ->
             New_balance is (Balance + Qty * Price), update_gold(New_balance),
@@ -192,30 +195,30 @@ sell_animal(Balance, Animal, Price, Qty) :-
 
 /* Tampilan ketika mengunjungi marketplace */
 display_marketplace_welcome :-
-    writeln('|------------------------------------------|'),
-    writeln('|        Welcome To The Marketplace        |'),
-    writeln('|------------------------------------------|'),
+    write('|------------------------------------------|'), nl,
+    write('|        Welcome To The Marketplace        |'), nl,
+    write('|------------------------------------------|'), nl,
     nl,
-    writeln('Are you interested in something?'),
-    writeln('[1] I want to buy something.'),
-    writeln('[2] I want to sell something'),
-    writeln('[0] Cancel.'), nl.
+    write('Are you interested in something?'), nl,
+    write('[1] I want to buy something.'), nl,
+    write('[2] I want to sell something.'), nl,
+    write('[0] Cancel.'), nl.
 
 
 /* Tampilan buy */
 display_marketplace_buy :-
-    writeln('|------------------------------------------|'),
-    writeln('|             Buy Items/Tools              |'),
-    writeln('|------------------------------------------|'), 
+    write('|------------------------------------------|'), nl,
+    write('|             Buy Items/Tools              |'), nl,
+    write('|------------------------------------------|'), nl,
     nl,
-    writeln('Which item or tool do you want to buy?'),
-    writeln('[1] Fish Bait            | 30   gold'),
-    writeln('[2] Corn Seed            | 30   gold'),
-    writeln('[3] Rice Seed            | 40   gold'),
-    writeln('[4] Wheat Seed           | 50   gold'),
-    writeln('[5] Chicken              | 500  gold'),
-    writeln('[6] Sheep                | 1000 gold'),
-    writeln('[7] Cow                  | 1500 gold'),
+    write('Which item or tool do you want to buy?'), nl,
+    write('[1] Fish Bait            | 30   gold'), nl,
+    write('[2] Corn Seed            | 30   gold'), nl,
+    write('[3] Rice Seed            | 40   gold'), nl, 
+    write('[4] Wheat Seed           | 50   gold'), nl,
+    write('[5] Chicken              | 500  gold'), nl,
+    write('[6] Sheep                | 1000 gold'), nl,
+    write('[7] Cow                  | 1500 gold'), nl,
 
     tool_price_per_level(fishing_rod, Price_fr, Lvl_fr), tool_price_per_level(shovel, Price_s, Lvl_s),
     (Lvl_fr =< 5 -> 
@@ -226,28 +229,28 @@ display_marketplace_buy :-
     ; Lvl_s =< 5 ->
         format('[8] Level ~d Shovel       | ~d  gold', [Lvl_s, Price_s]), nl, nl),
     
-    writeln('[0] Cancel                          '), nl.
+    write('[0] Cancel                          '), nl, nl.
 
 
 /* Tampilam sell */
 display_marketplace_sell :-
-    writeln('|------------------------------------------|'),
-    writeln('|               Sell Items                 |'),
-    writeln('|------------------------------------------|'), 
+    write('|------------------------------------------|'), nl,
+    write('|               Sell Items                 |'), nl,
+    write('|------------------------------------------|'), nl,
     nl,
-    writeln('Which item do you want to sell?'),
+    write('Which item do you want to sell?'), nl,
     forall(stored_item(Item, Count), 
-        (write(Item), write('\t: '), writeln(Count))),
+        (write(Item), write('\t: '), write(Count), nl)),
     forall(stored_animal(Animal, Count),
-        (write(Animal), write('\t\t: '), writeln(Count))), nl.
+        (write(Animal), write('\t\t: '), write(Count), nl)), nl.
 
 
 /* Tampilan keluar */
-display_marketplace_exit :- writeln('Alright! This marketplace will be at your service anytime.'), nl.
+display_marketplace_exit :- write('Alright! This marketplace will be at your service anytime.'), nl.
 
 
 /* Tampilan jika uang tidak cukup */
-display_insufficient_gold :- writeln('Sorry, you don\'t have enough gold.'), nl.
+display_insufficient_gold :- write('Sorry, you don\'t have enough gold.'), nl.
 
 
 /* Mengubah jumlah gold */

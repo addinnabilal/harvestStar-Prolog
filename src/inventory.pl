@@ -38,13 +38,13 @@ is_inventory_full(Used) :- space(Used), Used = 100.
 
 
 /* pesan jika inventory penuh */
-display_inventory_full_message :- writeln('Inventory full.'), nl.
+display_inventory_full_message :- write('Inventory full.'), nl, nl.
 
 
 /* store_item untuk memasukkan item ke dalam inventory */
 store_item(Item) :-
     % Cek apakah masih ada ruang kosong, jika ada, lanjut
-    not(is_inventory_full(Used)) ->
+    (\+ is_inventory_full(Used)) ->
         % Jika Item sudah ada, tinggal ditambah jumlahnya
         (stored_item(Item, Qty) -> 
             retract(stored_item(Item, Qty)), 
@@ -55,31 +55,31 @@ store_item(Item) :-
             ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
             NewUsed is Used + 1, asserta(used_space(NewUsed))),
         % Setelah berhasil ditambahkan keluarkan pesan
-        writeln('Item stored to inventory.'), nl
+        write('Item stored to inventory.'), nl, nl
     % Jika tas penuh, keluarkan pesan
     ; display_inventory_full_message.
 
 
 /* display_inventory untuk menampilkan inventory */
 display_inventory :-
-    writeln(' _                                              '),
-    writeln('| |                        _                    '),
-    writeln('| |____ _   _ _____ ____ _| |_ ___   ____ _   _ '),
-    writeln('| |  _ \\ | | | ___ |  _ (_   _) _ \\ / ___) | | |'),
-    writeln('| | | | \\ V /| ____| | | || || |_| | |   | |_| |'),
-    writeln('|_|_| |_|\\_/ |_____)_| |_| \\__)___/|_|    \\__  |'),
-    writeln('                                         (____/ '), 
+    write(' _                                              '), nl,
+    write('| |                        _                    '), nl,
+    write('| |____ _   _ _____ ____ _| |_ ___   ____ _   _ '), nl,
+    write('| |  _ \\ | | | ___ |  _ (_   _) _ \\ / ___) | | |'), nl,
+    write('| | | | \\ V /| ____| | | || || |_| | |   | |_| |'), nl,
+    write('|_|_| |_|\\_/ |_____)_| |_| \\__)___/|_|    \\__  |'), nl,
+    write('                                         (____/ '), nl,
     nl,
-    write('Load: '), space(Used), write(Used), write('/'), writeln('100'), 
+    write('Load: '), space(Used), write(Used), write('/'), write('100'), nl,
     nl,
-    writeln('-----------------  ITEMS LIST  -----------------'), 
+    write('-----------------  ITEMS LIST  -----------------'), nl, 
     nl,
     tool_level(fishing_rod, Lvl_fr),
-    write(fishing_rod), write('\tlv.'), writeln(Lvl_fr),
+    write(fishing_rod), write('\tlv.'), write(Lvl_fr), nl,
     tool_level(shovel, Lvl_s),
-    write(shovel), write('\t\tlv.'), writeln(Lvl_s),
+    write(shovel), write('\t\tlv.'), write(Lvl_s), nl,
     forall(stored_item(Item, Count), 
-        (write(Item), write('\t: '), writeln(Count))), nl.
+        (write(Item), write('\t: '), write(Count), nl)).
 
 
 /* delete_item untuk menghapus item pada inventory */
@@ -96,8 +96,8 @@ delete_item(Item, Qty) :-
         ; retract(stored_item(Item, OldQty)), asserta(stored_item(Item, NewQty)), 
             retract(used_space(Used)), NewUsed is Used - Qty, asserta(used_space(NewUsed))),
         % Jika berhasil menghapus item, tampilkan pesan
-        writeln('Item deleted from Inventory.'), nl
+        write('Item deleted from Inventory.'), nl, nl
     % Jika mencoba mendelete tool, tampilkan pesan
-    ; is_tool(Item) -> writeln('You can\'t delete a tool.'), nl
+    ; is_tool(Item) -> write('You can\'t delete a tool.'), nl, nl
     % Jika tidak punya item yang mau didelete, tampilkan pesan
-    ; writeln('You don\'t have that item.'), nl.
+    ; write('You don\'t have that item.'), nl, nl.
