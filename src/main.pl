@@ -12,7 +12,7 @@ startGame :-    write('  _    _                           _      _____ _        
                 write(' |  __  |/ _\` | \'__\\ \\ / / _ \\/ __| __|  \\___ \\| __/ _\` | \'__|                    '),nl,
                 write(' | |  | | (_| | |   \\ V /  __/\\__ \\ |_   ____) | || (_| | |                       '),nl,
                 write(' |_|  |_|\\__,_|_|    \\_/ \\___||___/\\__| |_____/ \\__\\__,_|_|                       '),nl,nl,
-                write('Harvest Star!!!'), nl,
+                write('Harvest Star!!!'),initMap, nl,
                 write('Lets play and pay our debts together!'), nl,
                 write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
                 write('%                          ~Harvest Star~                          %'), nl,
@@ -43,6 +43,29 @@ status :-   uname(Username),
             checkStatus(Username).
 
 inventory :- display_inventory.
+
+map :-  (write('Where is my map?, ooh i found it. Open the map.'), nl, nl,
+        write('  _____ _   _ _____  __     _____ _     _        _    ____ _____ '),nl,
+        write(' |_   _| | | | ____| \\ \\   / /_ _| |   | |      / \\  / ___| ____ '),nl,
+        write('   | | | |_| |  _|    \\ \\ / / | || |   | |     / _ \\| |  _|  _|  '),nl,
+        write('   | | |  _  | |___    \\ \\V /  | || |___| |___ / ___ \\ |_| | |___ '),nl,
+        write('   |_| |_| |_|_____|    \\_/  |___|_____|_____/_/   \\_\\____|_____|'),nl,nl,
+        showMap,
+        write('----------------------------------------------------------------------'), nl,
+        write('%                   ~Legends of Harvest Star~                        %'), nl,
+        write('% P : Your Current Position %'), nl,
+        write('% Q : The Quest. Help your uncle to beat the quest. %'), nl,
+        write('% M : Marketplace. You can buy item there. %'), nl,
+        write('% H : House. You can sleep there. %'), nl,
+        write('% o : Lakeside. You can fish from there. %'), nl,
+        write('% = : Watch out for digging. %'), nl,
+        write('% R : Ranch. Let`s see your cattle. %'), nl,
+        write('% A : Alchemist. This is a secret shop, do not tell anyone. %'), nl,
+        write('----------------------------------------------------------------------'), nl, !).
+
+        
+
+
 
 quit :- write('You quit the game!'),
         retractall(gold(_,_)), retractall(time(_,_)), retractall(overallExp(_,_)), retractall(fishingExp(_,_)), retractall(gold(_,_)),

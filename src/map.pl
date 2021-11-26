@@ -2,7 +2,7 @@
 
 /*createMap coordinate*/
 
-map :- displayMap(0,16).
+showMap :- displayMap(0,16).
 
 :- dynamic(coordinate/2).
 createMap(X, Y) :- (X = 0, Y = 0 -> asserta(coordinate(0, 0));
@@ -67,25 +67,25 @@ validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> write('Welcom
 w :-    retract(player(PrevX, PrevY)), 
         NewY is PrevY + 1, 
         asserta(player(PrevX, NewY)),
-        write('what\'s up in the north'), nl, write('============================'), nl,
+        write('what\'s up in the north, is it cold in the nort?'),  nl,
         validMove(PrevX, PrevY, PrevX, NewY).
 
 a:-     retract(player(PrevX, PrevY)), 
         NewX is PrevX - 1, 
         asserta(player(NewX, PrevY)),
-        write('what\'s up in the west'), nl, write('============================'), nl,
+        write('what\'s up in the west, seems cool to cowboy'), nl,
         validMove(PrevX, PrevY, NewX, PrevY).
 
 s :-    retract(player(PrevX, PrevY)), 
         NewY is PrevY - 1, 
         asserta(player(PrevX, NewY)),
-        write('what\'s up in the south'), nl,  write('============================'), nl,
+        write('what\'s up in the south, can i find penguins in the south?'), nl,
         validMove(PrevX, PrevY, PrevX, NewY).
 
 d:-     retract(player(PrevX, PrevY)), 
         NewX is PrevX + 1, 
         asserta(player(NewX, PrevY)),
-        write('what\'s up in the east'), nl, write('============================'), nl,
+        write('what\'s up in the east, i like asian culture'), nl,
         validMove(PrevX, PrevY, NewX, PrevY).
 
 /*deklarasi init map*/
@@ -128,13 +128,29 @@ diggingTile :-  player(PrevX,PrevY),
                 write('now you can farm here'), nl.
 
 
+periTidur :-    write('     __/\\__ '), nl,
+                write('. _  \\''//                '), nl,
+                write('-( )-/_||_\\                    '), nl,
+                write(' .\'  \\_()_/        '), nl,
+                write('  |   | , \\     '), nl,
+                write('  |mrf| .  \\ '), nl,
+                write(' .\\. ,\\_____\'. '), nl, nl,
+                
+                write('you meet a sleeping fairy in your dream, you can choose the place you want: '), nl,
+                write('Enter the X posisition that you want to go: '), read_integer(XT),
+                write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
+                wall(XT, YT) -> write('you can\'t go through wall'),nl;
+                lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
+                player(PrevX, PrevY), retract(player(PrevX, PrevY)), asserta(player(XT, YT)),
+                write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
+                write('Successfully moved, May we meet again, good boy! '), nl, nl,
+                validMove(PrevX, PrevY, XT, YT).
+
 
                                 
                                         
 
                                         
-
-
 
 
 
