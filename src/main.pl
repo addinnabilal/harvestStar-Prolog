@@ -5,6 +5,7 @@
 :- include('inventory.pl').
 :- include('alchemist.pl').
 :- include('house.pl').
+:- include('quest.pl')
 
 startGame :-    gameState(State),
                 (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
@@ -44,6 +45,8 @@ inventory :- display_inventory.
 
 throw :- throw_item.
 
+quest :- quest_message.
+
 map :-  (write('Where is my map?, ooh i found it. Open the map.'), nl, nl,
         write('  _____ _   _ _____  __     _____ _     _        _    ____ _____ '),nl,
         write(' |_   _| | | | ____| \\ \\   / /_ _| |   | |      / \\  / ___| ____ '),nl,
@@ -53,14 +56,14 @@ map :-  (write('Where is my map?, ooh i found it. Open the map.'), nl, nl,
         showMap,
         write('----------------------------------------------------------------------'), nl,
         write('%                   ~Legends of Harvest Star~                        %'), nl,
-        write('% P : Your Current Position %'), nl,
-        write('% Q : The Quest. Help your uncle to beat the quest. %'), nl,
-        write('% M : Marketplace. You can buy item there. %'), nl,
-        write('% H : House. You can sleep there. %'), nl,
-        write('% o : Lakeside. You can fish from there. %'), nl,
-        write('% = : Watch out for digging. %'), nl,
-        write('% R : Ranch. Let`s see your cattle. %'), nl,
-        write('% A : Alchemist. This is a secret shop, do not tell anyone. %'), nl,
+        write('% P : Your Current Position                                          %'), nl,
+        write('% Q : The Quest. Help your uncle to beat the quest.                  %'), nl,
+        write('% M : Marketplace. You can buy item there.                           %'), nl,
+        write('% H : House. You can sleep there.                                    %'), nl,
+        write('% o : Lakeside. You can fish from there.                             %'), nl,
+        write('% = : Watch out for digging.                                         %'), nl,
+        write('% R : Ranch. Let`s see your cattle.                                  %'), nl,
+        write('% A : Alchemist. This is a secret shop, do not tell anyone.          %'), nl,
         write('----------------------------------------------------------------------'), nl, !).
 
         
@@ -81,16 +84,17 @@ help :-
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
     write('%                         ~ COMMANDS LIST ~                        %'), nl,
     write('%                                                                  %'), nl,
-    write('% 1. start       : to start your journey                           %'), nl,
-    write('% 2. map         : to shows map                                    %'), nl,
-    write('% 3. status      : to show your current status                     %'), nl,
-    write('% 4. inventory   : to show your inventory                          %'), nl,
-    write('% 5. throw       : to throw an item                                %'), nl,
-    write('% 6. w           : move 1 step to north                            %'), nl,
-    write('% 7. s           : move 1 step to south                            %'), nl,
-    write('% 8. d           : move 1 step to east                             %'), nl,
-    write('% 9. a           : move 1 step to west                             %'), nl,
-    write('% 10. help       : to show commands list                           %'), nl,
+    write('% 1.  start       : to start your journey                          %'), nl,
+    write('% 2.  map         : to shows map                                   %'), nl,
+    write('% 3.  status      : to show your current status                    %'), nl,
+    write('% 4.  inventory   : to show your inventory                         %'), nl,
+    write('% 5.  quest       : to show your current active quest              %'), nl,
+    write('% 6.  throw       : to throw an item                               %'), nl,
+    write('% 7.  w           : move 1 step to north                           %'), nl,
+    write('% 8.  s           : move 1 step to south                           %'), nl,
+    write('% 9.  d           : move 1 step to east                            %'), nl,
+    write('% 10. a           : move 1 step to west                            %'), nl,
+    write('% 11. help        : to show commands list                          %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
 
 usePotion :- uname(Username), usePotion(Username).
