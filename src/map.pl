@@ -128,13 +128,29 @@ diggingTile :-  player(PrevX,PrevY),
                 write('now you can farm here'), nl.
 
 
+periTidur :-    write('     __/\\__ '), nl,
+                write('. _  \\''//                '), nl,
+                write('-( )-/_||_\\                    '), nl,
+                write(' .\'  \\_()_/        '), nl,
+                write('  |   | , \\     '), nl,
+                write('  |mrf| .  \\ '), nl,
+                write(' .\\. ,\\_____\'. '), nl, nl,
+                
+                write('you meet a sleeping fairy in your dream, you can choose the place you want: '), nl,
+                write('Enter the X posisition that you want to go: '), read_integer(XT),
+                write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
+                wall(XT, YT) -> write('you can\'t go through wall'),nl;
+                lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
+                player(PrevX, PrevY), retract(player(PrevX, PrevY)), asserta(player(XT, YT)),
+                write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
+                write('Successfully moved, May we meet again, good boy! '), nl, nl,
+                validMove(PrevX, PrevY, XT, YT).
+
 
                                 
                                         
 
                                         
-
-
 
 
 
