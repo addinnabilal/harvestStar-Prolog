@@ -3,7 +3,6 @@ addTime(X, Add) :-  time(X, PrevTime), retract(time(X, PrevTime)),
                     NewTime is PrevTime + Add, asserta(time(X, NewTime)),
                     write('changing day'), nl,
                     checkFailState(X),
-                    staminaPotionState(X,SPState),
                     (SPState=used -> useStaminaPotion(X)),
                     updateStamina(X), nl.
 
