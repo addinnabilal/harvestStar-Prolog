@@ -18,7 +18,7 @@
 
 
 createFarmer(X) :-  asserta(job(X, farmer)),
-                    asserta(gold(X,300)),
+                    asserta(gold(X,5000)),
                     asserta(time(X,0)),
                     asserta(overallExp(X,0)),
                     asserta(targetExp(X,100)),

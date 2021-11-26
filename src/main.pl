@@ -3,6 +3,8 @@
 :- include('leveling.pl').
 :- include('marketplace.pl').
 :- include('inventory.pl').
+:- include('alchemist.pl').
+:- include('house.pl').
 
 startGame :-    write('  _    _                           _      _____ _                       '),nl,
                 write(' | |  | |                         | |    / ____| |                      '),nl,
@@ -80,6 +82,10 @@ help :-
     write('% 9. a           : move 1 step to west                             %'), nl,
     write('% 10. help       : to show commands list                           %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
+
+usePotion :- uname(Username), usePotion(Username).
+
+alchemist :- uname(Username), buy_alchemist(Username).
 
 checkGoalState(X) :-    gold(X, CurrGold),
                         (CurrGold >= 20000 -> goalState, quit).

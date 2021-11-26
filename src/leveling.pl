@@ -19,9 +19,9 @@ levelUp(X) :-   overallLevel(X, CurrLevel),
                 NewTargetExp is CurrTargetExp+100,
                 asserta(targetExp(X, NewTargetExp)),
 
-                maxStamina(X, CurrStamina), retract(maxStamina(X, CurrStamina)),
+                currStamina(X, CurrStamina), retract(currStamina(X, CurrStamina)),
                 NewStamina is CurrStamina+3,
-                asserta(maxStamina(X, NewStamina)),
+                asserta(currStamina(X, NewStamina)),
                 
                 update_item_price_per_char_level(arowana_fish, NewLevel),
                 update_item_price_per_char_level(koi_fish, NewLevel),
