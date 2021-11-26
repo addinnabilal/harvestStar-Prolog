@@ -6,7 +6,9 @@
 :- include('alchemist.pl').
 :- include('house.pl').
 
-startGame :-    write('  _    _                           _      _____ _                       '),nl,
+startGame :-    gameState(State),
+                (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
+                write('  _    _                           _      _____ _                       '),nl,
                 write(' | |  | |                         | |    / ____| |                      '),nl,
                 write(' | |__| | __ _ _ ____   _____  ___| |_  | (___ | |_ __ _ _ __           '),nl,
                 write(' |  __  |/ _\` | \'__\\ \\ / / _ \\/ __| __|  \\___ \\| __/ _\` | \'__| '),nl,
@@ -17,18 +19,23 @@ startGame :-    write('  _    _                           _      _____ _        
                 nl,
                 help,
                 nl,
-                initMap, start.
+                initMap, start).
 
 :-dynamic(uname/1).
-start :-    write('Welcome to Harvest Star. Whats your name?'), nl, read(Username), nl, asserta(uname(Username)),
+:-dynamic(gameState/1).
+gameState(notplaying).
+start :-    gameState(State),
+            (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
+            retract(gameState(State)), asserta(gameState(playing)),
+            write('Welcome to Harvest Star. What\'s your name?'), nl, read(Username), nl, asserta(uname(Username)),
             write('Hello, '), write(Username), write(', choose your job now!'), nl,
             write('1. Fisherman'), nl,
             write('2. Farmer'), nl,
             write('3. Rancher'), nl,
             read_integer(JobChoice),
-            (JobChoice=1 -> write('You choose Fisherman, lets start fishing'), createFisherman(Username);
-            JobChoice=2 -> write('You choose Farmer, lets start farming'), createFarmer(Username);
-            JobChoice=3 -> write('You choose Rancher, lets start ranching'), createRancher(Username)).
+            (JobChoice=1 -> write('You choose Fisherman, let\'s start fishing'), createFisherman(Username);
+            JobChoice=2 -> write('You choose Farmer, let\'s start farming'), createFarmer(Username);
+            JobChoice=3 -> write('You choose Rancher, let\'s start ranching'), createRancher(Username))).
 
 status :-   uname(Username),
             checkStatus(Username).
@@ -61,11 +68,14 @@ map :-  (write('Where is my map?, ooh i found it. Open the map.'), nl, nl,
 
 
 quit :- write('You quit the game!'),
+        retractall(gameState(_)),
+        asserta(gameState(notplaying)),
         retractall(gold(_,_)), retractall(time(_,_)), retractall(overallExp(_,_)), retractall(fishingExp(_,_)), retractall(gold(_,_)),
         retractall(overallLevel(_,_)), retractall(fishingLevel(_,_)), retractall(farmingLevel(_,_)), retractall(ranchingLevel(_,_)),
         retractall(targetOverallExp(_,_)), retractall(targetFishingExp(_,_)), retractall(targetFarmingExp(_,_)), retractall(targetRanchingExp(_,_)),
         retractall(currStamina(_,_)), retractall(maxStamina(_,_)), retractall(isTaken(_,_)), retractall(time(_,_)), retractall(plant(_,_)),
-        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)), retractall(uname(_)).     
+        retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)), retractall(uname(_)), retractall(increaseProbability(_)),
+        retractall(increaseStamina(_)), retractall(staminaPotionState(_,_)), retractall(probabilityPotionState(_,_)), retractall(dayUsed(_,_)).     
 
 help :- 
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,

@@ -38,17 +38,21 @@ buyStamina(X) :-    gold(X, Gold), increaseStamina(Items),
                     write('Oops! You don\'t have enough gold to buy a potion to increase your stamina!'))).
 
 usePotion(X) :- staminaPotionState(X, SPState), probabilityPotionState(X, PPState),
-                ((SPState=notHave, PPState=notHave) -> write('You don\'t have any potion to use!');
-                (((SPState=used, PPState=used) -> write('You don\'t have any potion to use!');
-                ((SPState=notHave;SPState=used),(\ + (PPState=used,PPState=notHave))) -> write('1. -'), nl, write('2. '), write(PPState), nl;
-                ((PPState=notHave;PPState=used),(\ + (SPState=used,SPState=notHave))) -> write('1. '), write(SPState), nl, write('2. -'),nl;
-                write('1. '), write(SPState),nl, write('2. '), write(PPState),nl),
-                write('Which potion do you want to use?'),
-                read_integer(Opt),
-                (Opt=1 -> useStaminaPotion(X);
-                Opt=2 -> useProbabilityPotion(X);
-                Opt=0 -> write('Looks like you still not want to use the potion');
-                write('Oops! There are only 2 options')))).
+                (((SPState=notHave, PPState=notHave);(SPState=used, PPState=used);(SPState=used, PPState=notHave);(SPState=notHave, PPState=used)) -> write('You don\'t have any potion to use!');
+                    (
+                        (
+                            ((SPState=notHave;SPState=used),(\+ (PPState=used;PPState=notHave))) -> write('1. -'), nl, write('2. '), write(PPState), nl;
+                            ((PPState=notHave;PPState=used),(\+ (SPState=used;SPState=notHave))) -> write('1. '), write(SPState), nl, write('2. -'),nl;
+                            write('1. '), write(SPState),nl, write('2. '), write(PPState),nl
+                        ),
+                        write('Which potion do you want to use?'),nl,
+                        read_integer(Opt),
+                        (Opt=1 -> useStaminaPotion(X);
+                        Opt=2 -> useProbabilityPotion(X);
+                        Opt=0 -> write('Looks like you still not want to use the potion');
+                        write('Oops! There are only 2 options'))
+                    )
+                ).
 
 :- dynamic(dayUsed/2).
 dayUsed(_,0).

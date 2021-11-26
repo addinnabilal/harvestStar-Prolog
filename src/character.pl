@@ -96,7 +96,7 @@ checkStatus(X) :-   write('Username         :')  , write(X), nl,
                     write('Stamina          :')  , currStamina(X, CurrStamina), write(CurrStamina), maxStamina(X, MaxStamina), write('/'), write(MaxStamina),nl,
                     write('Day              :')  , time(X, Time), write(Time).
 
-displayChar:-    write('               ,,,     ,,,                  '),nl,
+displayChar:-       nl,write('               ,,,     ,,,                  '),nl,
                     write('             ,,,,,,,,,,,,,,,                                    '),nl,
                     write('           ,,,,,,,,,,,,,,,,,,,                                  '),nl,
                     write('          ,,,,*************,,,,                                 '),nl,
