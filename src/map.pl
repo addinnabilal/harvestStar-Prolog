@@ -2,7 +2,7 @@
 
 /*createMap coordinate*/
 
-map :- displayMap(0,16).
+showMap :- displayMap(0,16).
 
 :- dynamic(coordinate/2).
 createMap(X, Y) :- (X = 0, Y = 0 -> asserta(coordinate(0, 0));
@@ -67,25 +67,25 @@ validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> write('Welcom
 w :-    retract(player(PrevX, PrevY)), 
         NewY is PrevY + 1, 
         asserta(player(PrevX, NewY)),
-        write('what\'s up in the north'), nl, write('============================'), nl,
+        write('what\'s up in the north, is it cold in the nort?'),  nl,
         validMove(PrevX, PrevY, PrevX, NewY).
 
 a:-     retract(player(PrevX, PrevY)), 
         NewX is PrevX - 1, 
         asserta(player(NewX, PrevY)),
-        write('what\'s up in the west'), nl, write('============================'), nl,
+        write('what\'s up in the west, seems cool to cowboy'), nl,
         validMove(PrevX, PrevY, NewX, PrevY).
 
 s :-    retract(player(PrevX, PrevY)), 
         NewY is PrevY - 1, 
         asserta(player(PrevX, NewY)),
-        write('what\'s up in the south'), nl,  write('============================'), nl,
+        write('what\'s up in the south, can i find penguins in the south?'), nl,
         validMove(PrevX, PrevY, PrevX, NewY).
 
 d:-     retract(player(PrevX, PrevY)), 
         NewX is PrevX + 1, 
         asserta(player(NewX, PrevY)),
-        write('what\'s up in the east'), nl, write('============================'), nl,
+        write('what\'s up in the east, i like asian culture'), nl,
         validMove(PrevX, PrevY, NewX, PrevY).
 
 /*deklarasi init map*/
