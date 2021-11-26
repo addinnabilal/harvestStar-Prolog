@@ -38,26 +38,7 @@ is_inventory_full(Used) :- space(Used), Used = 100.
 
 
 /* pesan jika inventory penuh */
-display_inventory_full_message :- write('Inventory full.'), nl, nl.
-
-
-/* store_item untuk memasukkan item ke dalam inventory */
-store_item(Item) :-
-    % Cek apakah masih ada ruang kosong, jika ada, lanjut
-    (\+ is_inventory_full(Used)) ->
-        % Jika Item sudah ada, tinggal ditambah jumlahnya
-        (stored_item(Item, Qty) -> 
-            retract(stored_item(Item, Qty)), 
-            NewQty is Qty + 1, asserta(stored_item(Item, NewQty)), 
-            retract(used_space(Used)), NewUsed is Used + 1, 
-            asserta(used_space(NewUsed))
-            % Jika belum ada, dibuat baru
-            ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
-            NewUsed is Used + 1, asserta(used_space(NewUsed))),
-        % Setelah berhasil ditambahkan keluarkan pesan
-        write('Item stored to inventory.'), nl, nl
-    % Jika tas penuh, keluarkan pesan
-    ; display_inventory_full_message.
+display_inventory_full_message :- write('Inventory full.'), nl.
 
 
 /* display_inventory untuk menampilkan inventory */
@@ -82,6 +63,25 @@ display_inventory :-
         (write(Item), write('\t: '), write(Count), nl)).
 
 
+/* store_item untuk memasukkan item ke dalam inventory */
+store_item(Item) :-
+    % Cek apakah masih ada ruang kosong, jika ada, lanjut
+    (\+ is_inventory_full(Used)) ->
+        % Jika Item sudah ada, tinggal ditambah jumlahnya
+        (stored_item(Item, Qty) -> 
+            retract(stored_item(Item, Qty)), 
+            NewQty is Qty + 1, asserta(stored_item(Item, NewQty)), 
+            retract(used_space(Used)), NewUsed is Used + 1, 
+            asserta(used_space(NewUsed))
+            % Jika belum ada, dibuat baru
+            ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
+            NewUsed is Used + 1, asserta(used_space(NewUsed))),
+        % Setelah berhasil ditambahkan keluarkan pesan
+        write('Item stored to inventory.'), nl
+    % Jika tas penuh, keluarkan pesan
+    ; display_inventory_full_message.
+
+
 /* delete_item untuk menghapus item pada inventory */
 delete_item(Item, Qty) :-
     % Cek apakah dia item atau tool
@@ -96,8 +96,29 @@ delete_item(Item, Qty) :-
         ; retract(stored_item(Item, OldQty)), asserta(stored_item(Item, NewQty)), 
             retract(used_space(Used)), NewUsed is Used - Qty, asserta(used_space(NewUsed))),
         % Jika berhasil menghapus item, tampilkan pesan
-        write('Item deleted from Inventory.'), nl, nl
+        write('Item deleted from Inventory.'), nl
     % Jika mencoba mendelete tool, tampilkan pesan
-    ; is_tool(Item) -> write('You can\'t delete a tool.'), nl, nl
+    ; is_tool(Item) -> write('You can\'t delete a tool.'), nl
     % Jika tidak punya item yang mau didelete, tampilkan pesan
-    ; write('You don\'t have that item.'), nl, nl.
+    ; write('You don\'t have that item.'), nl.
+
+
+/* throw_item untuk membuang suatu item dari inventory */
+throw_item :- 
+    write('-----------------  ITEMS LIST  -----------------'), nl,
+    nl,
+    forall(stored_item(Item, Count), 
+        (write(Item), write('\t: '), write(Count), nl)), nl,
+    
+    write('Be careful, item that have been thrown can\'t be retrieved.'), nl,
+    write('Input "cancel" if you want to cancel.'), nl,
+    write('Pick an item: '), read(Item),
+
+    (stored_item(Item, _) ->
+        write('How many '), write(Item), write(' do you want to throw? '), read(Throw_qty), nl,
+        (Throw_qty =< 0 ->
+            write('It seems you are not interested in throwing the item.'), nl
+        ; delete_item(Item, Throw_qty))
+    ; Item = cancel -> write('Okay.'), nl
+    ; \+ stored_item(Item, _) -> write('You don\'t have that item.'), nl).
+    

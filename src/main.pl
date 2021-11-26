@@ -4,27 +4,18 @@
 :- include('marketplace.pl').
 :- include('inventory.pl').
 
-startGame :-    write('  _    _                           _      _____ _                    '),nl,
-                write(' | |  | |                         | |    / ____| |                                '),nl,
-                write(' | |__| | __ _ _ ____   _____  ___| |_  | (___ | |_ __ _ _ __                     '),nl,
-                write(' |  __  |/ _\` | \'__\\ \\ / / _ \\/ __| __|  \\___ \\| __/ _\` | \'__|                    '),nl,
-                write(' | |  | | (_| | |   \\ V /  __/\\__ \\ |_   ____) | || (_| | |                       '),nl,
-                write(' |_|  |_|\\__,_|_|    \\_/ \\___||___/\\__| |_____/ \\__\\__,_|_|                       '),nl,nl,
-                write('Harvest Star!!!'),initMap, nl,
-                write('Lets play and pay our debts together!'), nl,
-                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
-                write('%                          ~Harvest Star~                          %'), nl,
-                write('% 1. start       : to start your journey                                 %'), nl,
-                write('% 2. map         : to shows map                                            %'), nl,
-                write('% 3. status      : to show your current status                          %'), nl,
-                write('% 4. inventory   : to show your inventory                            %'), nl,
-                write('% 4. w : move 1 step to north                                      %'), nl,
-                write('% 5. s : move 1 step to south                                      %'), nl,
-                write('% 6. d : move 1 step to east                                       %'), nl,
-                write('% 7. a : move 1 step to west                                       %'), nl,
-                write('% 8. help : to show commands you can use                           %'), nl,
-                write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
-                start.
+startGame :-    write('  _    _                           _      _____ _                       '),nl,
+                write(' | |  | |                         | |    / ____| |                      '),nl,
+                write(' | |__| | __ _ _ ____   _____  ___| |_  | (___ | |_ __ _ _ __           '),nl,
+                write(' |  __  |/ _\` | \'__\\ \\ / / _ \\/ __| __|  \\___ \\| __/ _\` | \'__| '),nl,
+                write(' | |  | | (_| | |   \\ V /  __/\\__ \\ |_   ____) | || (_| | |          '),nl,
+                write(' |_|  |_|\\__,_|_|    \\_/ \\___||___/\\__| |_____/ \\__\\__,_|_|       '),nl,
+                nl,
+                write('              Lets play and pay our debts together!                 '), nl, 
+                nl,
+                help,
+                nl,
+                initMap, start.
 
 :-dynamic(uname/1).
 start :-    write('Welcome to Harvest Star. Whats your name?'), nl, read(Username), nl, asserta(uname(Username)),
@@ -41,6 +32,8 @@ status :-   uname(Username),
             checkStatus(Username).
 
 inventory :- display_inventory.
+
+throw :- throw_item.
 
 map :-  (write('Where is my map?, ooh i found it. Open the map.'), nl, nl,
         write('  _____ _   _ _____  __     _____ _     _        _    ____ _____ '),nl,
@@ -72,17 +65,21 @@ quit :- write('You quit the game!'),
         retractall(currStamina(_,_)), retractall(maxStamina(_,_)), retractall(isTaken(_,_)), retractall(time(_,_)), retractall(plant(_,_)),
         retractall(used_space(_)), retractall(stored_item(_,_)),retractall(tool_level(_,_)), retractall(uname(_)).     
 
-help :- write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
-        write('%                                    ~HELP~                                    %'), nl,
-        write('% 1. start : untuk memulai petualanganmu                                       %'), nl,
-        write('% 2. map : menampilkan peta                                                    %'), nl,
-        write('% 3. status : menampilkan kondisimu terkini                                    %'), nl,
-        write('% 4. w : gerak ke utara 1 langkah                                              %'), nl,
-        write('% 5. s : gerak ke selatan 1 langkah                                            %'), nl,
-        write('% 6. d : gerak ke ke timur 1 langkah                                           %'), nl,
-        write('% 7. a : gerak ke barat 1 langkah                                              %'), nl,
-        write('% 8. help : menampilkan segala bantuan                                         %'), nl,
-        write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%').
+help :- 
+    write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+    write('%                         ~ COMMANDS LIST ~                        %'), nl,
+    write('%                                                                  %'), nl,
+    write('% 1. start       : to start your journey                           %'), nl,
+    write('% 2. map         : to shows map                                    %'), nl,
+    write('% 3. status      : to show your current status                     %'), nl,
+    write('% 4. inventory   : to show your inventory                          %'), nl,
+    write('% 5. throw       : to throw an item                                %'), nl,
+    write('% 6. w           : move 1 step to north                            %'), nl,
+    write('% 7. s           : move 1 step to south                            %'), nl,
+    write('% 8. d           : move 1 step to east                             %'), nl,
+    write('% 9. a           : move 1 step to west                             %'), nl,
+    write('% 10. help       : to show commands list                           %'), nl,
+    write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
 
 checkGoalState(X) :-    gold(X, CurrGold),
                         (CurrGold >= 20000 -> goalState, quit).
