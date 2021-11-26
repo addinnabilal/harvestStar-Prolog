@@ -254,7 +254,7 @@ display_insufficient_gold :- write('Sorry, you don\'t have enough gold.'), nl.
 
 
 /* Mengubah jumlah gold */
-update_gold(New_number):- retract(gold(X,_)), asserta(gold(X, New_number)).
+update_gold(New_number):- uname(X), retract(gold(X,_)), asserta(gold(X, New_number)), checkGoalState(X).
 
 
 /* Mengubah harga jual item hasil aktivitas berdasarkan level */

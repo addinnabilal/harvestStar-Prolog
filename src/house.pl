@@ -3,7 +3,9 @@
 :- dynamic (time/2).
 addTime(X, Add) :-  time(X, PrevTime), retract(time(X, PrevTime)),
                     NewTime is PrevTime + Add, asserta(time(X, NewTime)),
-                    write('changing day'), nl.
+                    write('changing day'), nl,
+                    checkFailState(X).
+                
 :- dynamic (currStamina/2).
 updateStamina(X) :- maxStamina(X, PrevMax), retract(currStamina(X, PrevStamina)),
                     NewStamina is PrevMax, asserta(currStamina(X, NewStamina)),

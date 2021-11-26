@@ -34,6 +34,8 @@ createFarmer(X) :-  asserta(job(X, farmer)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
                     asserta(maxStamina(X,3)),
+                    asserta(time(X,0)),
+                    displayChar,
                     create_farmer_inventory.
 
 :- dynamic(createFisherman/1).
@@ -54,6 +56,8 @@ createFisherman(X) :-  asserta(job(X, fisherman)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
                     asserta(maxStamina(X,3)),
+                    asserta(time(X,0)),
+                    displayChar,
                     create_fisherman_inventory.
 
 :- dynamic(createRancher/1).
@@ -74,6 +78,8 @@ createRancher(X) :-  asserta(job(X, rancher)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
                     asserta(maxStamina(X,3)),
+                    asserta(time(X,0)),
+                    displayChar,
                     create_rancher_inventory.
                     
 checkStatus(X) :-   write('Username         :')  , write(X), nl,
@@ -87,6 +93,29 @@ checkStatus(X) :-   write('Username         :')  , write(X), nl,
                     write('Exp fishing      :')  , fishingExp(X, FishingExp), write(FishingExp), targetFishingExp(X, TargetFishingExp), write('/'), write(TargetFishingExp), nl,
                     write('Exp ranching     :')  , ranchingExp(X, RanchingExp), write(RanchingExp), targetRanchingExp(X, TargetRanchingExp), write('/'), write(TargetRanchingExp), nl,
                     write('Gold             :')  , gold(X, Gold), write(Gold), nl,
-                    write('Stamina          :')  , currStamina(X, CurrStamina), write(CurrStamina), maxStamina(X, MaxStamina), write('/'), write(MaxStamina).
+                    write('Stamina          :')  , currStamina(X, CurrStamina), write(CurrStamina), maxStamina(X, MaxStamina), write('/'), write(MaxStamina),nl,
+                    write('Day              :')  , time(X, Time), write(Time).
+
+displayChar:-    write('               ,,,     ,,,                  '),nl,
+                    write('             ,,,,,,,,,,,,,,,                                    '),nl,
+                    write('           ,,,,,,,,,,,,,,,,,,,                                  '),nl,
+                    write('          ,,,,*************,,,,                                 '),nl,
+                    write('          *********************                                 '),nl,
+                    write('      /////////////***/////////////                             '),nl,
+                    write('  ////////%%,,,,,,,,,,,,,,,,,%%////////                         '),nl,
+                    write('  ///////**%,,,##,,,,,,,##,,,%**///////                         '),nl,
+                    write('      ////*,,,,,,,,,,,,,,,,,,,*////                             '),nl,
+                    write('           ,,,,,,,,,,,,,,,,,,,                                  '),nl,
+                    write('             ,,,,,,,,,,,,,,,                                    '),nl,
+                    write('               ,,,,,,,,,,,                                      '),nl,                    
+                    write('               ***********                                      '),nl,
+                    write('           ///##*********##///                                  '),nl,
+                    write('       ###////####*****####////###                              '),nl,
+                    write('     #####////######*######////#####                            '),nl,
+                    write('    ######////#############////######                           '),nl,
+                    write('   #######/%%///////////////%%/#######                          '),nl,
+                    write('   #######/////////////////////#######                          '),nl.
+
+
 
 
