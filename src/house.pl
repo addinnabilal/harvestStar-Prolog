@@ -1,5 +1,5 @@
 :- dynamic(time/2).
-addTime(X, Add) :-  time(X, PrevTime), retract(time(X, PrevTime)),
+addTime(X,Add) :-   time(X, PrevTime), retract(time(X, PrevTime)),
                     NewTime is PrevTime + Add, asserta(time(X, NewTime)),
                     write('changing day'), nl,
                     checkFailState(X),
@@ -7,14 +7,13 @@ addTime(X, Add) :-  time(X, PrevTime), retract(time(X, PrevTime)),
                     updateStamina(X), nl.
 
 :- dynamic(currStamina/2).
-updateStamina(X) :- maxStamina(X, PrevMax), retract(currStamina(X, PrevStamina)),
+updateStamina(X) :- maxStamina(X, PrevMax), currStamina(X, PrevStamina), retract(currStamina(X, PrevStamina)),
                     NewStamina is PrevMax, asserta(currStamina(X, NewStamina)),
                     write('charging my energy'), nl.
 
 
 
 visitHouse :-   write('you are finally home'), nl,
-
                 write('        @ @ @ '),nl,
                 write('       []___                '), nl,
                 write('      /    /\\____                '),nl,
@@ -30,8 +29,11 @@ visitHouse :-   write('you are finally home'), nl,
 
                 (HouseChoice = 1 -> 
                     write('Good Night'), nl,
+                    uname(Username),
                     addTime(Username, 1),
                     random(1, 10, X),
+                    write('flag'), nl,
+                    write(X),
                     (X =< 5 -> periTidur;
                     X =< 10 -> visitHouse),
                 HouseChoice = 2 ->

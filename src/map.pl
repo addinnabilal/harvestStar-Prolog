@@ -133,9 +133,9 @@ periTidur :-    write('     __/\\__ '), nl,
                 write('-( )-/_||_\\                    '), nl,
                 write(' .\'  \\_()_/        '), nl,
                 write('  |   | , \\     '), nl,
-                write('  |mrf| .  \\ '), nl,
+                write('  |zzz| .  \\ '), nl,
                 write(' .\\. ,\\_____\'. '), nl, nl,
-                
+
                 write('you meet a sleeping fairy in your dream, you can choose the place you want: '), nl,
                 write('Enter the X posisition that you want to go: '), read_integer(XT),
                 write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
