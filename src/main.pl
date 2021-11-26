@@ -5,7 +5,7 @@
 :- include('inventory.pl').
 :- include('alchemist.pl').
 :- include('house.pl').
-:- include('quest.pl')
+:- include('quest.pl').
 
 startGame :-    gameState(State),
                 (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
