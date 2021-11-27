@@ -6,6 +6,7 @@
 :- include('alchemist.pl').
 :- include('house.pl').
 :- include('quest.pl').
+:- include('activity.pl').
 
 :-dynamic(uname/1).
 :-dynamic(gameState/1).
@@ -102,9 +103,6 @@ help :-
 usePotion :- uname(Username), usePotion(Username).
 
 alchemist :- uname(Username), buy_alchemist(Username).
-
-checkGoalState(X) :-    gold(X, CurrGold),
-                        (CurrGold >= 20000 -> goalState, quit).
 
 failState :-    write('You have worked hard, but in the end result is all that matters.'), nl,
                 write('May God bless you in the future with kind people!').

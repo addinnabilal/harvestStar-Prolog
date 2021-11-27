@@ -5,11 +5,11 @@ isAnimal(chicken).
 isAnimal(sheep).
 isAnimal(cow).
 
-isFish(arwana).
-isFish(koi).
-isFish(gurame).
-isFish(bawal).
-isFish(lele).
+isFish(arowana_fish).
+isFish(koi_fish).
+isFish(carp_fish).
+isFish(pomfret_fish).
+isFish(catfish).
 
 isPlant(corn).
 isPlant(wheat).
@@ -96,23 +96,23 @@ fish :-
             delete_item(fish_bait,1),
             random(1,100,X),
             (X =< 1 -> 
-                write('Congrats you got a jackpot fish \'Arwana\''),nl,
-                asserta(stored_item(arwana,1));
+                write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
+                store_item(arowana_fish);
             X =< 10 -> 
-                write('Congrats you got an uniqe fish \'Koi\''),nl,
-                asserta(stored_item(koi,1));
+                write('Congrats you got an unique fish \'Koi\'!'),nl,
+                store_item(koi_fish);
             X =< 30 -> 
-                write('Congrats you got a rare fish \'Gurame\''),nl,
-                asserta(stored_item(gurame,1));
+                write('Congrats you got a rare fish \'Carp\'!'),nl,
+                store_item(carp_fish);
             X =< 60 -> 
-                write('Congrats you got a normal fish \'Bawal\''),nl,
-                asserta(stored_item(bawal,1));
+                write('Congrats you got a normal fish \'Pomfret\'!'),nl,
+                store_item(pomfret_fish);
             X =< 90 -> 
-                write('Congrats you got a normal fish \'Lele\''),nl,
-                asserta(stored_item(lele,1));
+                write('Congrats you got a normal fish \'Catfish\'!'),nl,
+                stored_item(catfish);
             X =< 100 -> 
-                write('You got a legendary item or is it.... \'Sendal\''),nl,
-                asserta(stored_item(sendal,1)));
+                write('You got a legendary item or is it.... \'Boots\'!'),nl,
+                stored_item(boots));
         write('You don\'t have bait anymore to fish'),nl
         );
     write('You are not in the right spot to fish')).
@@ -122,24 +122,21 @@ fish :-
 
 /*  Primitif */
 :- dynamic(stored_animal/2).
-stored_animal(chicken,0).
-stored_animal(cow,0).
-stored_animal(sheep,0).
 
 store_animal(Animal):- 
     (stored_animal(Animal,Qty) -> 
         NewQ is Qty + 1, retract(stored_animal(Animal,Qty)), asserta(stored_animal(Animal,NewQ))
         ;
         asserta(stored_animal(Animal,1))
-    ).
+    ), write('Animal stored to ranch.'), nl.
 
 delete_animal(Animal,Qty):- 
     (stored_animal(Animal,PrevQ) -> 
         NewQ is PrevQ - Qty, 
-        (NewQ >= 0 -> 
+        (NewQ > 0 -> 
             retract(stored_animal(Animal,PrevQ)), asserta(stored_animal(Animal,NewQ))
             ;
-            retract(stored_animal(Animal,PrevQ)), asserta(stored_animal(Animal,0))
+            retract(stored_animal(Animal,PrevQ))
         ) 
     ).
 
