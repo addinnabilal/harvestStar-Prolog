@@ -148,7 +148,7 @@ delete_animal(Animal,Qty):-
 /* Ranchin Activity */
 ranch :- 
     player(SX,SY),
-    (ranch(SX, SY) -> write('What animal do you want to take care of ?'),nl,
+    (ranch(SX, SY) -> write('What animal do you want to take care of ?'),nl
         /*stored_animal()*/    
     ;
     write('You are not in the right spot to ranch')).
