@@ -1,12 +1,14 @@
-:- dynamic(time/2).
 addTime(X,Add) :-   time(X, PrevTime), retract(time(X, PrevTime)),
                     NewTime is PrevTime + Add, asserta(time(X, NewTime)),
                     write('changing day'), nl,
-                    checkFailState(X),
-                    (SPState=used -> useStaminaPotion(X)),
-                    updateStamina(X), nl.
+                    gameState(State),
+                    staminaPotionState(X,SPState),
+                    time(X, Time),
+                    (Time>=365 -> failState, quit;
+                    (State=playing -> 
+                    (SPState=used ->useStaminaPotion(X)),
+                    updateStamina(X), nl)).
 
-:- dynamic(currStamina/2).
 updateStamina(X) :- maxStamina(X, PrevMax), currStamina(X, PrevStamina), retract(currStamina(X, PrevStamina)),
                     NewStamina is PrevMax, asserta(currStamina(X, NewStamina)),
                     write('charging my energy'), nl.

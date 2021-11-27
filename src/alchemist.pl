@@ -3,11 +3,10 @@
 increaseStamina([amortentia, haliwinkles,polypody]).
 increaseProbability([ptolemy,thaumatagoria,staghorn]).
 
-:-dynamic(staminaPotionState/2).
 :-dynamic(probabilityPotionState/2).
-staminaPotionState(_, notHave).
 probabilityPotionState(_, notHave).
-
+:-dynamic(staminaPotionState/2).
+staminaPotionState(_, notHave).
 buy_alchemist(X) :- displayAlchemist,
                     read_integer(Opt),
                     (Opt =1 -> buyStamina(X);
@@ -62,6 +61,7 @@ useStaminaPotion(X) :- staminaPotionState(X, SPState),
                         dayUsed(X,DayUsed),
                         (SPState=notHave -> write('You don\'t have any stamina potion!'),nl;
                         SPState=used -> (
+                            write(DayUsed),nl,
                             (DayUsed=5 -> retract(maxStamina(X, CurrStamina)), New is CurrStamina-5, asserta(maxStamina(X, New)),
                                 retract(staminaPotionState(X, SPState)), asserta(staminaPotionState(X, notHave)),
                                 retract(dayUsed(X,5)), asserta(dayUsed(X,0));
@@ -79,7 +79,7 @@ useStaminaPotion(X) :- staminaPotionState(X, SPState),
 useProbabilityPotion(X) :- write('abc').
 
 itemCount([], X):- X is 0.
-itemCount([H|TAIL], Count) :-   itemCount(TAIL, Prev),
+itemCount([_|TAIL], Count) :-   itemCount(TAIL, Prev),
                                 Count is Prev + 1.
 
 removeItem([H|TAIL], H, TAIL).

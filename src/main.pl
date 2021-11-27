@@ -6,6 +6,10 @@
 :- include('alchemist.pl').
 :- include('house.pl').
 
+:-dynamic(uname/1).
+:-dynamic(gameState/1).
+gameState(notplaying).
+
 startGame :-    gameState(State),
                 (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
                 write('  _    _                           _      _____ _                       '),nl,
@@ -21,9 +25,7 @@ startGame :-    gameState(State),
                 nl,
                 initMap, start).
 
-:-dynamic(uname/1).
-:-dynamic(gameState/1).
-gameState(notplaying).
+
 start :-    gameState(State),
             (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
             retract(gameState(State)), asserta(gameState(playing)),
@@ -99,9 +101,6 @@ alchemist :- uname(Username), buy_alchemist(Username).
 
 checkGoalState(X) :-    gold(X, CurrGold),
                         (CurrGold >= 20000 -> goalState, quit).
-
-checkFailState(X) :-    time(X, Time),
-                        (Time is 365 -> failState, quit).
 
 failState :-    write('You have worked hard, but in the end result is all that matters.'), nl,
                 write('May God bless you in the future with kind people!').
