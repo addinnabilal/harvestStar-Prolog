@@ -1,34 +1,80 @@
 /* Aktivitas pemain */
 
+/* Fakta */
+isAnimal(chicken).
+isAnimal(sheep).
+isAnimal(cow).
+
+isFish(arwana).
+isFish(koi).
+isFish(gurame).
+isFish(bawal).
+isFish(lele).
+
+isPlant(corn).
+isPlant(wheat).
+isPlant(rice).
+
+
+/* Primitif */
+useStamina:-   
+            currStamina(X,Y), NewStamina is Y-1,
+            retract(currStamina(X,Y)), asserta(currStamina(X,NewStamina)).
+
 /* Farming */
-:- dynamic(plant/2).
-dig :-  diggingTile.
+:- dynamic(plant/4).
+:- dynamic(isSoilTaken/2).
+
+dig :-  player(X,Y),isTaken(X,Y), currStamina(Uname,St),
+        (\+ isTaken(X,Y) -> 
+            (St > 0 -> 
+                diggingTile,useStamina;
+                write('You don\'t have enough stamina'),nl
+            )
+            ;
+            write("You can\t dig here"),nl   
+        ).
+        
 
 plant :- 
-    player(SX,SY),
+    player(SX,SY), currStamina(X,Y),
     (digged(SX, SY) -> 
-        write('What do you want to plant?'),nl,
+        (Y > 0 -> 
+        write('What seed do you want to plant?'),nl,
         write('1. Corn seeds'),nl,
         write('2. Wheat seeds'),nl,
-        write('3. Rice'),nl,
+        write('3. Rice seeds'),nl,
         write('0 to cancel'), nl,
         write('Pick an option : '), read(option), nl,
-        (option = 1 -> 
-            asserta(plant(corn,2));
+        (option = 1 ->
+            stored_item(corn_seed,Qty),
+                (Qty > 0 -> 
+                    delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,2));
+                    write('You don\'t have enough seeds to plant'),nl
+                );
          option = 2 ->
-            asserta(plant(wheat,4));
+            stored_item(wheat_seed,Qty),
+                (Qty > 0 -> 
+                    delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,4));
+                    write('You don\'t have enough seeds to plant'),nl
+                );
          option = 3 ->
-            asserta(plant(rice,3));
+            stored_item(rice_seed,Qty),
+                (Qty > 0 -> 
+                    delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,3));
+                    write('You don\'t have enough seeds to plant'),nl
+                );
          option = 0 ->
             write('You did\'nt plant anything, come back here again to plant'),nl
-        )
-    ;
+        );
+        write('You don\'t have enough stamina'),nl
+        );
     write('You are not in the right spot to plant')).
 
 
 harvest :- 
     player(SX,SY),
-    (digged(SX, SY) -> plant(_,Y),
+    (digged(SX, SY) -> plant(SX,SY,X,Y),
     (Y =< 0 -> 
         write('Yeay you just harvest your plant'),nl
     
@@ -37,6 +83,8 @@ harvest :-
 
     ;
     write('You are not in the right spot to harvest')).
+
+/* updatePlant:- */
 
 
 /* Fishing */
@@ -71,8 +119,45 @@ fish :-
 
 
 /* Ranching */
-:- dynamic(animals/2).
+
+/*  Primitif */
+:- dynamic(stored_animal/2).
+stored_animal(chicken,0).
+stored_animal(cow,0).
+stored_animal(sheep,0).
+
+store_animal(Animal):- 
+    (stored_animal(Animal,Qty) -> 
+        NewQ is Qty + 1, retract(stored_animal(Animal,Qty)), asserta(stored_animal(Animal,NewQ))
+        ;
+        asserta(stored_animal(Animal,1))
+    ).
+
+delete_animal(Animal,Qty):- 
+    (stored_animal(Animal,PrevQ) -> 
+        NewQ is PrevQ - Qty, 
+        (NewQ >= 0 -> 
+            retract(stored_animal(Animal,PrevQ)), asserta(stored_animal(Animal,NewQ))
+            ;
+            retract(stored_animal(Animal,PrevQ)), asserta(stored_animal(Animal,0))
+        ) 
+    ).
+
+
+
+/* Ranchin Activity */
 ranch :- 
     player(SX,SY),
-    (ranch(SX, SY) -> write('What animal do you want to take care of ?'),nl;
+    (ranch(SX, SY) -> write('What animal do you want to take care of ?'),nl,
+        /*stored_animal()*/    
+    ;
     write('You are not in the right spot to ranch')).
+
+/*
+chicken :- 
+
+sheep :- 
+
+cow :- 
+*/
+
