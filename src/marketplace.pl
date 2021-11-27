@@ -9,7 +9,8 @@
 :- dynamic(item_price_per_char_level/3).
 :- dynamic(tool_price_per_level/3).
 
-stored_animal(chicken, 5).
+% debugging purpose
+% stored_animal(chicken, 5).
 
 % Harga beli item-item basic
 basic_item_buy_price(fish_bait, 30).
@@ -260,5 +261,6 @@ update_gold(New_number):- uname(X), retract(gold(X,_)), asserta(gold(X, New_numb
 /* Mengubah harga jual item hasil aktivitas berdasarkan level */
 update_item_price_per_char_level(Item, New_level) :-
     retract(item_price_per_char_level(Item, Price, _)),
-    New_price is ceiling(Price * 1,1),
+    New_price_temp is Price * (11/10),
+    New_price is ceiling(New_price_temp),
     asserta(item_price_per_char_level(Item, New_price, New_level)).

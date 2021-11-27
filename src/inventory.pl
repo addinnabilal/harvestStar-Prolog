@@ -107,6 +107,10 @@ delete_item(Item, Qty) :-
 throw_item :- 
     write('-----------------  ITEMS LIST  -----------------'), nl,
     nl,
+    tool_level(fishing_rod, Lvl_fr),
+    write(fishing_rod), write('\tlv.'), write(Lvl_fr), nl,
+    tool_level(shovel, Lvl_s),
+    write(shovel), write('\t\tlv.'), write(Lvl_s), nl,
     forall(stored_item(Item, Count), 
         (write(Item), write('\t: '), write(Count), nl)), nl,
     
@@ -119,6 +123,8 @@ throw_item :-
         (Throw_qty =< 0 ->
             write('It seems you are not interested in throwing the item.'), nl
         ; delete_item(Item, Throw_qty))
+    ; (is_tool(Item) ->
+        nl, write('You can\'t delete a tool.'), nl)
     ; Item = cancel -> write('Okay.'), nl
     ; \+ stored_item(Item, _) -> write('You don\'t have that item.'), nl).
     

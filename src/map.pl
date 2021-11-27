@@ -41,9 +41,9 @@ wall(X, Y) :- Y =:= 0, coordinate(X, Y).
 
 
 
-validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> write('Welcome to the market, want to buy something?'),nl,nl, visit_marketplace;
+validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> nl, visit_marketplace;
 
-                                        quest(NewX, NewY) -> write('uncle need your help!'), nl, nl, getQuest;
+                                        quest(NewX, NewY) -> nl, take_quest;
 
                                         ranch(NewX, NewY) -> write('uhuk, uhuk.. This ranch stinks'), nl, nl, visitRanch;
 
