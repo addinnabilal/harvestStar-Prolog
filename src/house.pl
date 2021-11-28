@@ -5,8 +5,8 @@ addTime(X,Add) :-   time(X, PrevTime), retract(time(X, PrevTime)),
                     staminaPotionState(X,SPState),
                     time(X, Time),
                     (Time>=365 -> failState, quit;
-                    (SPState=used ->useStaminaPotion(X)),
-                    updateStamina(X)).
+                    ((SPState=used ->useStaminaPotion(X)),
+                    updateStamina(X))).
 
 updateStamina(X) :- maxStamina(X, PrevMax), currStamina(X, PrevStamina), retract(currStamina(X, PrevStamina)),
                     NewStamina is PrevMax, asserta(currStamina(X, NewStamina)),
