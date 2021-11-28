@@ -46,7 +46,7 @@ obejctTimeP(corn,2).
 objectTimeP(wheat,4).
 objectTimeP(rice,3).
 
-:- dynamic(objectTimeA/2)
+:- dynamic(objectTimeA/2).
 objectTimeA(sheep,3).
 objectTimeA(chicken,2).
 objectTimeA(cow,5).
