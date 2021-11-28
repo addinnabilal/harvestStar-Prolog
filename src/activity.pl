@@ -61,6 +61,7 @@ dig :-  player(X,Y), currStamina(Uname,St),
         
 
 plant :- 
+    displayFarm,
     player(SX,SY), currStamina(X,Y),
     (digged(SX, SY) -> 
         (\+ isSoilTaken(SX,SY) ->
@@ -136,6 +137,7 @@ updatePlant:-
 /* Fishing */
 
 fish :- 
+    displayFish,
     player(SX,SY),
     (lakeSide(SX, SY) -> stored_item(fish_bait,Y), 
         (Y >= 0 -> write('You throw your rod into the lake...'),nl,
@@ -294,3 +296,36 @@ updateAnimalTime:-
         
     ).
 
+displayRanch :- nl,
+                write('                           _.-^-._    .--.            '),nl,
+                write('                        .-\'   _   \'-. |__|                    '),nl,
+                write('                       /     |_|     \\|  |                    '),nl,
+                write('                      /               \\  |                    '),nl,
+                write('                     /|     _____     |\\ |                    '),nl,
+                write('                      |    |==|==|    |  |                    '),nl,
+                write('  |---|---|---|---|---|    |--|--|    |  |                    '),nl,
+                write('  |---|---|---|---|---|    |==|==|    |  |                    '),nl,
+                write(' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                    '),nl.
+
+displayFarm :- nl,
+                write('              ______                    '),nl,
+                write('               |o  |   !                    '),nl,
+                write('   __          |:\`_|---\'-.            '),nl,
+                write('  |__|______.-.\'_\'.-----.|                    '),nl,
+                write(' (o)(o)------\'\'._.\'-----(O)                 '),nl.
+
+displayFish :- nl,
+                write('                  __,                    '),nl,
+                write('               .-\'_-\'`                    '),nl,
+                write('             .\' {`                    '),nl,
+                write('         .-\'````\'-.    .-\'``\'.            '),nl,
+                write('       .\'(0)       \'._/ _.-.  `\\                '),nl,
+                write('      }     \'. ))    _<`    )`  |                '),nl,
+                write('       `-.,\\\'.\\_,.-` \\`---; .\' /                    '),nl,
+                write('            )  )       \'-.  \'--:                '),nl,
+                write('           ( \' (          ) \'.  \\                '),nl,
+                write('            \'.  )      .\'(   /   )                '),nl,
+                write('              )/      (   \'.    /                    '),nl,
+                write('                       \'._( ) .\'                '),nl,
+                write('                           ( (                    '),nl,
+                write('                            \`-.            '),nl.
