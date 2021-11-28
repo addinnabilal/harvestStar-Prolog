@@ -17,11 +17,11 @@ is_tool(shovel).
 
 /* create Inventory untuk setiap speciality */
 create_farmer_inventory :-
-    asserta(used_space(7)), asserta(stored_item(corn_seed, 5)),
+    asserta(used_space(7)), asserta(stored_item(corn_seed, 5)), asserta(stored_animal(chicken, 5)),
     asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
 create_rancher_inventory :-
-    asserta(used_space(2)), asserta(stored_animal(chicken, 5)),
+    asserta(used_space(2)),
     asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
 create_fisherman_inventory :-
@@ -77,7 +77,24 @@ store_item(Item) :-
             ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
             NewUsed is Used + 1, asserta(used_space(NewUsed))),
         % Setelah berhasil ditambahkan keluarkan pesan
-        write(Item), write(' stored to inventory.'), nl
+        write('Item stored to inventory.'), nl
+    % Jika tas penuh, keluarkan pesan
+    ; display_inventory_full_message.
+
+store_many_item(Item,Amnt) :-
+    % Cek apakah masih ada ruang kosong, jika ada, lanjut
+    (\+ is_inventory_full(Used)) ->
+        % Jika Item sudah ada, tinggal ditambah jumlahnya
+        (stored_item(Item, Qty) -> 
+            retract(stored_item(Item, Qty)), 
+            NewQty is Qty + Amnt, asserta(stored_item(Item, NewQty)), 
+            retract(used_space(Used)), NewUsed is Used + Amnt, 
+            asserta(used_space(NewUsed))
+            % Jika belum ada, dibuat baru
+            ; asserta(stored_item(Item, Amnt)), retract(used_space(Used)), 
+            NewUsed is Used + Amnt, asserta(used_space(NewUsed))),
+        % Setelah berhasil ditambahkan keluarkan pesan
+        write('Item stored to inventory.'), nl
     % Jika tas penuh, keluarkan pesan
     ; display_inventory_full_message.
 
@@ -96,7 +113,7 @@ delete_item(Item, Qty) :-
         ; retract(stored_item(Item, OldQty)), asserta(stored_item(Item, NewQty)), 
             retract(used_space(Used)), NewUsed is Used - Qty, asserta(used_space(NewUsed))),
         % Jika berhasil menghapus item, tampilkan pesan
-        write(Item), write(' deleted from Inventory.'), nl
+        write('Item deleted from Inventory.'), nl
     % Jika mencoba mendelete tool, tampilkan pesan
     ; is_tool(Item) -> write('You can\'t delete a tool.'), nl
     % Jika tidak punya item yang mau didelete, tampilkan pesan
@@ -105,7 +122,6 @@ delete_item(Item, Qty) :-
 
 /* throw_item untuk membuang suatu item dari inventory */
 throw_item :- 
-    nl,
     write('-----------------  ITEMS LIST  -----------------'), nl,
     nl,
     tool_level(fishing_rod, Lvl_fr),
