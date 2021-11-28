@@ -49,7 +49,7 @@ useStamina:-
 :- dynamic(plant/4).
 :- dynamic(isSoilTaken/2).
 
-dig :-  player(X,Y),isTaken(X,Y), currStamina(Uname,St),
+dig :-  player(X,Y), currStamina(Uname,St),
         (\+ isTaken(X,Y) -> 
             (St > 0 -> 
                 diggingTile,useStamina;
@@ -70,8 +70,8 @@ plant :-
             write('2. Wheat seeds'),nl,
             write('3. Rice seeds'),nl,
             write('0 to cancel'), nl,
-            write('Pick an option : '), read_integer(option), nl,
-            (option = 1 ->
+            write('Pick an option : '), read_integer(Option), nl,
+            (Option = 1 ->
                 stored_item(corn_seed,Qty),
                     (Qty > 0 -> 
                         delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,2)),asserta(isSoilTaken(SX,SY)),
@@ -79,7 +79,7 @@ plant :-
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
-            option = 2 ->
+            Option = 2 ->
                 stored_item(wheat_seed,Qty),
                     (Qty > 0 -> 
                         delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,4)),asserta(isSoilTaken(SX,SY)),
@@ -87,7 +87,7 @@ plant :-
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
-            option = 3 ->
+            Option = 3 ->
                 stored_item(rice_seed,Qty),
                     (Qty > 0 -> 
                         delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,3)),asserta(isSoilTaken(SX,SY)),
@@ -95,7 +95,7 @@ plant :-
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
-            option = 0 ->
+            Option = 0 ->
                 write('You did\'nt plant anything, come back here again to plant'),nl
             );
             write('You don\'t have enough stamina'),nl
