@@ -246,7 +246,7 @@ store_animal(Animal):-
 
 store_many_animal(Animal,Amnt):- 
     (stored_animal(Animal,Qty) -> 
-        NewQ is Qty + Amnt, retract(stored_animal(Animal,Qty)), asserta(stored_animal(Animal,Amnt))
+        NewQ is Qty + Amnt, retract(stored_animal(Animal,Qty)), asserta(stored_animal(Animal,NewQ))
         ;
         asserta(stored_animal(Animal,Amnt))
     ).
