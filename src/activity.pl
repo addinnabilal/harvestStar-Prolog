@@ -41,11 +41,12 @@ objectProduced(sheep,wool).
 objectProduced(chicken,egg).
 
 /* Time Productivity */
-:- dynamic(objectTime/2).
-obejctTimeP(corn,2).
+:- dynamic(objectTimeP/2).
+objectTimeP(corn,2).
 objectTimeP(wheat,4).
 objectTimeP(rice,3).
 
+:- dynamic(objectTimeA/2).
 objectTimeA(sheep,3).
 objectTimeA(chicken,2).
 objectTimeA(cow,5).
