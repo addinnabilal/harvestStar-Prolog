@@ -121,26 +121,13 @@ quit :- write('You quit the game!'),
         retractall(probabilityPotionState(_,_)), 
         retractall(dayUsed(_,_)),
         retractall(player(_,_)),
-        retractall(digged(_,_)).     
+        retractall(digged(_,_)),
+        asserta(increaseStamina([amortentia, haliwinkles,polypody])),
+        asserta(increaseProbability([ptolemy,thaumatagoria,staghorn])),
+        asserta(probabilityPotionState(_, notHave)),
+        asserta(staminaPotionState(_, notHave)).     
 
 help :- 
-    write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
-    write('%                         ~ COMMANDS LIST ~                        %'), nl,
-    write('%                                                                  %'), nl,
-<<<<<<< HEAD
-    write('% 1.  start       : to start your journey                          %'), nl,
-    write('% 2.  map         : to shows map                                   %'), nl,
-    write('% 3.  status      : to show your current status                    %'), nl,
-    write('% 4.  inventory   : to show your inventory                         %'), nl,
-    write('% 5.  quest       : to show your current active quest              %'), nl,
-    write('% 6.  throw       : to throw an item                               %'), nl,
-    write('% 7.  w           : move 1 step to north                           %'), nl,
-    write('% 8.  s           : move 1 step to south                           %'), nl,
-    write('% 9.  d           : move 1 step to east                            %'), nl,
-    write('% 10. a           : move 1 step to west                            %'), nl,
-    write('% 11. help        : to show commands list                          %'), nl,
-    write('% 12. usePotion   : to use your potion                             %'), nl,
-=======
     write('% 1.  map         : to shows map                                   %'), nl,
     write('% 2.  status      : to show your current status                    %'), nl,
     write('% 3.  inventory   : to show your inventory                         %'), nl,
@@ -152,7 +139,7 @@ help :-
     write('% 9.  a           : move 1 step to west                            %'), nl,
     write('% 10. help        : to show commands list                          %'), nl,
     write('% 11. story       : to show your background story and objective    %'), nl,
->>>>>>> faf069150bd06a1176558e5af8f8f398fac93a73
+    write('% 12. usePotion   : to use your potion                             %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
 
 story :-
