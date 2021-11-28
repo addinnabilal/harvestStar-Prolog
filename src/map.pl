@@ -92,7 +92,7 @@ d:-     retract(player(XPrev, YPrev)),
 
 /*deklarasi init map*/
 initMap :-  createMap(16, 16), 
-        asserta(player(10, 8)), asserta(isPlaced(10,8)),
+        asserta(player(10, 8)),
         asserta(quest(6, 8)), asserta(isPlaced(6, 8)),
         asserta(marketplace(6, 10)), asserta(isPlaced(6, 10)),
         asserta(house(8, 8)), asserta(isPlaced(8,8)),
