@@ -48,16 +48,25 @@ getRare(Ctr):-
                 random(1, 100, X), Ctr is mod(X,50),
                 retract(probabilityPotionState(X,PBState)), asserta(probabilityPotionState(X,notHave))
             ).
+/*
+reducePlantTime(X,Y,0,Tm):- !.
+reducePlantTime(X,2,C,Tm):- Tm is 1, C2 is C-1, reducePlantTime(X,0,C2,T).
+reducePlantTime(Red,Ctr,Lv,Tm):-   Lv2 is Lv - 1, (Ctr = 0 -> Ctr2 is 0; Ctr2 is Ctr), 
+                                Ctr3 is Ctr2 + 1, reducePlantTime(Red2,Ctr3,Lv2,Tm2), Red is Tm2 + .
+*/
 
-reducePlantTime(X,Y,0):- !.
-reducePlantTime(X,2,C):- X is 1.
-reducePlantTime(Red,Ctr,Lv):- Lv2 is Lv -1.
 
 
 /* Primitif */
 useStamina:-   
             currStamina(X,Y), NewStamina is Y-1,
             retract(currStamina(X,Y)), asserta(currStamina(X,NewStamina)).
+
+isFullinv(Qty):- 
+                space(X), X2 is X + Qty,
+                (X2 > 100 -> 
+                    write('Your inventory is full, go sell something first'), nl
+                ).
 
 /* Farming */
 :- dynamic(plant/4).
@@ -138,13 +147,22 @@ harvest :-
                 Exp is Exp2
             ),
             (Y =< 0 -> 
+                NewQty is 2 + (1 * Lv), NewExp is NewQty * Exp,
                 write('Yeay you just harvest your plant'),nl,
-                NewQty is 2 + (1 * Lv), NewExp is NewQty * Exp, 
-                asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
-                retract(isSoilTaken(SX,SY)),
-                write('You got '), write(NewQty), write(X), write(' congrats'),nl,
-                write('You gained '), write(NewExp), write(' Exp'), nl,
-                retract(plant(SX,SY,X,Y))
+                write('......'), nl,
+                (isFullinv(NewQty) -> 
+                    write('Come back here later after you have some spaced'),nl
+                ;
+                    asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
+                    retract(isSoilTaken(SX,SY)),
+                    write('You got '), write(NewQty), write(X), write(' congrats'),nl,
+                    write('You gained '), write(NewExp), write(' Exp'), nl,
+                    retract(plant(SX,SY,X,Y)),
+                    (crop_to_harvest(Qst) -> 
+                        NewQst is Qst - 1, retract(crop_to_harvest(Qst)),
+                        asserta(crop_to_harvest(NewQst))
+                    )
+                )
             ;
             write('Your plant are not ready to be harvested')
             )
@@ -171,61 +189,69 @@ fish :-
     (lakeSide(SX, SY) -> 
         displayFish,
         (St > 0 ->
-            (stored_item(fish_bait,Y) -> 
-                (Y >= 0 -> write('You throw your rod into the lake...'),nl,
-                delete_item(fish_bait,1),
-                (getRare(A) -> 
-                    NewX is A
-                ;
-                    random(1,101,NewX)
-                ),
-                New2X is mod(Lv,20), X is NewX - New2X,
-                (X =< 1 -> 
-                    write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
-                    store_item(arowana_fish), useStamina,objectExp(arowana_fish, Exp),
-                    NewExp is Exp
-                    ;
-                X =< 10 -> 
-                    write('Congrats you got an unique fish \'Koi\'!'),nl,
-                    store_item(koi_fish), useStamina,objectExp(koi_fish, Exp),
-                    NewExp is Exp
-                    ;
-                X =< 25 -> 
-                    write('Congrats you got a rare fish \'Carp\'!'),nl,
-                    store_item(carp_fish), useStamina,objectExp(carp_fish, Exp),
-                    NewExp is Exp
-                    ;
-                X =< 50 -> 
-                    write('Congrats you got a normal fish \'Pomfret\'!'),nl,
-                    store_item(pomfret_fish),useStamina,objectExp(pomfret_fish, Exp),
-                    NewExp is Exp
-                    ;
-                X < 80 -> 
-                    write('Congrats you got a normal fish \'Catfish\'!'),nl,
-                    store_item(catfish),useStamina,objectExp(catfish, Exp),
-                    NewExp is Exp
-                    ;
-                X =< 90 -> 
-                    write('You got a legendary item or is it.... \'Boots\'!'),nl,
-                    store_item(boots), useStamina,objectExp(catfish, Exp),
-                    NewExp is Exp
-                    ;
-                X =< 100 -> 
-                    write('You did not get anything... :('),nl,
-                    useStamina, NewExp is 5
-                ),
-                (Class = fisherman -> 
-                    NewExp2 is (NewExp + round(NewExp/3))
-                ;
-                    NewExp2 is NewExp
-                ),
-                addFishingExp(Uname,NewExp2), addOverallExp(Uname,NewExp2),
-                write('You gained '), write(NewExp2), write(' Exp'),nl 
-                ;
-                write('You don\'t have bait anymore to fish'),nl
-                )
+            (isFullinv(1) -> 
+                write('Come back here later after you have some spaced'),nl
             ;
-            write('You don\'t have bait anymore to fish')
+                (stored_item(fish_bait,Y) -> 
+                    (Y >= 0 -> write('You throw your rod into the lake...'),nl,
+                    delete_item(fish_bait,1),
+                    (getRare(A) -> 
+                        NewX is A
+                    ;
+                        random(1,101,NewX)
+                    ),
+                    New2X is mod(Lv,20), X is NewX - New2X,
+                    (X =< 1 -> 
+                        write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
+                        store_item(arowana_fish), useStamina,objectExp(arowana_fish, Exp),
+                        NewExp is Exp
+                        ;
+                    X =< 10 -> 
+                        write('Congrats you got an unique fish \'Koi\'!'),nl,
+                        store_item(koi_fish), useStamina,objectExp(koi_fish, Exp),
+                        NewExp is Exp
+                        ;
+                    X =< 25 -> 
+                        write('Congrats you got a rare fish \'Carp\'!'),nl,
+                        store_item(carp_fish), useStamina,objectExp(carp_fish, Exp),
+                        NewExp is Exp
+                        ;
+                    X =< 50 -> 
+                        write('Congrats you got a normal fish \'Pomfret\'!'),nl,
+                        store_item(pomfret_fish),useStamina,objectExp(pomfret_fish, Exp),
+                        NewExp is Exp
+                        ;
+                    X < 80 -> 
+                        write('Congrats you got a normal fish \'Catfish\'!'),nl,
+                        store_item(catfish),useStamina,objectExp(catfish, Exp),
+                        NewExp is Exp
+                        ;
+                    X =< 90 -> 
+                        write('You got a legendary item or is it.... \'Boots\'!'),nl,
+                        store_item(boots), useStamina,objectExp(catfish, Exp),
+                        NewExp is Exp
+                        ;
+                    X =< 100 -> 
+                        write('You did not get anything... :('),nl,
+                        useStamina, NewExp is 5
+                    ),
+                    (Class = fisherman -> 
+                        NewExp2 is (NewExp + round(NewExp/3))
+                    ;
+                        NewExp2 is NewExp
+                    ),
+                    (fish_to_catch(Qst) -> 
+                        NewQst is Qst - 1, retract(fish_to_catch(Qst)),
+                        asserta(fish_to_catch(NewQst))
+                    ),
+                    addFishingExp(Uname,NewExp2), addOverallExp(Uname,NewExp2),
+                    write('You gained '), write(NewExp2), write(' Exp'),nl 
+                    ;
+                    write('You don\'t have bait anymore to fish'),nl
+                    )
+                ;
+                write('You don\'t have bait anymore to fish')
+                )
             )
         ;
         write('You don\'t have enough stamina'),nl
@@ -301,6 +327,10 @@ chicken:-
                     Exp is Exp2
                 ),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
+                (product_to_produce(Qst) -> 
+                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        asserta(product_to_produce(NewQst))
+                ),
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
@@ -333,6 +363,10 @@ cow:-
                     Exp is Exp2
                 ),
                 NewQ is (1 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
+                (product_to_produce(Qst) -> 
+                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        asserta(product_to_produce(NewQst))
+                ),
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
@@ -364,6 +398,10 @@ sheep:-
                     Exp is Exp2
                 ),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
+                (product_to_produce(Qst) -> 
+                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        asserta(product_to_produce(NewQst))
+                ),
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
