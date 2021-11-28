@@ -4,7 +4,7 @@ addTime(X,Add) :-   time(X, PrevTime), retract(time(X, PrevTime)),
                     gameState(State),
                     staminaPotionState(X,SPState),
                     time(X, Time),
-                    (Time>=365 -> failState, quit;
+                    (Time>=365 -> failState, nl,quit, !, fail;
                     ((SPState=used ->useStaminaPotion(X), updateStamina(X));
                     updateStamina(X))).
 
@@ -26,7 +26,7 @@ visitHouse :-   write('you are finally home'), nl,
                 write('- [2]. writeDiary'), nl,
                 write('- [3]. readDiary'), nl,
                 write('- [4]. exit'), nl,
-                write('Pick a number: '), read_integer(HouseChoice), nl,
+                write('Pick a number: '), read(HouseChoice), nl,
 
                 (HouseChoice = 1 -> 
                     updateAnimalTime, updatePlant,

@@ -34,6 +34,8 @@ startGame :-    gameState(State),
                 nl,
                 help,
                 nl,
+                asserta(increaseStamina([amortentia, haliwinkles,polypody])),
+                asserta(increaseProbability([ptolemy,thaumatagoria,staghorn])),
                 initMap, start).
 
 
@@ -125,7 +127,7 @@ quit :- write('You quit the game!'),
         asserta(increaseStamina([amortentia, haliwinkles,polypody])),
         asserta(increaseProbability([ptolemy,thaumatagoria,staghorn])),
         asserta(probabilityPotionState(_, notHave)),
-        asserta(staminaPotionState(_, notHave)).     
+        asserta(staminaPotionState(_, notHave)),    
         retractall(position(_,_)),
         retractall(digged(_,_)).     
 
@@ -166,7 +168,7 @@ failState :-    write('__  __               __                    __    '),nl,
 
 goalState :-    write('__  __               _       ___       __    '),nl,
                 write('\\ \\/ /___  __  __   | |     / (_)___  / /                '),nl,
-                write(' \\  / __ / / / /   | | /| / / / __ \\/ /                     '),nl,
+                write(' \\  / __  / / / /   | | /| / / / __ \\/ /                     '),nl,
                 write(' / / /_/ / /_/ /    | |/ |/ / / / / /_/                      '),nl,
                 write('/_/\\____/\\__,_/     |__/|__/_/_/ /_(_)                   '),nl,
                 write('Congratulations! You have finally collected 20000 golds!'), nl.

@@ -1,12 +1,8 @@
 :-dynamic(increaseStamina/1).
 :-dynamic(increaseProbability/1).
-increaseStamina([amortentia, haliwinkles,polypody]).
-increaseProbability([ptolemy,thaumatagoria,staghorn]).
 
 :-dynamic(probabilityPotionState/2).
-probabilityPotionState(_, notHave).
 :-dynamic(staminaPotionState/2).
-staminaPotionState(_, notHave).
 buy_alchemist(X) :- displayAlchemist,
                     read(Opt),
                     (Opt =1 -> buyStamina(X);
