@@ -53,7 +53,7 @@ validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> nl, visit_mar
 
                                         digged(NewX, NewY) -> write('I like farming!!'), nl, nl;
 
-                                        lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl, fish);
+                                        lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl);
 
                                         wall(NewX, NewY), taken(NewX, NewY) ->
                                         retract(player(NewX, NewY)), asserta(player(PrevX, PrevY)),
