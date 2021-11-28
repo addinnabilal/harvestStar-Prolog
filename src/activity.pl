@@ -71,56 +71,65 @@ plant :-
             write('2. Wheat seeds'),nl,
             write('3. Rice seeds'),nl,
             write('0 to cancel'), nl,
-            write('Pick an option : '), read_integer(Option), nl,
+            write('Pick an option : '), read(Option), nl,
             (Option = 1 -> 
-                stored_item(corn_seed,Qty), 
+                (stored_item(corn_seed,Qty) -> 
                     (Qty > 0 -> 
                         delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,2)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
+                        write('You don\'t have enough seeds to plant'),nl
+                    );
             Option = 2 -> 
-                stored_item(wheat_seed,Qty),
+                (stored_item(wheat_seed,Qty) ->
                     (Qty > 0 -> 
                         delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,4)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
+                        write('You don\'t have enough seeds to plant'),nl
+                    );
             Option = 3 -> 
-                stored_item(rice_seed,Qty),
+                (stored_item(rice_seed,Qty) ->
                     (Qty > 0 -> 
                         delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,3)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
+                    write('You don\'t have enough seeds to plant'),nl
+                    );
             Option = 0 ->
                 write('You did\'nt plant anything, come back here again to plant'),nl
             );
             write('You don\'t have enough stamina'),nl
-            );
-            write('You already planted here, plant somewhere else!'),nl
         );
+        write('You already planted here, plant somewhere else!'),nl
+    );
     write('You are not in the right spot to plant')).
 
 
 harvest :- 
     player(SX,SY), farmingLevel(Uname,Lv),
-    (digged(SX, SY) -> plant(SX,SY,X,Y), objectExp(X,Exp),
-    (Y =< 0 -> 
-        write('Yeay you just harvest your plant'),nl,
-        NewQty is 2 + (1 * Lv), NewExp is NewQty * Exp, 
-        asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp),
-        retract(isSoilTaken(SX,SY)),
-        write('You got '), write(NewQty), write(X), write(' congrats'),nl,
-        write('You gained '), write(NewExp), write(' Farming Exp'), nl,
-        retract(plant(SX,SY,X,Y))
-
-    ;
-        write('Your plant are not ready to be harvested'))    
-
+    (digged(SX, SY) -> 
+        (plant(SX,SY,_,_) -> 
+            plant(SX,SY,X,Y), objectExp(X,Exp),
+            (Y =< 0 -> 
+                write('Yeay you just harvest your plant'),nl,
+                NewQty is 2 + (1 * Lv), NewExp is NewQty * Exp, 
+                asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
+                retract(isSoilTaken(SX,SY)),
+                write('You got '), write(NewQty), write(X), write(' congrats'),nl,
+                write('You gained '), write(NewExp), write(' Exp'), nl,
+                retract(plant(SX,SY,X,Y))
+                ;
+                write('Your plant are not ready to be harvested')) 
+            ;
+            write('You did not plant anything here, the soil is empty')
+        )
     ;
     write('You are not in the right spot to harvest')).
 
@@ -137,6 +146,7 @@ updatePlant:-
 /* Fishing */
 
 fish :- 
+<<<<<<< HEAD
     displayFish,
     player(SX,SY),
     (lakeSide(SX, SY) -> stored_item(fish_bait,Y), 
@@ -157,26 +167,57 @@ fish :-
                 write('Congrats you got a rare fish \'Carp\'!'),nl,
                 store_item(carp_fish),objectExp(carp_fish, Exp),
                 NewExp is Exp
+=======
+    player(SX,SY), currStamina(_,St),
+    (lakeSide(SX, SY) -> 
+        (St > 0 ->
+            (stored_item(fish_bait,Y) -> 
+                (Y >= 0 -> write('You throw your rod into the lake...'),nl,
+                delete_item(fish_bait,1),
+                random(1,100,X),
+                (X =< 1 -> 
+                    write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
+                    store_item(arowana_fish), useStamina,objectExp(arowana_fish, Exp),
+                    NewExp is Exp
+                    ;
+                X =< 10 -> 
+                    write('Congrats you got an unique fish \'Koi\'!'),nl,
+                    store_item(koi_fish), useStamina,objectExp(koi_fish, Exp),
+                    NewExp is Exp
+                    ;
+                X =< 30 -> 
+                    write('Congrats you got a rare fish \'Carp\'!'),nl,
+                    store_item(carp_fish), useStamina,objectExp(carp_fish, Exp),
+                    NewExp is Exp
+                    ;
+                X =< 60 -> 
+                    write('Congrats you got a normal fish \'Pomfret\'!'),nl,
+                    store_item(pomfret_fish),useStamina,objectExp(pomfret_fish, Exp),
+                    NewExp is Exp
+                    ;
+                X =< 90 -> 
+                    write('Congrats you got a normal fish \'Catfish\'!'),nl,
+                    store_item(catfish),useStamina,objectExp(catfish, Exp),
+                    NewExp is Exp
+                    ;
+                X =< 100 -> 
+                    write('You got a legendary item or is it.... \'Boots\'!'),nl,
+                    store_item(boots), useStamina,objectExp(catfish, Exp),
+                    NewExp is Exp
+                    ),
+                addFishingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
+                write('You gained '), write(NewExp), write(' Exp'),nl 
+>>>>>>> f5da179b6a2b3c4e1ecc6ac4798a5a4aea4141ed
                 ;
-            X =< 60 -> 
-                write('Congrats you got a normal fish \'Pomfret\'!'),nl,
-                store_item(pomfret_fish),objectExp(pomfret_fish, Exp),
-                NewExp is Exp
-                ;
-            X =< 90 -> 
-                write('Congrats you got a normal fish \'Catfish\'!'),nl,
-                stored_item(catfish),objectExp(catfish, Exp),
-                NewExp is Exp
-                ;
-            X =< 100 -> 
-                write('You got a legendary item or is it.... \'Boots\'!'),nl,
-                stored_item(boots), objectExp(catfish, Exp),
-                NewExp is Exp
-                ),
-            addFishingExp(Uname,NewExp),write('You gained '), write(NewExp), write(' Exp'),nl 
+                write('You don\'t have bait anymore to fish'),nl
+                )
+            ;
+            write('You don\'t have bait anymore to fish')
+            )
         ;
-        write('You don\'t have bait anymore to fish'),nl
-        );
+        write('You don\'t have enough stamina'),nl
+        )
+        ;
     write('You are not in the right spot to fish')).
 
 /* Ranching */
@@ -209,9 +250,13 @@ animalTime(chicken,2).
 /* Ranchin Activity */
 ranch :- 
     player(SX,SY),
-    (ranch(SX, SY) -> write('What animal do you want to take care of, you have: '),nl,
-        forall(stored_animal(Animal,Qty),
+    (ranch(SX, SY) -> 
+        (stored_animal(_,_) -> 
+            write('What animal do you want to take care of, you have: '),nl,
+            forall(stored_animal(Animal,Qty),
             (write(Qty), write(' '), write(Animal),nl)
+            );
+            write('You don\'t have any animal'),nl
         )
     ;
     write('You are not in the right spot to ranch')).
@@ -221,42 +266,49 @@ chicken:-
     player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),
     (ranch(SX, SY) -> 
         (Y > 0 ->
-            animalTime(chicken, Time),
-            (Time =< 0 ->
+            (stored_animal(chicken,_) -> 
+                animalTime(chicken, Time),
+                (Time =< 0 ->
                 write('Yeay your chicken produced something'),nl,
                 objectProduced(chicken,Res),objectExp(chicken,Exp),
-                NewQ is 2 + (1 * Lv), NewExp is Exp * NewQ, useStamina,
-                store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
+                NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
+                store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
                 retract(animalTime(chicken,_)),asserta(animalTime(chicken,2))
-
+                ;
+                write('Your chicken did not produce anything, come back later'),nl
+                )
+            ;
+            write('You don\'t have any chicken')
             )
             ;
-            write('Your chicken did not produce anything, come back later'),nl
+            write('You don\'t have enough stamina'),nl
         )
-        ;
-        write('You don\'t have enough stamina'),nl
     ;
     write('You are not in the right spot to ranch')).
 
 cow:- 
     player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),
     (ranch(SX, SY) -> 
-        (Y > 0 ->
-            animalTime(cow, Time),
-            (Time =< 0 ->
+        (Y > 0 -> 
+            (stored_animal(cow,_) ->
+                animalTime(cow, Time),
+                (Time =< 0 ->
                 write('Yeay your cow produced something'),nl,
                 objectProduced(cow,Res),objectExp(cow,Exp),
-                NewQ is 2 + (1 * Lv), NewExp is Exp * NewQ, useStamina,
+                stored_animal(cow,AnQty),
+                NewQ is (1 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
                 retract(animalTime(cow,_)), asserta(animalTime(cow,5))
-
-            )
+                ;
+                write('Your cow did not produce anything, come back later'),nl
+                )
             ;
-            write('Your cow did not produce anything, come back later'),nl
+            write('You don\'t have any cow')
+            )
         )
         ;
         write('You don\'t have enough stamina'),nl
@@ -270,30 +322,31 @@ sheep:-
             animalTime(sheep, Time),
             (Time =< 0 ->
                 write('Yeay your sheep produced something'),nl,
+                stored_animal(sheep,AnQty),
                 objectProduced(sheep,Res),objectExp(sheep,Exp),
-                NewQ is 2 + (1 * Lv), NewExp is Exp * NewQ, useStamina,
+                NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
                 retract(animalTime(sheep,_)), asserta(animalTime(sheep,3))
-            )
             ;
             write('Your sheep did not produce anything, come back later'),nl
-        )
+            )
         ;
         write('You don\'t have enough stamina'),nl
+        )
     ;
     write('You are not in the right spot to ranch')).
 
 updateAnimalTime:- 
     forall(stored_animal(Type,Qty), 
-        animalTime(Type,Time), NewT is Time-1,
-        (NewT > 0 -> 
-            retract(animalTime(Type,Time)), asserta(animalTime(Type,NewT))
-            ;
-            retract(animalTime(Type,Time)), asserta(animalTime(Type,0))
-        )
-        
+        (animalTime(Type,Time), NewT is Time-1,
+            (NewT > 0 -> 
+                retract(animalTime(Type,Time)), asserta(animalTime(Type,NewT))
+                ;
+                retract(animalTime(Type,Time)), asserta(animalTime(Type,0))
+            )
+        )  
     ).
 
 displayRanch :- nl,

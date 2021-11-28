@@ -61,7 +61,6 @@ useStaminaPotion(X) :- staminaPotionState(X, SPState),
                         dayUsed(X,DayUsed),
                         (SPState=notHave -> write('You don\'t have any stamina potion!'),nl;
                         SPState=used -> (
-                            write(DayUsed),nl,
                             (DayUsed=5 -> retract(maxStamina(X, CurrStamina)), New is CurrStamina-5, asserta(maxStamina(X, New)),
                                 retract(staminaPotionState(X, SPState)), asserta(staminaPotionState(X, notHave)),
                                 retract(dayUsed(X,5)), asserta(dayUsed(X,0));
