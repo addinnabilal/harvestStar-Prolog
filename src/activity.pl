@@ -49,8 +49,9 @@ getRare(Ctr):-
                 retract(probabilityPotionState(X,PBState)), asserta(probabilityPotionState(X,notHave))
             ).
 
-reducePlantTime(X,Y,0):- Y is 0.
-reducePlantTime(Red,Ctr,Lv):- !.
+reducePlantTime(X,Y,0):- !.
+reducePlantTime(X,2,C):- X is 1.
+reducePlantTime(Red,Ctr,Lv):- Lv2 is Lv -1.
 
 
 /* Primitif */
@@ -242,14 +243,16 @@ store_animal(Animal):-
         NewQ is Qty + 1, retract(stored_animal(Animal,Qty)), asserta(stored_animal(Animal,NewQ))
         ;
         asserta(stored_animal(Animal,1))
-    ).
+    ),
+    write('1 '), write(Animal),write(' stored to ranch'),nl.
 
 store_many_animal(Animal,Amnt):- 
     (stored_animal(Animal,Qty) -> 
         NewQ is Qty + Amnt, retract(stored_animal(Animal,Qty)), asserta(stored_animal(Animal,NewQ))
         ;
         asserta(stored_animal(Animal,Amnt))
-    ).
+    ),
+    write(Amnt),write(' '), write(Animal),write(' stored to inventory'), nl.
 
 delete_animal(Animal,Qty):- 
     (stored_animal(Animal,PrevQ) -> 
