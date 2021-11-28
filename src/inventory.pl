@@ -77,7 +77,7 @@ store_item(Item) :-
             ; asserta(stored_item(Item, 1)), retract(used_space(Used)), 
             NewUsed is Used + 1, asserta(used_space(NewUsed))),
         % Setelah berhasil ditambahkan keluarkan pesan
-        write('Item stored to inventory.'), nl
+        write(Item), write(' stored to inventory.'), nl
     % Jika tas penuh, keluarkan pesan
     ; display_inventory_full_message.
 
@@ -94,7 +94,7 @@ store_many_item(Item,Amnt) :-
             ; asserta(stored_item(Item, Amnt)), retract(used_space(Used)), 
             NewUsed is Used + Amnt, asserta(used_space(NewUsed))),
         % Setelah berhasil ditambahkan keluarkan pesan
-        write(Item), write(' stored to inventory.'), nl
+        write(Item), write(' x'), write(Amnt), write(' stored to inventory.'), nl
     % Jika tas penuh, keluarkan pesan
     ; display_inventory_full_message.
 
