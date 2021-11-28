@@ -56,7 +56,7 @@ dig :-  player(X,Y),isTaken(X,Y), currStamina(Uname,St),
                 write('You don\'t have enough stamina'),nl
             )
             ;
-            write("You can\t dig here"),nl   
+            write('You can\'t dig here'),nl   
         ).
         
 
