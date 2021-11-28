@@ -45,9 +45,9 @@ validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> nl, visit_mar
 
                                         quest(NewX, NewY) -> nl, take_quest;
 
-                                        ranch(NewX, NewY) -> write('uhuk, uhuk.. This ranch stinks'), nl, nl, visitRanch;
+                                        ranch(NewX, NewY) -> write('uhuk, uhuk.. This ranch stinks'), nl, nl, ranch;
 
-                                        alchemist(NewX, NewY) -> write('welcome to secret'), nl, nl, visitAlchemist;
+                                        alchemist(NewX, NewY) -> write('welcome to secret'), nl, nl, alchemist;
 
                                         house(NewX, NewY) -> write('Mama, Papa, i\'m home'), nl, nl, visitHouse;
 
@@ -58,9 +58,9 @@ validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> nl, visit_mar
                                         lake(NewX, NewY), taken(NewX, NewY) -> retract(player(NewX, NewY)), asserta(player(PrevX, PrevY)),
                                         write('This lake is too cold, I don\'t want to swim here'), nl, !, fail;
                                         
-                                        digged(NewX, NewY) -> write('I like farming!!'), nl, nl, visitFarm;
+                                        digged(NewX, NewY) -> write('I like farming!!'), nl, nl, harvest;
 
-                                        lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl, fishing).
+                                        lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl, fish).
 
 /*deklarasi move*/
 :- dynamic(player/2).
