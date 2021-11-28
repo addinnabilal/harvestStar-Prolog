@@ -272,7 +272,7 @@ sheep:-
                 NewQ is 2 + (1 * Lv), NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
-                write('You gained '), write(NewExp), write(' Exp'),nl
+                write('You gained '), write(NewExp), write(' Exp'),nl,
                 retract(animalTime(sheep,_)), asserta(animalTime(sheep,3))
             )
             ;

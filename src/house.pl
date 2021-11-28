@@ -38,7 +38,7 @@ visitHouse :-   write('you are finally home'), nl,
                     write('flag'), nl,
                     write(X),
                     (X =< 5 -> periTidur;
-                    X =< 10 -> visitHouse),
+                    X =< 10 -> visitHouse);
                 HouseChoice = 2 ->
                     write('writing diary'), nl;
                 HouseChoice = 3 ->

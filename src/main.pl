@@ -69,9 +69,6 @@ map :-  (write('Where is my map?, ooh i found it. Open the map.'), nl, nl,
         write('% A : Alchemist. This is a secret shop, do not tell anyone.          %'), nl,
         write('----------------------------------------------------------------------'), nl, !).
 
-        
-
-
 
 quit :- write('You quit the game!'),
         retractall(gameState(_)),
