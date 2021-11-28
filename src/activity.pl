@@ -50,7 +50,7 @@ useStamina:-
 :- dynamic(isSoilTaken/2).
 
 dig :-  player(X,Y), currStamina(Uname,St),
-        (\+ isTaken(X,Y) -> 
+        (\+ isPlaced(X,Y) -> 
             (St > 0 -> 
                 diggingTile,useStamina;
                 write('You don\'t have enough stamina'),nl
