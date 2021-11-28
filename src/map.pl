@@ -27,7 +27,7 @@ wall(X, Y) :- Y =:= 0, locate(X, Y).
  displayMap(SX, SY) :-  (SX = 0 -> write('\t\t\t')
                         ; write('')),
                         (wall(SX, SY) -> write('#');
-                        player(SX, SY) -> write('P');
+                        position(SX, SY) -> write('P');
                         marketplace(SX, SY) -> write('M');
                         quest(SX, SY) -> write('Q');
                         house(SX, SY) -> write('H');
@@ -58,43 +58,43 @@ isValid(XPrev, YPrev, XNew, YNew) :- (marketplace(XNew, YNew) -> nl, visit_marke
                                         lakeSide(XNew, YNew) -> write('This is lakeside, you can fish from here'),nl,nl);
 
                                         wall(XNew, YNew), placed(XNew, YNew) ->
-                                        retract(player(XNew, YNew)), asserta(player(XPrev, YPrev)),
+                                        retract(position(XNew, YNew)), asserta(position(XPrev, YPrev)),
                                         !,write('aaaa!!, I hit the wall. It hurts'), nl, fail;
 
-                                        lake(XNew, YNew), placed(XNew, YNew) -> retract(player(XNew, YNew)), asserta(player(XPrev, YPrev)),
+                                        lake(XNew, YNew), placed(XNew, YNew) -> retract(position(XNew, YNew)), asserta(position(XPrev, YPrev)),
                                         !,write('This lake is too cold, I don\'t want to swim here'),nl, fail.
                                         
                                         
 
 /*deklarasi move*/
-:- dynamic(player/2).
-w :-    retract(player(XPrev, YPrev)), 
+:- dynamic(position/2).
+w :-    retract(position(XPrev, YPrev)), 
         YNew is YPrev + 1, 
-        asserta(player(XPrev, YNew)),
+        asserta(position(XPrev, YNew)),
         write('what\'s up in the north, is it cold in the nort?'),  nl,
         isValid(XPrev, YPrev, XPrev, YNew).
 
-a:-     retract(player(XPrev, YPrev)), 
+a:-     retract(position(XPrev, YPrev)), 
         XNew is XPrev - 1, 
-        asserta(player(XNew, YPrev)),
+        asserta(position(XNew, YPrev)),
         write('what\'s up in the west, seems cool to cowboy'), nl,
         isValid(XPrev, YPrev, XNew, YPrev).
 
-s :-    retract(player(XPrev, YPrev)), 
+s :-    retract(position(XPrev, YPrev)), 
         YNew is YPrev - 1, 
-        asserta(player(XPrev, YNew)),
+        asserta(position(XPrev, YNew)),
         write('what\'s up in the south, can i find penguins in the south?'), nl,
         isValid(XPrev, YPrev, XPrev, YNew).
 
-d:-     retract(player(XPrev, YPrev)), 
+d:-     retract(position(XPrev, YPrev)), 
         XNew is XPrev + 1, 
-        asserta(player(XNew, YPrev)),
+        asserta(position(XNew, YPrev)),
         write('what\'s up in the east, i like asian culture'), nl,
         isValid(XPrev, YPrev, XNew, YPrev).
 
 /*deklarasi init map*/
 initMap :-  createMap(16, 16), 
-        asserta(player(10, 8)),
+        asserta(position(10, 8)),
         asserta(quest(6, 8)), asserta(isPlaced(6, 8)),
         asserta(marketplace(6, 10)), asserta(isPlaced(6, 10)),
         asserta(house(8, 8)), asserta(isPlaced(8,8)),
@@ -126,7 +126,7 @@ initMap :-  createMap(16, 16),
         asserta(lakeSide(1,4)), asserta(isPlaced(1, 4)).
 
 
-diggingTile :-  player(XPrev,YPrev),
+diggingTile :-  position(XPrev,YPrev),
                 asserta(digged(XPrev, YPrev)),
                 asserta(isPlaced(XPrev, YPrev)),
                 write('now you can farm here'), nl.
@@ -145,7 +145,7 @@ periTidur :-    write('     __/\\__ '), nl,
                 write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
                 (wall(XT, YT) -> write('you can\'t go through wall'), fail, nl;
                 lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
-                player(XPrev, YPrev), retract(player(XPrev, YPrev)), asserta(player(XT, YT)),
+                position(XPrev, YPrev), retract(position(XPrev, YPrev)), asserta(position(XT, YT)),
                 write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
                 write('Successfully moved, May we meet again, good boy! '), nl, nl,
                 isValid(XPrev, YPrev, XT, YT)).

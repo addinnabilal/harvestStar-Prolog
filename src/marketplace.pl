@@ -164,7 +164,6 @@ buy_animal(Balance, Animal) :-
         ; display_insufficient_gold
         )    
     ).
-    
 
 buy_tool(Balance, Tool, Price, Level) :-
     Balance >= Price ->
@@ -177,11 +176,14 @@ buy_tool(Balance, Tool, Price, Level) :-
         asserta(tool_level(Tool, Level)),
 
         % Update harga beli tool pada level selanjutnya
-        retract(tool_price_per_level(shovel, Price, Level)),
+        retract(tool_price_per_level(Tool, Price, Level)),
         Next_level is Level + 1, Next_price is Price + 100,
-        asserta(tool_price_per_level(shovel, Next_price, Next_level)),
+        asserta(tool_price_per_level(Tool, Next_price, Next_level)),
 
-        write(Tool), write(' upgraded to level '), write(Level), write('!'), nl
+        write(Tool), write(' upgraded to level '), write(Level), write('!'), nl,
+        (Tool = fishing_rod ->
+            write('Your chances of getting high rarity fish will increase.'), nl
+        ; write('The yield of your crops will increase.'), nl)
     ; display_insufficient_gold.
 
 
@@ -215,26 +217,14 @@ sell_animal(Balance, Animal, Price, Qty) :-
 
 /* Tampilan ketika mengunjungi marketplace */
 display_marketplace_welcome :-
-    write('                                               /\\      /\\        '),nl,
-    write('                                               ||______||        '),nl,
-    write('                                               || ^  ^ ||        '),nl,
-    write('                                               \\| |  | |/        '),nl,
-    write('                                                |______|        '),nl,
-    write('              __                                |  __  |        '),nl,
-    write('             /  \\       ________________________|_/  \\_|__        '),nl,
-    write('            / ^^ \\     /=========================/ ^^ \\===|        '),nl,
-    write('           /  []  \\   /=========================/  []  \\==|        '),nl,
-    write('          /________\\ /=========================/________\\=|        '),nl,
-    write('       *  |        |/==========================|        |=|        '),nl,
-    write('      *** | ^^  ^^ |---------------------------| ^^  ^^ |--        '),nl,
-    write('     *****| []  [] |           _____           | []  [] | |        '),nl,
-    write('    *******        |          /_____\\          |      * | |        '),nl,
-    write('   *********^^  ^^ |  ^^  ^^  |  |  |  ^^  ^^  |     ***| |        '),nl,
-    write('  ***********]  [] |  []  []  |  |  |  []  []  | ===***** |        '),nl,
-    write(' *************     |         @|__|__|@         |/ |*******|        '),nl,
-    write('***************   ***********--=====--**********| *********        '),nl,
-    write('***************___*********** |=====| **********|***********        '),nl,
-    write(' *************     ********* /=======\\ ******** | *********        '),nl,
+    nl,
+    write('                   `\'::::.'),nl,
+    write('                 _____A_'),nl,
+    write('                /      /\\'),nl,
+    write('             __/__/\\__/  \\___'),nl,
+    write('         ---/__|" '' "| /___/\\----'),nl,
+    write('            |\'\'|"\'||\'"| |\' \'||'),nl,
+    write('            `""`""))""`"`""""`'),nl,
     write('|------------------------------------------|'), nl,
     write('|        Welcome To The Marketplace        |'), nl,
     write('|------------------------------------------|'), nl,

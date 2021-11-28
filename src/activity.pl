@@ -40,6 +40,16 @@ objectProduced(cow,milk).
 objectProduced(sheep,wool).
 objectProduced(chicken,egg).
 
+/* Time Productivity */
+:- dynamic(objectTime/2).
+obejctTimeP(corn,2).
+objectTimeP(wheat,4).
+objectTimeP(rice,3).
+
+objectTimeA(sheep,3).
+objectTimeA(chicken,2).
+objectTimeA(cow,5).
+
 
 /* Advantage from Class speciality and Speciality Level */
 getRare(Ctr):- 
@@ -48,12 +58,30 @@ getRare(Ctr):-
                 random(1, 100, X), Ctr is mod(X,50),
                 retract(probabilityPotionState(X,PBState)), asserta(probabilityPotionState(X,notHave))
             ).
-/*
-reducePlantTime(X,Y,0,Tm):- !.
-reducePlantTime(X,2,C,Tm):- Tm is 1, C2 is C-1, reducePlantTime(X,0,C2,T).
-reducePlantTime(Red,Ctr,Lv,Tm):-   Lv2 is Lv - 1, (Ctr = 0 -> Ctr2 is 0; Ctr2 is Ctr), 
-                                Ctr3 is Ctr2 + 1, reducePlantTime(Red2,Ctr3,Lv2,Tm2), Red is Tm2 + .
-*/
+
+reducePlantTime:- 
+                farmingLevel(_,Lv),
+                forall(objectTimeP(A,B),    
+                    (NewX is round(Lv/3), NewX2 is B - NewX,
+                    (NewX2 < 2 ->
+                        retract(objectTimeP(A,B)), asserta(objectTimeP(A,2))
+                    ;
+                        retract(objectTimeP(A,B)), asserta(objectTimeP(A,NewX2))
+                    ))
+                    ).
+
+
+reduceAnimalTime:- 
+                ranchingLevel(_,Lv),
+                forall(objectTimeA(A,B),    
+                    (NewX is round(Lv/3), NewX2 is B - NewX,
+                    (NewX2 < 2 ->
+                        retract(objectTimeA(A,B)), asserta(objectTimeA(A,2))
+                    ;
+                        retract(objectTimeA(A,B)), asserta(objectTimeA(A,NewX2))
+                    ))
+                ).
+
 
 
 
@@ -72,8 +100,8 @@ isFullinv(Qty):-
 :- dynamic(plant/4).
 :- dynamic(isSoilTaken/2).
 
-dig :-  player(X,Y), currStamina(_,St),
-        (\+ isTaken(X,Y) -> 
+dig :-  position(X,Y), currStamina(_,St),
+        (\+ isPlaced(X,Y) -> 
             (St > 0 -> 
                 diggingTile,useStamina;
                 write('You don\'t have enough stamina'),nl
@@ -85,7 +113,7 @@ dig :-  player(X,Y), currStamina(_,St),
 
 plant :- 
     displayFarm,
-    player(SX,SY), currStamina(_,Y),
+    position(SX,SY), currStamina(_,Y),
     (digged(SX, SY) -> 
         (\+ isSoilTaken(SX,SY) ->
             (Y > 0 -> 
@@ -99,7 +127,8 @@ plant :-
             (Option = 1 -> 
                 (stored_item(corn_seed,Qty) -> 
                     (Qty > 0 -> 
-                        delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,2)),asserta(isSoilTaken(SX,SY)),
+                        obejctTimeP(corn,Tm),
+                        delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
@@ -109,7 +138,8 @@ plant :-
             Option = 2 -> 
                 (stored_item(wheat_seed,Qty) ->
                     (Qty > 0 -> 
-                        delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,4)),asserta(isSoilTaken(SX,SY)),
+                        obejctTimeP(wheat,Tm),
+                        delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
@@ -119,7 +149,8 @@ plant :-
             Option = 3 -> 
                 (stored_item(rice_seed,Qty) ->
                     (Qty > 0 -> 
-                        delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,3)),asserta(isSoilTaken(SX,SY)),
+                        obejctTimeP(rice,Tm),
+                        delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
@@ -137,7 +168,7 @@ plant :-
 
 
 harvest :- 
-    player(SX,SY), farmingLevel(Uname,Lv), job(_,X),
+    position(SX,SY), farmingLevel(Uname,Lv), job(_,X),
     (digged(SX, SY) -> 
         (plant(SX,SY,_,_) -> 
             plant(SX,SY,X,Y), objectExp(X,Exp2),
@@ -185,7 +216,7 @@ updatePlant:-
 /* Fishing */
 
 fish :- 
-    player(SX,SY), currStamina(_,St), fishingLevel(_,Lv), job(_,Class),
+    position(SX,SY), currStamina(_,St), fishingLevel(_,Lv), job(_,Class),
     (lakeSide(SX, SY) -> 
         displayFish,
         (St > 0 ->
@@ -297,7 +328,7 @@ animalTime(chicken,2).
 
 /* Ranchin Activity */
 ranch :- 
-    player(SX,SY),
+    position(SX,SY),
     (ranch(SX, SY) -> 
         displayRanch,
         (stored_animal(_,_) -> 
@@ -312,7 +343,7 @@ ranch :-
 
 
 chicken:- 
-    player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv), job(_,Class),
+    position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv), job(_,Class),
     (ranch(SX, SY) -> 
         (Y > 0 ->
             (stored_animal(chicken,_) -> 
@@ -334,7 +365,8 @@ chicken:-
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
-                retract(animalTime(chicken,_)),asserta(animalTime(chicken,2))
+                objectTimeA(chicken,Tm),
+                retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm))
                 ;
                 write('Your chicken did not produce anything, come back later'),nl
                 )
@@ -348,7 +380,7 @@ chicken:-
     write('You are not in the right spot to ranch')).
 
 cow:- 
-    player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
+    position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
     (ranch(SX, SY) -> 
         (Y > 0 -> 
             (stored_animal(cow,_) ->
@@ -370,7 +402,8 @@ cow:-
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
-                retract(animalTime(cow,_)), asserta(animalTime(cow,5))
+                objectTimeA(cow,Tm),
+                retract(animalTime(cow,_)), asserta(animalTime(cow,Tm))
                 ;
                 write('Your cow did not produce anything, come back later'),nl
                 )
@@ -384,7 +417,7 @@ cow:-
     write('You are not in the right spot to ranch')).
 
 sheep:- 
-    player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
+    position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
     (ranch(SX, SY) -> 
         (Y > 0 ->
             animalTime(sheep, Time),
@@ -405,7 +438,8 @@ sheep:-
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl,
-                retract(animalTime(sheep,_)), asserta(animalTime(sheep,3))
+                objectTimeA(sheep,Tm),
+                retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm))
             ;
             write('Your sheep did not produce anything, come back later'),nl
             )
