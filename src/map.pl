@@ -24,7 +24,9 @@ wall(X, Y) :- Y =:= 0, locate(X, Y).
 
 
 /*deklarasi show map */
- displayMap(SX, SY) :-  (wall(SX, SY) -> write('#');
+ displayMap(SX, SY) :-  (SX = 0 -> write('\t\t\t')
+                        ; write('')),
+                        (wall(SX, SY) -> write('#');
                         player(SX, SY) -> write('P');
                         marketplace(SX, SY) -> write('M');
                         quest(SX, SY) -> write('Q');
@@ -57,10 +59,10 @@ isValid(XPrev, YPrev, XNew, YNew) :- (marketplace(XNew, YNew) -> nl, visit_marke
 
                                         wall(XNew, YNew), placed(XNew, YNew) ->
                                         retract(player(XNew, YNew)), asserta(player(XPrev, YPrev)),
-                                        write('aaaa!!, I hit the wall. It hurts'), nl, !, fail;
+                                        !,write('aaaa!!, I hit the wall. It hurts'), nl, fail;
 
                                         lake(XNew, YNew), placed(XNew, YNew) -> retract(player(XNew, YNew)), asserta(player(XPrev, YPrev)),
-                                        write('This lake is too cold, I don\'t want to swim here'), nl, !, fail.
+                                        !,write('This lake is too cold, I don\'t want to swim here'),nl, fail.
                                         
                                         
 
@@ -92,7 +94,7 @@ d:-     retract(player(XPrev, YPrev)),
 
 /*deklarasi init map*/
 initMap :-  createMap(16, 16), 
-        asserta(player(10, 8)), asserta(isPlaced(10,8)),
+        asserta(player(10, 8)),
         asserta(quest(6, 8)), asserta(isPlaced(6, 8)),
         asserta(marketplace(6, 10)), asserta(isPlaced(6, 10)),
         asserta(house(8, 8)), asserta(isPlaced(8,8)),
@@ -141,12 +143,12 @@ periTidur :-    write('     __/\\__ '), nl,
                 write('you meet a sleeping fairy in your dream, you can choose the place you want: '), nl,
                 write('Enter the X posisition that you want to go: '), read_integer(XT),
                 write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
-                wall(XT, YT) -> write('you can\'t go through wall'),nl;
+                (wall(XT, YT) -> write('you can\'t go through wall'), fail, nl;
                 lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
                 player(XPrev, YPrev), retract(player(XPrev, YPrev)), asserta(player(XT, YT)),
                 write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
                 write('Successfully moved, May we meet again, good boy! '), nl, nl,
-                isValid(XPrev, YPrev, XT, YT).
+                isValid(XPrev, YPrev, XT, YT)).
 
 
                                 
