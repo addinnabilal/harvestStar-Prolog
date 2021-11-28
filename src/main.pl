@@ -7,6 +7,7 @@
 :- include('house.pl').
 :- include('quest.pl').
 :- include('activity.pl').
+:- include('displayActivity.pl').
 
 :-dynamic(uname/1).
 :-dynamic(gameState/1).
@@ -125,23 +126,26 @@ quit :- write('You quit the game!'),
         asserta(increaseStamina([amortentia, haliwinkles,polypody])),
         asserta(increaseProbability([ptolemy,thaumatagoria,staghorn])),
         asserta(probabilityPotionState(_, notHave)),
-        asserta(staminaPotionState(_, notHave)).     
+        asserta(staminaPotionState(_, notHave)),     
         retractall(position(_,_)),
         retractall(digged(_,_)).     
 
 help :- 
+    write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
+    write('%                         ~ COMMANDS LIST ~                        %'), nl,
+    write('%                                                                  %'), nl,
     write('% 1.  map         : to shows map                                   %'), nl,
     write('% 2.  status      : to show your current status                    %'), nl,
     write('% 3.  inventory   : to show your inventory                         %'), nl,
     write('% 4.  quest       : to show your current active quest              %'), nl,
     write('% 5.  throw       : to throw an item                               %'), nl,
-    write('% 6.  w           : move 1 step to north                           %'), nl,
-    write('% 7.  s           : move 1 step to south                           %'), nl,
-    write('% 8.  d           : move 1 step to east                            %'), nl,
-    write('% 9.  a           : move 1 step to west                            %'), nl,
-    write('% 10. help        : to show commands list                          %'), nl,
-    write('% 11. story       : to show your background story and objective    %'), nl,
-    write('% 12. usePotion   : to use your potion                             %'), nl,
+    write('% 6.  usePotion   : to use your potion                             %'), nl,
+    write('% 7.  w           : move 1 step to north                           %'), nl,
+    write('% 8.  s           : move 1 step to south                           %'), nl,
+    write('% 9.  d           : move 1 step to east                            %'), nl,
+    write('% 10. a           : move 1 step to west                            %'), nl,
+    write('% 11. help        : to show commands list                          %'), nl,
+    write('% 12. story       : to show your background story and objective    %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
 
 story :-
