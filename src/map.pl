@@ -140,9 +140,14 @@ periTidur :-    write('     __/\\__ '), nl,
                 write('  |zzz| .  \\ '), nl,
                 write(' .\\. ,\\_____\'. '), nl, nl,
 
-                write('you meet a sleeping fairy in your dream, you can choose the place you want: '), nl,
-                write('Enter the X posisition that you want to go: '), read_integer(XT),
-                write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
+                write('You meet a sleeping fairy in your dream!'), nl,
+                write('You can move to the place you want after wake up!'), nl,
+                nl,
+                showMap,
+                nl,
+                write('Notes: (0,0) is the bottom left position on the map'),
+                write('Enter the X posisition that you want to go: '), read(XT),
+                write('Enter the Y posisition that you want to go: '), read(YT), nl,
                 (wall(XT, YT) -> write('you can\'t go through wall'), fail, nl;
                 lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
                 position(XPrev, YPrev), retract(position(XPrev, YPrev)), asserta(position(XT, YT)),
