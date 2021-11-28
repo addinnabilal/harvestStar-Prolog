@@ -91,7 +91,7 @@ visit_marketplace  :-
             
             % Level fishing rod = 5 dan shovel = 5, tidak bisa membeli tool
 
-        ), 
+        ), nl,
         visit_marketplace
     
     % SELL
@@ -112,11 +112,11 @@ visit_marketplace  :-
             basic_item_sell_price(Item, Price), sell_animal(Balance, Item, Price, Qty)
         
         ; Item = cancel ->
-            write('Okay, looks like you have other interests.'), nl, nl
+            write('Okay, looks like you have other interests.'), nl
 
         % Tidak mempunyai item yang dipilih
-        ; write('You don\'t have that item.'), nl, nl
-        ), 
+        ; write('You don\'t have that item.'), nl
+        ), nl,
         visit_marketplace
     
     % CANCEL
@@ -255,7 +255,10 @@ display_insufficient_gold :- write('Sorry, you don\'t have enough gold.'), nl.
 
 
 /* Mengubah jumlah gold */
-update_gold(New_number):- uname(X), retract(gold(X,_)), asserta(gold(X, New_number)), checkGoalState(X).
+update_gold(New_number):- 
+    uname(X),
+    (New_number >= 20000 -> goalState, quit
+    ; retract(gold(X,_)), asserta(gold(X, New_number))).
 
 
 /* Mengubah harga jual item hasil aktivitas berdasarkan level */
