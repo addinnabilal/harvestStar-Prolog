@@ -117,6 +117,7 @@ help :-
     write('% 9.  d           : move 1 step to east                            %'), nl,
     write('% 10. a           : move 1 step to west                            %'), nl,
     write('% 11. help        : to show commands list                          %'), nl,
+    write('% 12. usePotion   : to use your potion                             %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
 
 usePotion :- uname(Username), usePotion(Username).
