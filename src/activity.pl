@@ -246,6 +246,7 @@ chicken:-
                 animalTime(chicken, Time),
                 (Time =< 0 ->
                 write('Yeay your chicken produced something'),nl,
+                stored_animal(chicken,AnQty),
                 objectProduced(chicken,Res),objectExp(chicken,Exp),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
@@ -272,8 +273,8 @@ cow:-
                 animalTime(cow, Time),
                 (Time =< 0 ->
                 write('Yeay your cow produced something'),nl,
-                objectProduced(cow,Res),objectExp(cow,Exp),
                 stored_animal(cow,AnQty),
+                objectProduced(cow,Res),objectExp(cow,Exp),
                 NewQ is (1 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
