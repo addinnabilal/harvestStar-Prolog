@@ -37,14 +37,16 @@ visitHouse :-   write('you are finally home'), nl,
                     (X =< 5 -> periTidur;
                     X =< 10 -> visitHouse);
                 HouseChoice = 2 ->
-                    write('writing diary'), nl;
+                    write('writing diary'), nl,
+                    writeDiary;
                 HouseChoice = 3 ->
-                    write('reading diary'), nl;
+                    write('reading diary'), nl,
+                    readDiary;
                 HouseChoice = 4 ->
                 write('already want to go again? ok good luck'),nl).
 
 :- dynamic(diary/1).
-save :- write('Mau nulis apa ngab'), nl, read(Diary), asserta(diary(Diary)),
+writeDiary :- write('Mau nulis apa ngab'), nl, read(Diary), asserta(diary(Diary)),
         uname(Username), time(Username, Day), number_atom(Day, NewDay), 
         atom_concat('Day_',NewDay, NewFile),
         atom_concat('saves/', NewFile, NewFile2),
@@ -82,7 +84,7 @@ save :- write('Mau nulis apa ngab'), nl, read(Diary), asserta(diary(Diary)),
         told,
         write('saving games'),nl, !.
 
-load    :-  write('Your Diary: '), nl, 
+readDiary   :-  write('Your Diary: '), nl, 
             directory_files('./saves', Files),
             Files = [_, _|Files2],
             displayList(Files2, 1), nl, 
@@ -90,11 +92,38 @@ load    :-  write('Your Diary: '), nl,
             BaseDirectory = './saves/', 
             read(FileName),
             atom_concat(BaseDirectory, FileName, NewFileName),
+            retractall(gold(_,_)), 
+            retractall(time(_,_)), 
+            retractall(overallExp(_,_)), 
+            retractall(fishingExp(_,_)), 
+            retractall(gold(_,_)),
+            retractall(overallLevel(_,_)), 
+            retractall(fishingLevel(_,_)), 
+            retractall(farmingLevel(_,_)), 
+            retractall(ranchingLevel(_,_)),
+            retractall(targetOverallExp(_,_)), 
+            retractall(targetFishingExp(_,_)), 
+            retractall(targetFarmingExp(_,_)), 
+            retractall(targetRanchingExp(_,_)),
+            retractall(currStamina(_,_)), 
+            retractall(maxStamina(_,_)), 
+            retractall(isPlaced(_,_)),  
+            retractall(plant(_,_)),
+            retractall(used_space(_)), 
+            retractall(stored_item(_,_)),
+            retractall(tool_level(_,_)), 
+            retractall(uname(_)), 
+            retractall(increaseProbability(_)),
+            retractall(increaseStamina(_)), 
+            retractall(staminaPotionState(_,_)), 
+            retractall(probabilityPotionState(_,_)), 
+            retractall(dayUsed(_,_)),
+            retractall(digged(_,_)),
             (\+file_exists(NewFileName) -> write('salah load.'), nl, fail;
             open(NewFileName, read, Stream), loadFile(Stream, Lines),
             loadList(Lines), close(Stream), 
             initMap,
-            retractall(position(_,_)), asserta(position(X, Y)),
+            retractall(position(_,_)), asserta(position(10, 10)),
             write('-----------------------------loading-----------------------------'), nl,
             write('-----------------------------------------------------------------'), nl, nl,
             diary(Diary),
