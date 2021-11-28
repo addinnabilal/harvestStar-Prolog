@@ -75,7 +75,16 @@ useStaminaPotion(X) :- staminaPotionState(X, SPState),
                         retract(currStamina(X, CurrStamina)), New is CurrStamina+5,
                         asserta(currStamina(X, New))).
 
-useProbabilityPotion(X) :- write('abc').
+useProbabilityPotion(X) :- 
+            probabilityPotionState(X, PBState), 
+            (PBState = notHave -> 
+                write('You don\'t have any stamina potion!'),nl
+            ;
+                retract(probabilityPotionState(X, PBState)),
+                asserta(probabilityPotionState(X, used)),
+                write('Your chance to get rare fish are increased for one time, go fish right now!'),nl
+            ).
+
 
 itemCount([], X):- X is 0.
 itemCount([_|TAIL], Count) :-   itemCount(TAIL, Prev),

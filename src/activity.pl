@@ -82,6 +82,7 @@ reduceAnimalTime:-
                     ))
                 ).
 
+getShovelAdv(X):- tool_level(shovel,TLv), Qty1 is round(TLv/3), X is Qty1.
 
 
 
@@ -112,7 +113,6 @@ dig :-  position(X,Y), currStamina(_,St),
         
 
 plant :- 
-    displayFarm,
     position(SX,SY), currStamina(_,Y),
     (digged(SX, SY) -> 
         (\+ isSoilTaken(SX,SY) ->
@@ -178,7 +178,8 @@ harvest :-
                 Exp is Exp2
             ),
             (Y =< 0 -> 
-                NewQty is 2 + (1 * Lv), NewExp is NewQty * Exp,
+                getShovelAdv(QAdd), 
+                NewQty is (2 + (1 * Lv)) + QAdd, NewExp is NewQty * Exp,
                 write('Yeay you just harvest your plant'),nl,
                 write('......'), nl,
                 (isFullinv(NewQty) -> 
@@ -206,7 +207,7 @@ harvest :-
 updatePlant:- 
     forall(plant(A,B,C,T),
         (T > 0 -> 
-            newT is T - 1, retract(plant(A,B,C,T)),asserta(plant(A,B,C,newT))
+            NewT is T - 1, retract(plant(A,B,C,T)),asserta(plant(A,B,C,NewT))
             ;
             retract(plant(A,B,C,T)),asserta(plant(A,B,C,0))
         )
@@ -231,7 +232,8 @@ fish :-
                     ;
                         random(1,101,NewX)
                     ),
-                    New2X is mod(Lv,20), X is NewX - New2X,
+                    tool_level(fishing_rod,TLv),
+                    New2X is mod(Lv,20), X2 is NewX - New2X, X is X2 - TLv,
                     (X =< 1 -> 
                         write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
                         store_item(arowana_fish), useStamina,objectExp(arowana_fish, Exp),
