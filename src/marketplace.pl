@@ -128,24 +128,43 @@ visit_marketplace  :-
 buy_item(Balance, Item) :-
     basic_item_buy_price(Item, Price),
     (\+(is_inventory_full(_)) -> 
-        (Balance >= Price ->
-            % Update gold
-            New_balance is Balance - Price,
-            update_gold(New_balance),
-
-            store_item(Item)
-        ; display_insufficient_gold)
+        write('How many '), write(Item), write(' do you want to buy? '), read(Buy_qty), nl,
+        % Jika membeli dengan quantity <= 0, keluarkan pesan
+        (Buy_qty =< 0 -> 
+            write('It seems you are not interested in buying the item.'), nl, nl
+        % Jika > 0 , lanjut dengan pengecekan apakah quantity yang dibeli bisa masuk inventory
+        ; space(Used), New_used is Used + Buy_qty, 
+            % Beli melebihi kapasitas inventory
+            (New_used > 100 ->
+                display_inventory_full_message
+            % Beli kurang dari kapasitas inventory
+            ; Total_price is Price * Buy_qty,
+                (Balance >= Total_price ->
+                    % Update gold
+                    New_balance is Balance - Total_price,
+                    update_gold(New_balance),
+                    store_many_item(Item, Buy_qty)
+                ; display_insufficient_gold
+                )
+            )
+        )
     ; display_inventory_full_message).
 
 buy_animal(Balance, Animal) :-
     basic_item_buy_price(Animal, Price),
-    (Balance >= Price ->
-        % Update gold
-        New_balance is Balance - Price,
-        update_gold(New_balance),
-
-        store_animal(Animal)
-    ; display_insufficient_gold).
+    write('How many '), write(Animal), write(' do you want to buy? '), read(Buy_qty), nl,
+    (Buy_qty =< 0 ->
+        write('It seems you are not interested in buying the item.'), nl, nl
+    ; Total_price is Price * Buy_qty,
+        (Balance >= Total_price ->
+            % Update gold
+            New_balance is Balance - Total_price,
+            update_gold(New_balance),
+            store_many_animal(Animal, Buy_qty)
+        ; display_insufficient_gold
+        )    
+    ).
+    
 
 buy_tool(Balance, Tool, Price, Level) :-
     Balance >= Price ->
