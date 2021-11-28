@@ -40,9 +40,9 @@ usePotion(X) :- staminaPotionState(X, SPState), probabilityPotionState(X, PPStat
                 (((SPState=notHave, PPState=notHave);(SPState=used, PPState=used);(SPState=used, PPState=notHave);(SPState=notHave, PPState=used)) -> write('You don\'t have any potion to use!');
                     (
                         (
-                            ((SPState=notHave;SPState=used),(\+ (PPState=used;PPState=notHave))) -> write('1. -'), nl, write('2. '), write(PPState), nl;
-                            ((PPState=notHave;PPState=used),(\+ (SPState=used;SPState=notHave))) -> write('1. '), write(SPState), nl, write('2. -'),nl;
-                            write('1. '), write(SPState),nl, write('2. '), write(PPState),nl
+                            ((SPState=notHave;SPState=used),(\+ (PPState=used;PPState=notHave))) -> write('0. Back'), nl, write('1. -'), nl, write('2. '), write(PPState), nl;
+                            ((PPState=notHave;PPState=used),(\+ (SPState=used;SPState=notHave))) -> write('0. Back'), nl, write('1. '), write(SPState), nl, write('2. -'),nl;
+                            write('0. Back'), nl, write('1. '), write(SPState),nl, write('2. '), write(PPState),nl
                         ),
                         write('Which potion do you want to use?'),nl,
                         read_integer(Opt),

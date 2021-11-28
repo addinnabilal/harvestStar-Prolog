@@ -104,7 +104,17 @@ usePotion :- uname(Username), usePotion(Username).
 
 alchemist :- uname(Username), buy_alchemist(Username).
 
-failState :-    write('You have worked hard, but in the end result is all that matters.'), nl,
+failState :-    write('__  __               __                    __    '),nl,
+                write('\\ \\/ /___  __  __   / /   ____  ________  / /                    '),nl,
+                write(' \\  / __ \\/ / / /  / /   / __ \\/ ___/ _ \\/ /                     '),nl,
+                write(' / / /_/ / /_/ /  / /___/ /_/ (__  )  __/_/                  '),nl,
+                write('/_/\\____/\\__,_/  /_____/\\____/____/\\___(_)                   '),nl,
+                write('You have worked hard, but in the end result is all that matters.'), nl,
                 write('May God bless you in the future with kind people!').
 
-goalState :-    write('Congratulations! You have finally collected 20000 golds!'), nl.
+goalState :-    write('__  __               _       ___       __    '),nl,
+                write('\\ \\/ /___  __  __   | |     / (_)___  / /                '),nl,
+                write(' \\  / __ / / / /   | | /| / / / __ \\/ /                     '),nl,
+                write(' / / /_/ / /_/ /    | |/ |/ / / / / /_/                      '),nl,
+                write('/_/\\____/\\__,_/     |__/|__/_/_/ /_(_)                   '),nl,
+                write('Congratulations! You have finally collected 20000 golds!'), nl.
