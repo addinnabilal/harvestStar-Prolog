@@ -71,15 +71,15 @@ plant :-
             write('3. Rice seeds'),nl,
             write('0 to cancel'), nl,
             write('Pick an option : '), read_integer(Option), nl,
-            (Option = 1 ->
-                stored_item(corn_seed,Qty),
+            (Option = 1 -> 
+                stored_item(corn_seed,Qty), 
                     (Qty > 0 -> 
                         delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,2)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
-            Option = 2 ->
+            Option = 2 -> 
                 stored_item(wheat_seed,Qty),
                     (Qty > 0 -> 
                         delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,4)),asserta(isSoilTaken(SX,SY)),
@@ -87,7 +87,7 @@ plant :-
                         ;
                         write('You don\'t have enough seeds to plant'),nl
                     );
-            Option = 3 ->
+            Option = 3 -> 
                 stored_item(rice_seed,Qty),
                     (Qty > 0 -> 
                         delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,3)),asserta(isSoilTaken(SX,SY)),
@@ -114,9 +114,9 @@ harvest :-
         asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp),
         retract(isSoilTaken(SX,SY)),
         write('You got '), write(NewQty), write(X), write(' congrats'),nl,
-        write('You gained '), write(NewExp), write(' Farming Exp'), nl
+        write('You gained '), write(NewExp), write(' Farming Exp'), nl,
+        retract(plant(SX,SY,X,Y))
 
-        
     ;
         write('Your plant are not ready to be harvested'))    
 
@@ -226,7 +226,8 @@ chicken:-
                 NewQ is 2 + (1 * Lv), NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
-                write('You gained '), write(NewExp), write(' Exp'),nl
+                write('You gained '), write(NewExp), write(' Exp'),nl,
+                retract(animalTime(chicken,_)),asserta(animalTime(chicken,2))
 
             )
             ;
@@ -248,7 +249,8 @@ cow:-
                 NewQ is 2 + (1 * Lv), NewExp is Exp * NewQ, useStamina,
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
-                write('You gained '), write(NewExp), write(' Exp'),nl
+                write('You gained '), write(NewExp), write(' Exp'),nl,
+                retract(animalTime(cow,_)), asserta(animalTime(cow,5))
 
             )
             ;
@@ -271,7 +273,7 @@ sheep:-
                 store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
                 write('You got '), write(NewQ), write(' '), write(Res), nl,
                 write('You gained '), write(NewExp), write(' Exp'),nl
-
+                retract(animalTime(sheep,_)), asserta(animalTime(sheep,3))
             )
             ;
             write('Your sheep did not produce anything, come back later'),nl
