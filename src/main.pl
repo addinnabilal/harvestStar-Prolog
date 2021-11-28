@@ -120,13 +120,16 @@ quit :- write('You quit the game!'),
         retractall(staminaPotionState(_,_)), 
         retractall(probabilityPotionState(_,_)), 
         retractall(dayUsed(_,_)),
+        retractall(player(_,_)),
+        retractall(digged(_,_)),
+        asserta(increaseStamina([amortentia, haliwinkles,polypody])),
+        asserta(increaseProbability([ptolemy,thaumatagoria,staghorn])),
+        asserta(probabilityPotionState(_, notHave)),
+        asserta(staminaPotionState(_, notHave)).     
         retractall(position(_,_)),
         retractall(digged(_,_)).     
 
 help :- 
-    write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl,
-    write('%                         ~ COMMANDS LIST ~                        %'), nl,
-    write('%                                                                  %'), nl,
     write('% 1.  map         : to shows map                                   %'), nl,
     write('% 2.  status      : to show your current status                    %'), nl,
     write('% 3.  inventory   : to show your inventory                         %'), nl,
@@ -138,6 +141,7 @@ help :-
     write('% 9.  a           : move 1 step to west                            %'), nl,
     write('% 10. help        : to show commands list                          %'), nl,
     write('% 11. story       : to show your background story and objective    %'), nl,
+    write('% 12. usePotion   : to use your potion                             %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
 
 story :-

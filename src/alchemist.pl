@@ -8,7 +8,7 @@ probabilityPotionState(_, notHave).
 :-dynamic(staminaPotionState/2).
 staminaPotionState(_, notHave).
 buy_alchemist(X) :- displayAlchemist,
-                    read_integer(Opt),
+                    read(Opt),
                     (Opt =1 -> buyStamina(X);
                     Opt=2 -> buyProbability(X);
                     Opt=0 -> write('Okay, looks like you have other interests.');
@@ -40,12 +40,12 @@ usePotion(X) :- staminaPotionState(X, SPState), probabilityPotionState(X, PPStat
                 (((SPState=notHave, PPState=notHave);(SPState=used, PPState=used);(SPState=used, PPState=notHave);(SPState=notHave, PPState=used)) -> write('You don\'t have any potion to use!');
                     (
                         (
-                            ((SPState=notHave;SPState=used),(\+ (PPState=used;PPState=notHave))) -> write('0. Back'), nl, write('1. -'), nl, write('2. '), write(PPState), nl;
-                            ((PPState=notHave;PPState=used),(\+ (SPState=used;SPState=notHave))) -> write('0. Back'), nl, write('1. '), write(SPState), nl, write('2. -'),nl;
-                            write('0. Back'), nl, write('1. '), write(SPState),nl, write('2. '), write(PPState),nl
+                            ((SPState=notHave;SPState=used),(\+ (PPState=used;PPState=notHave))) -> write('[0] Back'), nl, write('[1] -'), nl, write('[2] '), write(PPState), nl;
+                            ((PPState=notHave;PPState=used),(\+ (SPState=used;SPState=notHave))) -> write('[0] Back'), nl, write('[1] '), write(SPState), nl, write('[2] -'),nl;
+                            write('[0] Back'), nl, write('[1] '), write(SPState),nl, write('[2] '), write(PPState),nl
                         ),
                         write('Which potion do you want to use?'),nl,
-                        read_integer(Opt),
+                        read(Opt),
                         (Opt=1 -> useStaminaPotion(X);
                         Opt=2 -> useProbabilityPotion(X);
                         Opt=0 -> write('Looks like you still not want to use the potion');
@@ -84,6 +84,32 @@ itemCount([_|TAIL], Count) :-   itemCount(TAIL, Prev),
 removeItem([H|TAIL], H, TAIL).
 
 displayAlchemist :-
+
+    write('          .'),nl,
+    write('        (\'        '),nl,
+    write('        \'|        '),nl,
+    write('        |\'        '),nl,
+    write('       [::]        '),nl,
+    write('       [::]   _......_        '),nl,
+    write('       [::].-\'      _.-`.'),nl,
+    write('       [:.\'    .-. \'-._.-`.'),nl,
+    write('       [/ /\\   |  \\        `-..'),nl,    
+    write('       / / |   `-.\'      .-.   `-.'),nl,
+    write('      /  `-\'            (   `.    `.'),nl,
+    write('     |           /\\      `-._/      \\        '),nl,
+    write('     \'    .\'\\   /  `.           _.-\'|        '),nl,    
+    write('    /    /  /   \\_.-\'        _.\':;:/        '),nl,
+    write('  .\'     \\_/             _.-\':;_.-\'        '),nl,
+    write(' /   .-.             _.-\' \\;.-\'        '),nl,
+    write('/   (   \\       _..-\'     |        '),nl,
+    write('\\    `._/  _..-\'    .--.  |        '),nl,
+    write(' `-.....-\'/  _ _  .\'    \'.|        '),nl,
+    write('          | |_|_| |      | \\  (o)    '),nl,
+    write('     (o)  | |_|_| |      | | (\\\'/)    '),nl,
+    write('    (\\\'/)/  \'\'\'\'\' |     o|  \\;:;    '),nl,
+    write('     :;  |        |      |  |/)    '),nl,
+    write('      ;: `-.._    /__..--\'\\.\' ;:        '),nl,
+    write('          :;  `--\' :;   :;        '),nl,
     write('|------------------------------------------|'), nl,
     write('|            Hi, I\'m Alchemist             |'), nl,
     write('|------------------------------------------|'), nl,
