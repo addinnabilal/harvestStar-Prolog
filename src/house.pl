@@ -1,50 +1,61 @@
 addTime(X,Add) :-   time(X, PrevTime), retract(time(X, PrevTime)),
                     NewTime is PrevTime + Add, asserta(time(X, NewTime)),
-                    write('changing day'), nl,
-                    gameState(State),
+                    write('Day turns to day '), write(NewTime), write('...'), nl,
+                    gameState(_),
                     staminaPotionState(X,SPState),
                     time(X, Time),
                     (Time>=365 -> failState, nl,quit, !, fail;
-                    ((SPState=used ->useStaminaPotion(X), updateStamina(X));
+                    ((SPState=used ->useStaminaPotion2(X), updateStamina(X));
                     updateStamina(X))).
 
 updateStamina(X) :- maxStamina(X, PrevMax), currStamina(X, PrevStamina), retract(currStamina(X, PrevStamina)),
                     NewStamina is PrevMax, asserta(currStamina(X, NewStamina)),
-                    write('charging my energy'), nl.
+                    write('Replenish stamina...'), nl.
 
 
 
-visitHouse :-   write('you are finally home'), nl,
+visitHouse :-   nl,
                 write('        @ @ @ '),nl,
                 write('       []___                '), nl,
                 write('      /    /\\____                '),nl,
                 write(' 00  /_/\\_//____/\\'), nl,
                 write(' |   | || |||__|||                '), nl,
-
                 write('what do you want to do?'), nl,
                 write('- [1]. sleep'), nl, 
                 write('- [2]. writeDiary'), nl,
                 write('- [3]. readDiary'), nl,
                 write('- [4]. exit'), nl,
                 write('Pick a number: '), read(HouseChoice), nl,
-
+                nl,
+                write('Home sweet home!'), nl,
+                write('What do you want to do?'), nl,
+                write('[1] Sleep'), nl, 
+                write('[2] Write Diary'), nl,
+                write('[3] Read Diary'), nl,
+                nl,
+                write('[0] Cancel'), nl,
+                nl,
+                write('Pick an option: '), read(HouseChoice), nl,
                 (HouseChoice = 1 -> 
                     updateAnimalTime, updatePlant,
-                    write('Good Night'), nl,
+                    write('Good Night...'), nl,
                     uname(Username),
                     addTime(Username, 1),
                     random(1, 10, X),
                     (X =< 5 -> periTidur;
                     X =< 10 -> visitHouse);
                 HouseChoice = 2 ->
-                    write('writing diary'), nl;
+                    write('Writing diary...'), nl,
+                    writeDiary, visitHouse;
                 HouseChoice = 3 ->
-                    write('reading diary'), nl;
-                HouseChoice = 4 ->
-                write('already want to go again? ok good luck'),nl).
+                    write('Reading diary...'), nl,
+                    readDiary;
+                HouseChoice = 0 ->
+                write('Want to go again? ok good luck.'),nl).
 
 :- dynamic(diary/1).
-save :- write('Mau nulis apa ngab'), nl, read(Diary), asserta(diary(Diary)),
+writeDiary :- 
+        write('What do you want to write? '), nl, read(Diary), asserta(diary(Diary)),
         uname(Username), time(Username, Day), number_atom(Day, NewDay), 
         atom_concat('Day_',NewDay, NewFile),
         atom_concat('saves/', NewFile, NewFile2),
@@ -80,21 +91,49 @@ save :- write('Mau nulis apa ngab'), nl, read(Diary), asserta(diary(Diary)),
             listing(position/2),
             listing(digged/2),
         told,
-        write('saving games'),nl, !.
+        nl,
+        write('Saving your memories to the diary...'),nl.
 
-load    :-  write('Your Diary: '), nl, 
+readDiary   :-  write('Your Diary: '), nl, 
             directory_files('./saves', Files),
             Files = [_, _|Files2],
             displayList(Files2, 1), nl, 
-            write('masukkan nama file dengan aposthrope sebagai prefix dan postfix (ex: \'Day_0\'): '), nl,
+            write('Input the diary title with apostrophe as a prefix and postfix (ex: \'Day_0\'): '), nl,
             BaseDirectory = './saves/', 
             read(FileName),
             atom_concat(BaseDirectory, FileName, NewFileName),
+            retractall(gold(_,_)), 
+            retractall(time(_,_)), 
+            retractall(overallExp(_,_)), 
+            retractall(fishingExp(_,_)), 
+            retractall(gold(_,_)),
+            retractall(overallLevel(_,_)), 
+            retractall(fishingLevel(_,_)), 
+            retractall(farmingLevel(_,_)), 
+            retractall(ranchingLevel(_,_)),
+            retractall(targetOverallExp(_,_)), 
+            retractall(targetFishingExp(_,_)), 
+            retractall(targetFarmingExp(_,_)), 
+            retractall(targetRanchingExp(_,_)),
+            retractall(currStamina(_,_)), 
+            retractall(maxStamina(_,_)), 
+            retractall(isPlaced(_,_)),  
+            retractall(plant(_,_)),
+            retractall(used_space(_)), 
+            retractall(stored_item(_,_)),
+            retractall(tool_level(_,_)), 
+            retractall(uname(_)), 
+            retractall(increaseProbability(_)),
+            retractall(increaseStamina(_)), 
+            retractall(staminaPotionState(_,_)), 
+            retractall(probabilityPotionState(_,_)), 
+            retractall(dayUsed(_,_)),
+            retractall(digged(_,_)),
             (\+file_exists(NewFileName) -> write('salah load.'), nl, fail;
             open(NewFileName, read, Stream), loadFile(Stream, Lines),
             loadList(Lines), close(Stream), 
             initMap,
-            retractall(position(_,_)), asserta(position(X, Y)),
+            retractall(position(_,_)), asserta(position(10, 10)),
             write('-----------------------------loading-----------------------------'), nl,
             write('-----------------------------------------------------------------'), nl, nl,
             diary(Diary),
