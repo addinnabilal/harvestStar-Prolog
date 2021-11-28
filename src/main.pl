@@ -14,6 +14,15 @@ gameState(notplaying).
 
 startGame :-    gameState(State),
                 (State=playing -> write('You still in a game! If you want to start the game again, please quit this game first.');
+                nl,
+                write('.'), nl,
+                write('.'), nl,
+                write('.'), nl,
+                story,
+                write('.'), nl,
+                write('.'), nl,
+                write('.'), nl,
+                nl,
                 write('  _    _                           _      _____ _                       '),nl,
                 write(' | |  | |                         | |    / ____| |                      '),nl,
                 write(' | |__| | __ _ _ ____   _____  ___| |_  | (___ | |_ __ _ _ __           '),nl,
@@ -128,7 +137,16 @@ help :-
     write('% 8.  d           : move 1 step to east                            %'), nl,
     write('% 9.  a           : move 1 step to west                            %'), nl,
     write('% 10. help        : to show commands list                          %'), nl,
+    write('% 11. story       : to show your background story and objective    %'), nl,
     write('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'), nl.
+
+story :-
+    write('You are a businessman who has just been scammed by a client who has'), nl,
+    write('just magically disappeared without paying for a project you worked so'), nl,
+    write('hard to build. In addition to being a victim of fraud, you are also'), nl,
+    write('in debt of 20000 golds that needs to be repaid within 1 year. Therefore,'), nl,
+    write('you decide to return to your hometown and continue your grandfather\'s'), nl,
+    write('farming business to be able to continue living and pay off your debts.'), nl.
 
 usePotion :- uname(Username), usePotion(Username).
 
@@ -148,3 +166,4 @@ goalState :-    write('__  __               _       ___       __    '),nl,
                 write(' / / /_/ / /_/ /    | |/ |/ / / / / /_/                      '),nl,
                 write('/_/\\____/\\__,_/     |__/|__/_/_/ /_(_)                   '),nl,
                 write('Congratulations! You have finally collected 20000 golds!'), nl.
+
