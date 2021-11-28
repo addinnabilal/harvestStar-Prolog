@@ -57,10 +57,10 @@ isValid(XPrev, YPrev, XNew, YNew) :- (marketplace(XNew, YNew) -> nl, visit_marke
 
                                         wall(XNew, YNew), placed(XNew, YNew) ->
                                         retract(player(XNew, YNew)), asserta(player(XPrev, YPrev)),
-                                        write('aaaa!!, I hit the wall. It hurts'), nl, !, fail;
+                                        !,write('aaaa!!, I hit the wall. It hurts'), nl, fail;
 
                                         lake(XNew, YNew), placed(XNew, YNew) -> retract(player(XNew, YNew)), asserta(player(XPrev, YPrev)),
-                                        write('This lake is too cold, I don\'t want to swim here'), nl, !, fail.
+                                        !,write('This lake is too cold, I don\'t want to swim here'),nl, fail.
                                         
                                         
 
