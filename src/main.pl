@@ -120,7 +120,7 @@ quit :- write('You quit the game!'),
         retractall(staminaPotionState(_,_)), 
         retractall(probabilityPotionState(_,_)), 
         retractall(dayUsed(_,_)),
-        retractall(player(_,_)),
+        retractall(position(_,_)),
         retractall(digged(_,_)).     
 
 help :- 

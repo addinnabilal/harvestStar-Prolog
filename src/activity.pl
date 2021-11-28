@@ -100,7 +100,7 @@ isFullinv(Qty):-
 :- dynamic(plant/4).
 :- dynamic(isSoilTaken/2).
 
-dig :-  player(X,Y), currStamina(_,St),
+dig :-  position(X,Y), currStamina(_,St),
         (\+ isPlaced(X,Y) -> 
             (St > 0 -> 
                 diggingTile,useStamina;
@@ -113,7 +113,7 @@ dig :-  player(X,Y), currStamina(_,St),
 
 plant :- 
     displayFarm,
-    player(SX,SY), currStamina(_,Y),
+    position(SX,SY), currStamina(_,Y),
     (digged(SX, SY) -> 
         (\+ isSoilTaken(SX,SY) ->
             (Y > 0 -> 
@@ -168,7 +168,7 @@ plant :-
 
 
 harvest :- 
-    player(SX,SY), farmingLevel(Uname,Lv), job(_,X),
+    position(SX,SY), farmingLevel(Uname,Lv), job(_,X),
     (digged(SX, SY) -> 
         (plant(SX,SY,_,_) -> 
             plant(SX,SY,X,Y), objectExp(X,Exp2),
@@ -216,7 +216,7 @@ updatePlant:-
 /* Fishing */
 
 fish :- 
-    player(SX,SY), currStamina(_,St), fishingLevel(_,Lv), job(_,Class),
+    position(SX,SY), currStamina(_,St), fishingLevel(_,Lv), job(_,Class),
     (lakeSide(SX, SY) -> 
         displayFish,
         (St > 0 ->
@@ -328,7 +328,7 @@ animalTime(chicken,2).
 
 /* Ranchin Activity */
 ranch :- 
-    player(SX,SY),
+    position(SX,SY),
     (ranch(SX, SY) -> 
         displayRanch,
         (stored_animal(_,_) -> 
@@ -343,7 +343,7 @@ ranch :-
 
 
 chicken:- 
-    player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv), job(_,Class),
+    position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv), job(_,Class),
     (ranch(SX, SY) -> 
         (Y > 0 ->
             (stored_animal(chicken,_) -> 
@@ -380,7 +380,7 @@ chicken:-
     write('You are not in the right spot to ranch')).
 
 cow:- 
-    player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
+    position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
     (ranch(SX, SY) -> 
         (Y > 0 -> 
             (stored_animal(cow,_) ->
@@ -417,7 +417,7 @@ cow:-
     write('You are not in the right spot to ranch')).
 
 sheep:- 
-    player(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
+    position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
     (ranch(SX, SY) -> 
         (Y > 0 ->
             animalTime(sheep, Time),

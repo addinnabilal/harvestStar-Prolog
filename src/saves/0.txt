@@ -133,7 +133,7 @@ dayUsed(_, 0).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/map.pl
 
-player(10, 8).
+position(10, 8).
 
 % file: user_input
 
