@@ -146,30 +146,9 @@ updatePlant:-
 /* Fishing */
 
 fish :- 
-<<<<<<< HEAD
-    displayFish,
-    player(SX,SY),
-    (lakeSide(SX, SY) -> stored_item(fish_bait,Y), 
-        (Y >= 0 -> write('You throw your rod into the lake...'),nl,
-            delete_item(fish_bait,1),
-            random(1,100,X),
-            (X =< 1 -> 
-                write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
-                store_item(arowana_fish), objectExp(arowana_fish, Exp),
-                NewExp is Exp
-                ;
-            X =< 10 -> 
-                write('Congrats you got an unique fish \'Koi\'!'),nl,
-                store_item(koi_fish), objectExp(koi_fish, Exp),
-                NewExp is Exp
-                ;
-            X =< 30 -> 
-                write('Congrats you got a rare fish \'Carp\'!'),nl,
-                store_item(carp_fish),objectExp(carp_fish, Exp),
-                NewExp is Exp
-=======
     player(SX,SY), currStamina(_,St),
     (lakeSide(SX, SY) -> 
+        displayFish,
         (St > 0 ->
             (stored_item(fish_bait,Y) -> 
                 (Y >= 0 -> write('You throw your rod into the lake...'),nl,
@@ -207,7 +186,6 @@ fish :-
                     ),
                 addFishingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                 write('You gained '), write(NewExp), write(' Exp'),nl 
->>>>>>> f5da179b6a2b3c4e1ecc6ac4798a5a4aea4141ed
                 ;
                 write('You don\'t have bait anymore to fish'),nl
                 )
