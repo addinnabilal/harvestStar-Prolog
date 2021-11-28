@@ -51,16 +51,18 @@ validMove(PrevX, PrevY, NewX, NewY) :- (marketplace(NewX, NewY) -> nl, visit_mar
 
                                         house(NewX, NewY) -> write('Mama, Papa, i\'m home'), nl, nl, visitHouse;
 
+                                        digged(NewX, NewY) -> write('I like farming!!'), nl, nl;
+
+                                        lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl, fish);
+
                                         wall(NewX, NewY), taken(NewX, NewY) ->
                                         retract(player(NewX, NewY)), asserta(player(PrevX, PrevY)),
                                         write('aaaa!!, I hit the wall. It hurts'), nl, !, fail;
 
                                         lake(NewX, NewY), taken(NewX, NewY) -> retract(player(NewX, NewY)), asserta(player(PrevX, PrevY)),
-                                        write('This lake is too cold, I don\'t want to swim here'), nl, !, fail;
+                                        write('This lake is too cold, I don\'t want to swim here'), nl, !, fail.
                                         
-                                        digged(NewX, NewY) -> write('I like farming!!'), nl, nl, harvest;
-
-                                        lakeSide(NewX, NewY) -> write('This is lakeside, you can fish from here'),nl,nl, fish).
+                                        
 
 /*deklarasi move*/
 :- dynamic(player/2).
