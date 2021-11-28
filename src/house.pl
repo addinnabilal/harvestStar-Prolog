@@ -34,8 +34,6 @@ visitHouse :-   write('you are finally home'), nl,
                     uname(Username),
                     addTime(Username, 1),
                     random(1, 10, X),
-                    write('flag'), nl,
-                    write(X),
                     (X =< 5 -> periTidur;
                     X =< 10 -> visitHouse);
                 HouseChoice = 2 ->

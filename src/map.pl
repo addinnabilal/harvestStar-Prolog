@@ -141,12 +141,12 @@ periTidur :-    write('     __/\\__ '), nl,
                 write('you meet a sleeping fairy in your dream, you can choose the place you want: '), nl,
                 write('Enter the X posisition that you want to go: '), read_integer(XT),
                 write('Enter the Y posisition that you want to go: '), read_integer(YT), nl,
-                wall(XT, YT) -> write('you can\'t go through wall'),nl;
+                (wall(XT, YT) -> write('you can\'t go through wall'), fail, nl;
                 lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
                 player(XPrev, YPrev), retract(player(XPrev, YPrev)), asserta(player(XT, YT)),
                 write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
                 write('Successfully moved, May we meet again, good boy! '), nl, nl,
-                isValid(XPrev, YPrev, XT, YT).
+                isValid(XPrev, YPrev, XT, YT)).
 
 
                                 
