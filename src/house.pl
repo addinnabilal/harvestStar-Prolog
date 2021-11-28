@@ -30,6 +30,7 @@ visitHouse :-   write('you are finally home'), nl,
                 write('Pick a number: '), read_integer(HouseChoice), nl,
 
                 (HouseChoice = 1 -> 
+                    updateAnimalTime, updatePlant,
                     write('Good Night'), nl,
                     uname(Username),
                     addTime(Username, 1),
