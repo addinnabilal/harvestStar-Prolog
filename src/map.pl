@@ -24,7 +24,9 @@ wall(X, Y) :- Y =:= 0, locate(X, Y).
 
 
 /*deklarasi show map */
- displayMap(SX, SY) :-  (wall(SX, SY) -> write('#');
+ displayMap(SX, SY) :-  (SX = 0 -> write('\t\t\t')
+                        ; write('')),
+                        (wall(SX, SY) -> write('#');
                         player(SX, SY) -> write('P');
                         marketplace(SX, SY) -> write('M');
                         quest(SX, SY) -> write('Q');
