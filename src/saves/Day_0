@@ -1,7 +1,7 @@
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/house.pl
 
-diary('hari ini aku dapat banyak uang').
+diary('ini adalah fikron mencoba fisherman').
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/main.pl
 
@@ -9,59 +9,59 @@ gameState(playing).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-gold(addin, 300).
+gold(fikron, 300).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-time(addin, 0).
+time(fikron, 0).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-overallExp(addin, 0).
+overallExp(fikron, 0).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-fishingExp(addin, 0).
+fishingExp(fikron, 0).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-gold(addin, 300).
+gold(fikron, 300).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-overallLevel(addin, 1).
+overallLevel(fikron, 1).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-fishingLevel(addin, 1).
+fishingLevel(fikron, 1).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-farmingLevel(addin, 1).
+farmingLevel(fikron, 1).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-ranchingLevel(addin, 1).
+ranchingLevel(fikron, 1).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-targetFishingExp(addin, 40).
+targetFishingExp(fikron, 40).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-targetFarmingExp(addin, 40).
+targetFarmingExp(fikron, 40).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-targetRanchingExp(addin, 40).
+targetRanchingExp(fikron, 40).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-currStamina(addin, 3).
+currStamina(fikron, 3).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/character.pl
 
-maxStamina(addin, 3).
+maxStamina(fikron, 3).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/map.pl
 
@@ -97,10 +97,11 @@ isPlaced(6, 8).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/inventory.pl
 
-used_space(2).
+used_space(7).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/inventory.pl
 
+stored_item(fish_bait, 5).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/inventory.pl
 
@@ -109,7 +110,7 @@ tool_level(fishing_rod, 1).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/main.pl
 
-uname(addin).
+uname(fikron).
 
 % file: /Users/fikron/Documents/Project/harvestStar/harvestStar-Prolog/src/alchemist.pl
 
