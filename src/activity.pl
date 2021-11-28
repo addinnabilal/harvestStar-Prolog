@@ -40,6 +40,9 @@ objectProduced(cow,milk).
 objectProduced(sheep,wool).
 objectProduced(chicken,egg).
 
+
+/* Advantage from Class speciality and Speciality Level */
+
 /* Primitif */
 useStamina:-   
             currStamina(X,Y), NewStamina is Y-1,
@@ -66,6 +69,7 @@ plant :-
     (digged(SX, SY) -> 
         (\+ isSoilTaken(SX,SY) ->
             (Y > 0 -> 
+            displayFarm,
             write('What seed do you want to plant?'),nl,
             write('1. Corn seeds'),nl,
             write('2. Wheat seeds'),nl,
@@ -125,10 +129,11 @@ harvest :-
                 write('You got '), write(NewQty), write(X), write(' congrats'),nl,
                 write('You gained '), write(NewExp), write(' Exp'), nl,
                 retract(plant(SX,SY,X,Y))
-                ;
-                write('Your plant are not ready to be harvested')) 
             ;
-            write('You did not plant anything here, the soil is empty')
+            write('Your plant are not ready to be harvested')
+            )
+        ;
+        write('You did not plant anything here, the soil is empty')
         )
     ;
     write('You are not in the right spot to harvest')).
@@ -229,6 +234,7 @@ animalTime(chicken,2).
 ranch :- 
     player(SX,SY),
     (ranch(SX, SY) -> 
+        displayRanch,
         (stored_animal(_,_) -> 
             write('What animal do you want to take care of, you have: '),nl,
             forall(stored_animal(Animal,Qty),
@@ -327,37 +333,3 @@ updateAnimalTime:-
             )
         )  
     ).
-
-displayRanch :- nl,
-                write('                           _.-^-._    .--.            '),nl,
-                write('                        .-\'   _   \'-. |__|                    '),nl,
-                write('                       /     |_|     \\|  |                    '),nl,
-                write('                      /               \\  |                    '),nl,
-                write('                     /|     _____     |\\ |                    '),nl,
-                write('                      |    |==|==|    |  |                    '),nl,
-                write('  |---|---|---|---|---|    |--|--|    |  |                    '),nl,
-                write('  |---|---|---|---|---|    |==|==|    |  |                    '),nl,
-                write(' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                    '),nl.
-
-displayFarm :- nl,
-                write('              ______                    '),nl,
-                write('               |o  |   !                    '),nl,
-                write('   __          |:\`_|---\'-.            '),nl,
-                write('  |__|______.-.\'_\'.-----.|                    '),nl,
-                write(' (o)(o)------\'\'._.\'-----(O)                 '),nl.
-
-displayFish :- nl,
-                write('                  __,                    '),nl,
-                write('               .-\'_-\'`                    '),nl,
-                write('             .\' {`                    '),nl,
-                write('         .-\'````\'-.    .-\'``\'.            '),nl,
-                write('       .\'(0)       \'._/ _.-.  `\\                '),nl,
-                write('      }     \'. ))    _<`    )`  |                '),nl,
-                write('       `-.,\\\'.\\_,.-` \\`---; .\' /                    '),nl,
-                write('            )  )       \'-.  \'--:                '),nl,
-                write('           ( \' (          ) \'.  \\                '),nl,
-                write('            \'.  )      .\'(   /   )                '),nl,
-                write('              )/      (   \'.    /                    '),nl,
-                write('                       \'._( ) .\'                '),nl,
-                write('                           ( (                    '),nl,
-                write('                            \`-.            '),nl.
