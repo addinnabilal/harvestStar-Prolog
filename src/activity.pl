@@ -128,7 +128,7 @@ plant :-
             (Option = 1 -> 
                 (stored_item(corn_seed,Qty) -> 
                     (Qty > 0 -> 
-                        obejctTimeP(corn,Tm),
+                        objectTimeP(corn,Tm),
                         delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
@@ -139,7 +139,7 @@ plant :-
             Option = 2 -> 
                 (stored_item(wheat_seed,Qty) ->
                     (Qty > 0 -> 
-                        obejctTimeP(wheat,Tm),
+                        objectTimeP(wheat,Tm),
                         delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
@@ -150,7 +150,7 @@ plant :-
             Option = 3 -> 
                 (stored_item(rice_seed,Qty) ->
                     (Qty > 0 -> 
-                        obejctTimeP(rice,Tm),
+                        objectTimeP(rice,Tm),
                         delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
@@ -188,6 +188,7 @@ harvest :-
                 ;
                     asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                     retract(isSoilTaken(SX,SY)),
+                    displayPlant,nl,
                     write('You got '), write(NewQty), write(X), write(' congrats'),nl,
                     write('You gained '), write(NewExp), write(' Exp'), nl,
                     retract(plant(SX,SY,X,Y)),
@@ -220,13 +221,12 @@ updatePlant:-
 fish :- 
     position(SX,SY), currStamina(_,St), fishingLevel(_,Lv), job(_,Class),
     (lakeSide(SX, SY) -> 
-        displayFish,
         (St > 0 ->
             (isFullinv(1) -> 
                 write('Come back here later after you have some spaced'),nl
             ;
                 (stored_item(fish_bait,Y) -> 
-                    (Y >= 0 -> write('You throw your rod into the lake...'),nl,
+                    (Y >= 0 -> write('You throw your rod into the lake...'),nl,displayFishing,nl,
                     delete_item(fish_bait,1),
                     (getRare(A) -> 
                         NewX is A
@@ -236,27 +236,27 @@ fish :-
                     tool_level(fishing_rod,TLv),
                     New2X is mod(Lv,20), X2 is NewX - New2X, X is X2 - TLv,
                     (X =< 1 -> 
-                        write('Congrats you got a jackpot fish \'Arowana\'!'),nl,
+                        write('Congrats you got a jackpot fish \'Arowana\'!'),nl,displayFish,nl,
                         store_item(arowana_fish), useStamina,objectExp(arowana_fish, Exp),
                         NewExp is Exp
                         ;
                     X =< 10 -> 
-                        write('Congrats you got an unique fish \'Koi\'!'),nl,
+                        write('Congrats you got an unique fish \'Koi\'!'),nl,displayFish,nl,
                         store_item(koi_fish), useStamina,objectExp(koi_fish, Exp),
                         NewExp is Exp
                         ;
                     X =< 25 -> 
-                        write('Congrats you got a rare fish \'Carp\'!'),nl,
+                        write('Congrats you got a rare fish \'Carp\'!'),nl,displayFish2,nl,
                         store_item(carp_fish), useStamina,objectExp(carp_fish, Exp),
                         NewExp is Exp
                         ;
                     X =< 50 -> 
-                        write('Congrats you got a normal fish \'Pomfret\'!'),nl,
+                        write('Congrats you got a normal fish \'Pomfret\'!'),nl,displayFish1,nl,
                         store_item(pomfret_fish),useStamina,objectExp(pomfret_fish, Exp),
                         NewExp is Exp
                         ;
                     X < 80 -> 
-                        write('Congrats you got a normal fish \'Catfish\'!'),nl,
+                        write('Congrats you got a normal fish \'Catfish\'!'),nl,displayFish1,nl,
                         store_item(catfish),useStamina,objectExp(catfish, Exp),
                         NewExp is Exp
                         ;
@@ -266,7 +266,7 @@ fish :-
                         NewExp is Exp
                         ;
                     X =< 100 -> 
-                        write('You did not get anything... :('),nl,
+                        write('You did not get anything... :('),nl,displayZonk,nl,
                         useStamina, NewExp is 5
                     ),
                     (Class = fisherman -> 
@@ -361,15 +361,20 @@ chicken:-
                     Exp is Exp2
                 ),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
-                (product_to_produce(Qst) -> 
+                (isFullinv(NewQ) ->
+                    write('Come back here later after you have some spaced'),nl
+                ;
+                    (product_to_produce(Qst) -> 
                         NewQst is Qst - 1, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
-                ),
-                store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
-                write('You got '), write(NewQ), write(' '), write(Res), nl,
-                write('You gained '), write(NewExp), write(' Exp'),nl,
-                objectTimeA(chicken,Tm),
-                retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm))
+                    ),
+                    store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
+                    write('You got '), write(NewQ), write(' '), write(Res), nl,nl,
+                    displayEgg,nl,nl,
+                    write('You gained '), write(NewExp), write(' Exp'),nl,
+                    objectTimeA(chicken,Tm),
+                    retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm))
+                )
                 ;
                 write('Your chicken did not produce anything, come back later'),nl
                 )
@@ -398,15 +403,20 @@ cow:-
                     Exp is Exp2
                 ),
                 NewQ is (1 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
-                (product_to_produce(Qst) -> 
+                (isFullinv(NewQ)->
+                    write('Come back here later after you have some spaced'),nl
+                ;
+                    (product_to_produce(Qst) -> 
                         NewQst is Qst - 1, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
-                ),
-                store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
-                write('You got '), write(NewQ), write(' '), write(Res), nl,
-                write('You gained '), write(NewExp), write(' Exp'),nl,
-                objectTimeA(cow,Tm),
-                retract(animalTime(cow,_)), asserta(animalTime(cow,Tm))
+                    ),
+                    store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
+                    write('You got '), write(NewQ), write(' '), write(Res), nl,nl,
+                    displayMilk,nl,nl,
+                    write('You gained '), write(NewExp), write(' Exp'),nl,
+                    objectTimeA(cow,Tm),
+                    retract(animalTime(cow,_)), asserta(animalTime(cow,Tm))
+                )
                 ;
                 write('Your cow did not produce anything, come back later'),nl
                 )
@@ -434,15 +444,20 @@ sheep:-
                     Exp is Exp2
                 ),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
-                (product_to_produce(Qst) -> 
+                (isFullinv(NewQ) ->
+                    write('Come back here later after you have some spaced'),nl
+                ;
+                    (product_to_produce(Qst) -> 
                         NewQst is Qst - 1, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
-                ),
-                store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
-                write('You got '), write(NewQ), write(' '), write(Res), nl,
-                write('You gained '), write(NewExp), write(' Exp'),nl,
-                objectTimeA(sheep,Tm),
-                retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm))
+                    ),
+                    store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
+                    write('You got '), write(NewQ), write(' '), write(Res), nl,nl,
+                    displayWool,nl,nl,
+                    write('You gained '), write(NewExp), write(' Exp'),nl,
+                    objectTimeA(sheep,Tm),
+                    retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm))
+                )
             ;
             write('Your sheep did not produce anything, come back later'),nl
             )
