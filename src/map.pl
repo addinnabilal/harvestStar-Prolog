@@ -71,25 +71,25 @@ isValid(XPrev, YPrev, XNew, YNew) :- (marketplace(XNew, YNew) -> nl, visit_marke
 w :-    retract(position(XPrev, YPrev)), 
         YNew is YPrev + 1, 
         asserta(position(XPrev, YNew)),
-        write('what\'s up in the north, is it cold in the nort?'),  nl,
+        write('What\'s up in the north, is it cold in the nort?'),  nl,
         isValid(XPrev, YPrev, XPrev, YNew).
 
 a:-     retract(position(XPrev, YPrev)), 
         XNew is XPrev - 1, 
         asserta(position(XNew, YPrev)),
-        write('what\'s up in the west, seems cool to cowboy'), nl,
+        write('What\'s up in the west, seems cool to cowboy.'), nl,
         isValid(XPrev, YPrev, XNew, YPrev).
 
 s :-    retract(position(XPrev, YPrev)), 
         YNew is YPrev - 1, 
         asserta(position(XPrev, YNew)),
-        write('what\'s up in the south, can i find penguins in the south?'), nl,
+        write('What\'s up in the south, can i find penguins in the south?'), nl,
         isValid(XPrev, YPrev, XPrev, YNew).
 
 d:-     retract(position(XPrev, YPrev)), 
         XNew is XPrev + 1, 
         asserta(position(XNew, YPrev)),
-        write('what\'s up in the east, i like asian culture'), nl,
+        write('What\'s up in the east, i like asian culture.'), nl,
         isValid(XPrev, YPrev, XNew, YPrev).
 
 /*deklarasi init map*/
@@ -129,7 +129,7 @@ initMap :-  createMap(16, 16),
 diggingTile :-  position(XPrev,YPrev),
                 asserta(digged(XPrev, YPrev)),
                 asserta(isPlaced(XPrev, YPrev)),
-                write('now you can farm here'), nl.
+                write('Now you can farm here.'), nl.
 
 
 periTidur :-    write('     __/\\__ '), nl,
@@ -145,14 +145,14 @@ periTidur :-    write('     __/\\__ '), nl,
                 nl,
                 showMap,
                 nl,
-                write('Notes: (0,0) is the bottom left position on the map'),
+                write('Notes: (0,0) is the bottom left position on the map.'), nl,
                 write('Enter the X posisition that you want to go: '), read(XT),
                 write('Enter the Y posisition that you want to go: '), read(YT), nl,
-                (wall(XT, YT) -> write('you can\'t go through wall'), fail, nl;
-                lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
+                (wall(XT, YT) -> write('You can\'t go through wall.'), nl, fail;
+                lake(XT, YT) -> write('You can\'t swim, don\'t go there.'), nl, fail;
                 position(XPrev, YPrev), retract(position(XPrev, YPrev)), asserta(position(XT, YT)),
-                write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
-                write('Successfully moved, May we meet again, good boy! '), nl, nl,
+                write('             ~ Wingardium Leviosa ~             '), nl, 
+                write('Successfully moved, May we meet again, good boy!'), nl, nl,
                 isValid(XPrev, YPrev, XT, YT)).
 
 

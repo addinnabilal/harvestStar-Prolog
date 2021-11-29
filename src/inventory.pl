@@ -108,12 +108,14 @@ delete_item(Item, Qty) :-
         % Jika jumlahnya menjadi negatif atau nol, hapus semua item tsb
         (NewQty =< 0 -> 
             retract(stored_item(Item, OldQty)), retract(used_space(Used)),
-            NewUsed is Used - OldQty, asserta(used_space(NewUsed))
+            NewUsed is Used - OldQty, asserta(used_space(NewUsed)),
+            write(Item), write(' x'), write(OldQty), write(' deleted from Inventory.'), nl
             % Jika jumlahnya positif, kurangi kuantitasnya
         ; retract(stored_item(Item, OldQty)), asserta(stored_item(Item, NewQty)), 
-            retract(used_space(Used)), NewUsed is Used - Qty, asserta(used_space(NewUsed))),
-        % Jika berhasil menghapus item, tampilkan pesan
-        write(Item), write(' deleted from Inventory.'), nl
+            retract(used_space(Used)), NewUsed is Used - Qty, asserta(used_space(NewUsed)),
+            write(Item), write(' x'), write(Qty), write(' deleted from Inventory.'), nl
+        )
+        
     % Jika mencoba mendelete tool, tampilkan pesan
     ; is_tool(Item) -> write('You can\'t delete a tool.'), nl
     % Jika tidak punya item yang mau didelete, tampilkan pesan

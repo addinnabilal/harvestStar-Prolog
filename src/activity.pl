@@ -94,7 +94,7 @@ useStamina:-
 isFullinv(Qty):- 
                 space(X), X2 is X + Qty,
                 (X2 > 100 -> 
-                    write('Your inventory is full, go sell something first'), nl
+                    write('Your inventory is full, go sell or throw something first.'), nl
                 ).
 
 /* Farming */
@@ -105,36 +105,37 @@ dig :-  position(X,Y), currStamina(_,St),
         (\+ isPlaced(X,Y) -> 
             (St > 0 -> 
                 diggingTile,useStamina;
-                write('You don\'t have enough stamina'),nl
+                write('You don\'t have enough stamina.'),nl
             )
             ;
-            write('You can\'t dig here'),nl   
+            write('You can\'t dig here.'),nl   
         ).
         
 
 plant :- 
-    displayFarm,
     position(SX,SY), currStamina(_,Y),
     (digged(SX, SY) -> 
         (\+ isSoilTaken(SX,SY) ->
             (Y > 0 -> 
             displayFarm,
             write('What seed do you want to plant?'),nl,
-            write('1. Corn seeds'),nl,
-            write('2. Wheat seeds'),nl,
-            write('3. Rice seeds'),nl,
-            write('0 to cancel'), nl,
+            write('[1] Corn seeds'),nl,
+            write('[2] Wheat seeds'),nl,
+            write('[3] Rice seeds'),nl,
+            nl,
+            write('[0] Cancel'), nl,
+            nl,
             write('Pick an option : '), read(Option), nl,
             (Option = 1 -> 
                 (stored_item(corn_seed,Qty) -> 
                     (Qty > 0 -> 
                         objectTimeP(corn,Tm),
                         delete_item(corn_seed,1),useStamina,asserta(plant(SX,SY,corn,Tm)),asserta(isSoilTaken(SX,SY)),
-                        write('You just plant the seed, wait for it to grow...'),nl
+                        write('You just planted the seed, wait for it to grow...'),nl
                         ;
-                        write('You don\'t have enough seeds to plant'),nl
+                        write('You don\'t have enough seeds to plant.'),nl
                     );
-                        write('You don\'t have enough seeds to plant'),nl
+                        write('You don\'t have enough seeds to plant.'),nl
                     );
             Option = 2 -> 
                 (stored_item(wheat_seed,Qty) ->
@@ -143,9 +144,9 @@ plant :-
                         delete_item(wheat_seed,1),useStamina,asserta(plant(SX,SY,wheat,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
-                        write('You don\'t have enough seeds to plant'),nl
+                        write('You don\'t have enough seeds to plant.'),nl
                     );
-                        write('You don\'t have enough seeds to plant'),nl
+                        write('You don\'t have enough seeds to plant.'),nl
                     );
             Option = 3 -> 
                 (stored_item(rice_seed,Qty) ->
@@ -154,18 +155,18 @@ plant :-
                         delete_item(rice_seed,1),useStamina,asserta(plant(SX,SY,rice,Tm)),asserta(isSoilTaken(SX,SY)),
                         write('You just plant the seed, wait for it to grow...'),nl
                         ;
-                        write('You don\'t have enough seeds to plant'),nl
+                        write('You don\'t have enough seeds to plant.'),nl
                     );
-                    write('You don\'t have enough seeds to plant'),nl
+                    write('You don\'t have enough seeds to plant.'),nl
                     );
             Option = 0 ->
-                write('You did\'nt plant anything, come back here again to plant'),nl
+                write('You did\'nt plant anything, come back here again to plant.'),nl
             );
-            write('You don\'t have enough stamina'),nl
+            write('You don\'t have enough stamina.'),nl
         );
         write('You already planted here, plant somewhere else!'),nl
     );
-    write('You are not in the right spot to plant')).
+    write('You are not in the right spot to plant.')).
 
 
 harvest :- 
@@ -180,16 +181,16 @@ harvest :-
             ),
             (Y =< 0 -> 
                 NewQty is 2 + (1 * Lv), NewExp is NewQty * Exp,
-                write('Yeay you just harvest your plant'),nl,
+                write('Yeay you just harvest your plant.'),nl,
                 write('......'), nl,
                 (isFullinv(NewQty) -> 
-                    write('Come back here later after you have some spaced'),nl
+                    write('Come back here later after you have some spaced.'),nl
                 ;
                     asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                     retract(isSoilTaken(SX,SY)),
                     displayPlant,nl,
-                    write('You got '), write(NewQty), write(X), write(' congrats'),nl,
-                    write('You gained '), write(NewExp), write(' Exp'), nl,
+                    write('You got '), write(NewQty), write(X), write(' congrats!'),nl,
+                    write('You gained '), write(NewExp), write(' Exp.'), nl,
                     retract(plant(SX,SY,X,Y)),
                     (crop_to_harvest(Qst) -> 
                         NewQst is Qst - 1, retract(crop_to_harvest(Qst)),
@@ -197,13 +198,13 @@ harvest :-
                     )
                 )
             ;
-            write('Your plant are not ready to be harvested')
+            write('Your plant are not ready to be harvested.')
             )
         ;
-        write('You did not plant anything here, the soil is empty')
+        write('You did not plant anything here, the soil is empty.')
         )
     ;
-    write('You are not in the right spot to harvest')).
+    write('You are not in the right spot to harvest.')).
 
 updatePlant:- 
     forall(plant(A,B,C,T),
@@ -277,19 +278,19 @@ fish :-
                         asserta(fish_to_catch(NewQst))
                     ),
                     addFishingExp(Uname,NewExp2), addOverallExp(Uname,NewExp2),
-                    write('You gained '), write(NewExp2), write(' Exp'),nl 
+                    write('You gained '), write(NewExp2), write(' Exp.'),nl 
                     ;
-                    write('You don\'t have bait anymore to fish'),nl
+                    write('You don\'t have bait anymore to fish.'),nl
                     )
                 ;
-                write('You don\'t have bait anymore to fish')
+                write('You don\'t have bait anymore to fish.')
                 )
             )
         ;
-        write('You don\'t have enough stamina'),nl
+        write('You don\'t have enough stamina.'),nl
         )
         ;
-    write('You are not in the right spot to fish')).
+    write('You are not in the right spot to fish.')).
 
 /* Ranching */
 
@@ -310,7 +311,7 @@ store_many_animal(Animal,Amnt):-
         ;
         asserta(stored_animal(Animal,Amnt))
     ),
-    write(Amnt),write(' '), write(Animal),write(' stored to inventory'), nl.
+    write(Amnt),write(' '), write(Animal),write(' stored to inventory.'), nl.
 
 delete_animal(Animal,Qty):- 
     (stored_animal(Animal,PrevQ) -> 
@@ -337,10 +338,10 @@ ranch :-
             forall(stored_animal(Animal,Qty),
             (write(Qty), write(' '), write(Animal),nl)
             );
-            write('You don\'t have any animal'),nl
+            write('You don\'t have any animal.'),nl
         )
     ;
-    write('You are not in the right spot to ranch')).
+    write('You are not in the right spot to ranch.')).
 
 
 chicken:- 
@@ -350,7 +351,7 @@ chicken:-
             (stored_animal(chicken,_) -> 
                 animalTime(chicken, Time),
                 (Time =< 0 ->
-                write('Yeay your chicken produced something'),nl,
+                write('Yeay your chicken produced something.'),nl,
                 stored_animal(chicken,AnQty),
                 objectProduced(chicken,Res),objectExp(chicken,Exp2),
                 (Class = rancher ->
@@ -360,7 +361,7 @@ chicken:-
                 ),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 (isFullinv(NewQ) ->
-                    write('Come back here later after you have some spaced'),nl
+                    write('Come back here later after you have some spaced.'),nl
                 ;
                     (product_to_produce(Qst) -> 
                         NewQst is Qst - 1, retract(product_to_produce(Qst)),
@@ -369,21 +370,21 @@ chicken:-
                     store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                     write('You got '), write(NewQ), write(' '), write(Res), nl,nl,
                     displayEgg,nl,nl,
-                    write('You gained '), write(NewExp), write(' Exp'),nl,
+                    write('You gained '), write(NewExp), write(' Exp.'),nl,
                     objectTimeA(chicken,Tm),
                     retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm))
                 )
                 ;
-                write('Your chicken did not produce anything, come back later'),nl
+                write('Your chicken did not produce anything, come back later.'),nl
                 )
             ;
-            write('You don\'t have any chicken')
+            write('You don\'t have any chicken.')
             )
             ;
-            write('You don\'t have enough stamina'),nl
+            write('You don\'t have enough stamina.'),nl
         )
     ;
-    write('You are not in the right spot to ranch')).
+    write('You are not in the right spot to ranch.')).
 
 cow:- 
     position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
@@ -392,7 +393,7 @@ cow:-
             (stored_animal(cow,_) ->
                 animalTime(cow, Time),
                 (Time =< 0 ->
-                write('Yeay your cow produced something'),nl,
+                write('Yeay your cow produced something.'),nl,
                 stored_animal(cow,AnQty),
                 objectProduced(cow,Res),objectExp(cow,Exp2),
                 (Class = rancher ->
@@ -402,7 +403,7 @@ cow:-
                 ),
                 NewQ is (1 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 (isFullinv(NewQ)->
-                    write('Come back here later after you have some spaced'),nl
+                    write('Come back here later after you have some spaced.'),nl
                 ;
                     (product_to_produce(Qst) -> 
                         NewQst is Qst - 1, retract(product_to_produce(Qst)),
@@ -416,16 +417,16 @@ cow:-
                     retract(animalTime(cow,_)), asserta(animalTime(cow,Tm))
                 )
                 ;
-                write('Your cow did not produce anything, come back later'),nl
+                write('Your cow did not produce anything, come back later.'),nl
                 )
             ;
-            write('You don\'t have any cow')
+            write('You don\'t have any cow.')
             )
         )
         ;
-        write('You don\'t have enough stamina'),nl
+        write('You don\'t have enough stamina.'),nl
     ;
-    write('You are not in the right spot to ranch')).
+    write('You are not in the right spot to ranch.')).
 
 sheep:- 
     position(SX,SY), currStamina(Uname,Y), ranchingLevel(Uname,Lv),job(_,Class),
@@ -433,7 +434,7 @@ sheep:-
         (Y > 0 ->
             animalTime(sheep, Time),
             (Time =< 0 ->
-                write('Yeay your sheep produced something'),nl,
+                write('Yeay your sheep produced something.'),nl,
                 stored_animal(sheep,AnQty),
                 objectProduced(sheep,Res),objectExp(sheep,Exp2),
                 (Class = rancher ->
@@ -443,7 +444,7 @@ sheep:-
                 ),
                 NewQ is (2 + (1 * Lv)) * AnQty, NewExp is Exp * NewQ, useStamina,
                 (isFullinv(NewQ) ->
-                    write('Come back here later after you have some spaced'),nl
+                    write('Come back here later after you have some space in your inventory.'),nl
                 ;
                     (product_to_produce(Qst) -> 
                         NewQst is Qst - 1, retract(product_to_produce(Qst)),
@@ -457,13 +458,13 @@ sheep:-
                     retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm))
                 )
             ;
-            write('Your sheep did not produce anything, come back later'),nl
+            write('Your sheep did not produce anything, come back later.'),nl
             )
         ;
-        write('You don\'t have enough stamina'),nl
+        write('You don\'t have enough stamina.'),nl
         )
     ;
-    write('You are not in the right spot to ranch')).
+    write('You are not in the right spot to ranch.')).
 
 updateAnimalTime:- 
     forall(stored_animal(Type,_), 
