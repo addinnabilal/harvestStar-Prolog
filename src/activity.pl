@@ -54,7 +54,7 @@ objectTimeA(cow,5).
 
 /* Advantage from Class speciality and Speciality Level */
 getRare(Ctr):- 
-            probabilityPotionState(X,PBState),
+            probabilityPotionState(_,PBState),
             (PBState = used -> 
                 random(1, 100, X), Ctr is mod(X,50),
                 retract(probabilityPotionState(X,PBState)), asserta(probabilityPotionState(X,notHave))
@@ -126,10 +126,10 @@ plant :-
             (Y > 0 -> 
             displayFarm,
             write('What seed do you want to plant?'),nl,
-            write('1. Corn seeds'),nl,
-            write('2. Wheat seeds'),nl,
-            write('3. Rice seeds'),nl,
-            write('0 to cancel'), nl,
+            write('[1] Corn seeds'),nl,
+            write('[2] Wheat seeds'),nl,
+            write('[3] Rice seeds'),nl,
+            write('[0] to cancel'), nl,
             write('Pick an option : '), read(Option), nl,
             (Option = 1 -> 
                 (stored_item(corn_seed,Qty) -> 

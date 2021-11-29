@@ -34,12 +34,13 @@ displayFish :- nl,
 
 
 displayFish1:- 
-            write('      /`·.¸'),nl,
-            write('     /¸...¸`:·'),nl,
-            write(' ¸.·´  ¸   `·.¸.·´)'), nl,
-            write(': © ):´;      ¸  {'),nl,
-            write(' `·.¸ `·  ¸.·´\\`·¸)'),nl,
-            write('     `\\`´´/¸.·´'),nl.
+            write('     |\\    o'),nl,
+            write('    |  \\    o'),nl,
+            write('|\\ /    .\\ o'), nl,
+            write('| |       ('),nl,
+            write('|/ \\     /'),nl,
+            write('    |  /'),nl,
+            write('     |/'),nl.
 
 
 displayFish2:-
