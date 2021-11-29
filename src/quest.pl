@@ -61,52 +61,52 @@ generate_quest(Level) :-
     (Level = 1 ->
         asserta(fish_to_catch(2)),
         asserta(crop_to_harvest(1)),
-        asserta(product_to_produce(1)),
+        asserta(product_to_produce(3)),
         asserta(quest_reward_exp_gold(50, 250))
     ; Level = 2 ->
         asserta(fish_to_catch(3)),
         asserta(crop_to_harvest(2)),
-        asserta(product_to_produce(2)),
+        asserta(product_to_produce(4)),
         asserta(quest_reward_exp_gold(100, 300))
     ; Level = 3 ->
         asserta(fish_to_catch(4)),
         asserta(crop_to_harvest(3)),
-        asserta(product_to_produce(3)),
+        asserta(product_to_produce(5)),
         asserta(quest_reward_exp_gold(150, 350))
     ; Level = 4 ->
         asserta(fish_to_catch(5)),
         asserta(crop_to_harvest(4)),
-        asserta(product_to_produce(4)),
+        asserta(product_to_produce(6)),
         asserta(quest_reward_exp_gold(200, 400))
     ; Level = 5 ->
         asserta(fish_to_catch(6)),
         asserta(crop_to_harvest(5)),
-        asserta(product_to_produce(5)),
+        asserta(product_to_produce(7)),
         asserta(quest_reward_exp_gold(250, 450))
     ; Level = 6 ->
         asserta(fish_to_catch(7)),
         asserta(crop_to_harvest(6)),
-        asserta(product_to_produce(6)),
+        asserta(product_to_produce(8)),
         asserta(quest_reward_exp_gold(300, 500))
     ; Level = 7 ->
         asserta(fish_to_catch(8)),
         asserta(crop_to_harvest(7)),
-        asserta(product_to_produce(7)),
+        asserta(product_to_produce(9)),
         asserta(quest_reward_exp_gold(350, 550))
     ; Level = 8 ->
         asserta(fish_to_catch(9)),
         asserta(crop_to_harvest(8)),
-        asserta(product_to_produce(8)),
+        asserta(product_to_produce(10)),
         asserta(quest_reward_exp_gold(400, 600))
     ; Level = 9 ->
         asserta(fish_to_catch(10)),
         asserta(crop_to_harvest(9)),
-        asserta(product_to_produce(9)),
+        asserta(product_to_produce(11)),
         asserta(quest_reward_exp_gold(450, 650))
     ; Level = 10 ->
         asserta(fish_to_catch(11)),
         asserta(crop_to_harvest(10)),
-        asserta(product_to_produce(10)),
+        asserta(product_to_produce(12)),
         asserta(quest_reward_exp_gold(500, 700))
     ).
 
