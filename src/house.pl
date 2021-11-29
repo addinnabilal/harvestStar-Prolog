@@ -35,8 +35,8 @@ visitHouse :-   nl,
                     uname(Username),
                     addTime(Username, 1),
                     random(1, 10, X),
-                    (X =< 5 -> periTidur;
-                    X =< 10 -> visitHouse);
+                    (X =< 10 -> periTidur;
+                    X =< 12 -> visitHouse);
                 HouseChoice = 2 ->
                     write('Writing diary...'), nl,
                     writeDiary, visitHouse;

@@ -148,11 +148,11 @@ periTidur :-    write('     __/\\__ '), nl,
                 write('Notes: (0,0) is the bottom left position on the map.'), nl,
                 write('Enter the X posisition that you want to go: '), read(XT),
                 write('Enter the Y posisition that you want to go: '), read(YT), nl,
-                (wall(XT, YT) -> write('you can\'t go through wall'), fail, nl;
-                lake(XT, YT) -> write('you can\'t swim, don\'t go there'), nl;
+                (wall(XT, YT) -> write('You can\'t go through wall.'), nl, fail;
+                lake(XT, YT) -> write('You can\'t swim, don\'t go there.'), nl, fail;
                 position(XPrev, YPrev), retract(position(XPrev, YPrev)), asserta(position(XT, YT)),
-                write('-----------------3, 2, 1.. GO!!!!------------------'), nl, 
-                write('Successfully moved, May we meet again, good boy! '), nl, nl,
+                write('             ~ Wingardium Leviosa ~             '), nl, 
+                write('Successfully moved, May we meet again, good boy!'), nl, nl,
                 isValid(XPrev, YPrev, XT, YT)).
 
 
