@@ -21,7 +21,7 @@ create_farmer_inventory :-
     asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
 create_rancher_inventory :-
-    asserta(used_space(2)), asserta(stored_animal(chicken, 5)),
+    asserta(used_space(2)), asserta(stored_animal(chicken, 2)),
     asserta(tool_level(fishing_rod, 1)), asserta(tool_level(shovel, 1)).
 
 create_fisherman_inventory :-
