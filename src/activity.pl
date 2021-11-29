@@ -379,7 +379,7 @@ chicken:-
                     write('Come back here later after you have some spaced'),nl
                 ;
                     (product_to_produce(Qst) -> 
-                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        NewQst is Qst - NewQ, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
                     ),
                     store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
@@ -421,7 +421,7 @@ cow:-
                     write('Come back here later after you have some spaced'),nl
                 ;
                     (product_to_produce(Qst) -> 
-                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        NewQst is Qst - NewQ, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
                     ),
                     store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
@@ -463,7 +463,7 @@ sheep:-
                         write('Come back here later after you have some spaced'),nl
                     ;
                         (product_to_produce(Qst) -> 
-                            NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                            NewQst is Qst - NewQ, retract(product_to_produce(Qst)),
                             asserta(product_to_produce(NewQst))
                         ),
                         store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
