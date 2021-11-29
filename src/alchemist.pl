@@ -1,12 +1,8 @@
 :-dynamic(increaseStamina/1).
 :-dynamic(increaseProbability/1).
-increaseStamina([amortentia, haliwinkles,polypody]).
-increaseProbability([ptolemy,thaumatagoria,staghorn]).
 
 :-dynamic(probabilityPotionState/2).
-probabilityPotionState(_, notHave).
 :-dynamic(staminaPotionState/2).
-staminaPotionState(_, notHave).
 buy_alchemist(X) :- displayAlchemist,
                     read(Opt),
                     (Opt =1 -> buyStamina(X);
@@ -57,24 +53,30 @@ usePotion(X) :- staminaPotionState(X, SPState), probabilityPotionState(X, PPStat
 dayUsed(_,0).
 
 useStaminaPotion(X) :- staminaPotionState(X, SPState),
-                        maxStamina(X, CurrStamina),
+                        maxStamina(X, MaxCurrStamina),
+                        currStamina(X, CurrStamina),
                         dayUsed(X,DayUsed),
-                        (SPState=notHave -> write('You don\'t have any stamina potion!'),nl;
-                        SPState=used -> (
-                            (DayUsed=5 -> retract(maxStamina(X, CurrStamina)), New is CurrStamina-5, asserta(maxStamina(X, New)),
-                                retract(staminaPotionState(X, SPState)), asserta(staminaPotionState(X, notHave)),
-                                retract(dayUsed(X,5)), asserta(dayUsed(X,0));
-                            retract(dayUsed(X, DayUsed)), NewDay is DayUsed+1, asserta(dayUsed(X,NewDay))));
+                        ((SPState=notHave;SPState=used) -> write('You don\'t have any stamina potion!'),nl;
                         write('Your stamina will be increased by 5 for 5 days!'),
                         retract(staminaPotionState(X, SPState)),
                         asserta(staminaPotionState(X, used)),
                         retract(dayUsed(X,DayUsed)),
                         asserta(dayUsed(X,1)),
-                        retract(maxStamina(X, CurrMaxStamina)), NewMax is CurrMaxStamina+5,
+                        retract(maxStamina(X, MaxCurrStamina)), NewMax is MaxCurrStamina+5,
                         asserta(maxStamina(X, NewMax)),
                         retract(currStamina(X, CurrStamina)), New is CurrStamina+5,
                         asserta(currStamina(X, New))).
 
+useStaminaPotion2(X) :- staminaPotionState(X, SPState),
+                        maxStamina(X, CurrStamina),
+                        dayUsed(X, DayUsed),
+                        (DayUsed=5 -> retract(maxStamina(X, CurrStamina)), New is CurrStamina-5, asserta(maxStamina(X, New)),
+                            retract(staminaPotionState(X, SPState)), asserta(staminaPotionState(X, notHave)),
+                            retract(dayUsed(X,5)), asserta(dayUsed(X,0));
+                        retract(dayUsed(X, DayUsed)), NewDay is DayUsed+1, asserta(dayUsed(X,NewDay))).
+            
+            
+                        
 useProbabilityPotion(X) :- 
             probabilityPotionState(X, PBState), 
             (PBState = notHave -> 

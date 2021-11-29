@@ -17,8 +17,8 @@
 
 
 createFarmer(X) :-  asserta(job(X, farmer)),
-                    asserta(gold(X,5000)),
-                    asserta(time(X,0)),
+                    asserta(gold(X,2000)),
+                    asserta(time(X,5)),
                     asserta(overallExp(X,0)),
                     asserta(targetExp(X,100)),
                     asserta(fishingExp(X,0)),
@@ -33,12 +33,14 @@ createFarmer(X) :-  asserta(job(X, farmer)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
                     asserta(maxStamina(X,3)),
+                    asserta(probabilityPotionState(X, notHave)),
+                    asserta(staminaPotionState(X, notHave)),
                     displayFarmer,
                     create_farmer_inventory.
 
 createFisherman(X) :-  asserta(job(X, fisherman)),
-                    asserta(gold(X,300)),
-                    asserta(time(X,0)),
+                    asserta(gold(X,0)),
+                    asserta(time(X,364)),
                     asserta(overallExp(X,0)),
                     asserta(targetExp(X,100)),
                     asserta(fishingExp(X,0)),
@@ -53,6 +55,8 @@ createFisherman(X) :-  asserta(job(X, fisherman)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
                     asserta(maxStamina(X,3)),
+                    asserta(probabilityPotionState(X, notHave)),
+                    asserta(staminaPotionState(X, notHave)),
                     displayFisherman,
                     create_fisherman_inventory.
 
@@ -73,6 +77,8 @@ createRancher(X) :-  asserta(job(X, rancher)),
                     asserta(targetFarmingExp(X,40)),
                     asserta(currStamina(X,3)),
                     asserta(maxStamina(X,3)),
+                    asserta(probabilityPotionState(X, notHave)),
+                    asserta(staminaPotionState(X, notHave)),
                     displayRancher,
                     create_rancher_inventory.
                     

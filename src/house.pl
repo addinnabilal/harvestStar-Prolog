@@ -4,8 +4,8 @@ addTime(X,Add) :-   time(X, PrevTime), retract(time(X, PrevTime)),
                     gameState(_),
                     staminaPotionState(X,SPState),
                     time(X, Time),
-                    (Time>=365 -> failState, quit;
-                    ((SPState=used ->useStaminaPotion(X), updateStamina(X));
+                    (Time>=365 -> failState, nl,quit, !, fail;
+                    ((SPState=used -> useStaminaPotion2(X), updateStamina(X));
                     updateStamina(X))).
 
 updateStamina(X) :- maxStamina(X, PrevMax), currStamina(X, PrevStamina), retract(currStamina(X, PrevStamina)),
@@ -20,6 +20,12 @@ visitHouse :-   nl,
                 write('      /    /\\____                '),nl,
                 write(' 00  /_/\\_//____/\\'), nl,
                 write(' |   | || |||__|||                '), nl,
+                write('what do you want to do?'), nl,
+                write('- [1]. sleep'), nl, 
+                write('- [2]. writeDiary'), nl,
+                write('- [3]. readDiary'), nl,
+                write('- [4]. exit'), nl,
+                write('Pick a number: '), read(HouseChoice), nl,
                 nl,
                 write('Home sweet home!'), nl,
                 write('What do you want to do?'), nl,
@@ -30,7 +36,6 @@ visitHouse :-   nl,
                 write('[0] Cancel'), nl,
                 nl,
                 write('Pick an option: '), read(HouseChoice), nl,
-
                 (HouseChoice = 1 -> 
                     updateAnimalTime, updatePlant,
                     write('Good Night...'), nl,

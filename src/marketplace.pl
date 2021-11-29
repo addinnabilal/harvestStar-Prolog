@@ -286,7 +286,7 @@ display_insufficient_gold :- write('Sorry, you don\'t have enough gold.'), nl.
 /* Mengubah jumlah gold */
 update_gold(New_number):- 
     uname(X),
-    (New_number >= 20000 -> goalState, quit
+    (New_number >= 20000 -> goalState, quit,!, fail
     ; retract(gold(X,_)), asserta(gold(X, New_number))).
 
 
