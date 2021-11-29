@@ -203,7 +203,7 @@ harvest :-
                     (crop_to_harvest(Qst) -> 
                         NewQst is Qst - 1, retract(crop_to_harvest(Qst)),
                         asserta(crop_to_harvest(NewQst))
-                    )
+                    ),isQuestFinished
                 )
             ;
             write('Your plant are not ready to be harvested'), nl
@@ -292,7 +292,8 @@ fish :-
                         asserta(fish_to_catch(NewQst))
                     ),
                     addFishingExp(Uname,NewExp2), addOverallExp(Uname,NewExp2),
-                    write('You gained '), write(NewExp2), write(' Exp'),nl 
+                    write('You gained '), write(NewExp2), write(' Exp'),nl,
+                    isQuestFinished 
                     ;
                     write('You don\'t have bait anymore to fish'),nl
                     )
@@ -386,7 +387,7 @@ chicken:-
                     displayEgg,nl,nl,
                     write('You gained '), write(NewExp), write(' Exp'),nl,
                     objectTimeA(chicken,Tm),
-                    retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm))
+                    retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm)),isQuestFinished
                 )
                 ;
                 write('Your chicken did not produce anything, come back later'),nl
@@ -428,7 +429,7 @@ cow:-
                     displayMilk,nl,nl,
                     write('You gained '), write(NewExp), write(' Exp'),nl,
                     objectTimeA(cow,Tm),
-                    retract(animalTime(cow,_)), asserta(animalTime(cow,Tm))
+                    retract(animalTime(cow,_)), asserta(animalTime(cow,Tm)),isQuestFinished
                 )
                 ;
                 write('Your cow did not produce anything, come back later'),nl
@@ -470,7 +471,7 @@ sheep:-
                         displayWool,nl,nl,
                         write('You gained '), write(NewExp), write(' Exp'),nl,
                         objectTimeA(sheep,Tm),
-                        retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm))
+                        retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm)),isQuestFinished
                     )
                 ;
                 write('Your sheep did not produce anything, come back later'),nl

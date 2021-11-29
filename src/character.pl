@@ -18,7 +18,7 @@
 
 createFarmer(X) :-  asserta(job(X, farmer)),
                     asserta(gold(X,2000)),
-                    asserta(time(X,5)),
+                    asserta(time(X,0)),
                     asserta(overallExp(X,0)),
                     asserta(targetExp(X,100)),
                     asserta(fishingExp(X,0)),
@@ -40,7 +40,7 @@ createFarmer(X) :-  asserta(job(X, farmer)),
 
 createFisherman(X) :-  asserta(job(X, fisherman)),
                     asserta(gold(X,0)),
-                    asserta(time(X,364)),
+                    asserta(time(X,0)),
                     asserta(overallExp(X,0)),
                     asserta(targetExp(X,100)),
                     asserta(fishingExp(X,0)),
