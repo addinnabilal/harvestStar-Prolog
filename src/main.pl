@@ -35,9 +35,7 @@ startGame :-    gameState(State),
                 nl,
                 help,
                 nl,
-                asserta(increaseStamina([amortentia, haliwinkles,polypody])),
-                asserta(increaseProbability([ptolemy,thaumatagoria,staghorn])),
-                initMap, start).
+                start).
 
 
 start :-    gameState(State),
@@ -61,7 +59,10 @@ start :-    gameState(State),
             ; JobChoice=3 -> write('You choose to become a \'Rancher\'!'), 
                 createRancher(Username),
                 write('Ranching will be the most profitable activity for you. May your debt be paid off!'), nl
-            )
+            ),
+            initMap,
+            asserta(increaseStamina([amortentia, haliwinkles,polypody])),
+            asserta(increaseProbability([ptolemy,thaumatagoria,staghorn]))
             ).
 
 status :-   uname(Username),
