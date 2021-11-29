@@ -147,4 +147,4 @@ displayList(List, 1) :- nl, List = [Head|Tail],
 displayList(List, X) :-
     List = [Head|Tail],
     write(X), write('. '), write(Head), nl, X2 is X+1, displayList(Tail, X2), !;
-    !.                
+    !.                 
