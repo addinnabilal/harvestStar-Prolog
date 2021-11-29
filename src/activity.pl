@@ -203,7 +203,7 @@ harvest :-
                     (crop_to_harvest(Qst) -> 
                         NewQst is Qst - 1, retract(crop_to_harvest(Qst)),
                         asserta(crop_to_harvest(NewQst))
-                    ),isQuestFinished
+                    ),is_quest_finished
                 )
             ;
             write('Your plant are not ready to be harvested'), nl
@@ -293,7 +293,7 @@ fish :-
                     ),
                     addFishingExp(Uname,NewExp2), addOverallExp(Uname,NewExp2),
                     write('You gained '), write(NewExp2), write(' Exp'),nl,
-                    isQuestFinished 
+                    is_quest_finished
                     ;
                     write('You don\'t have bait anymore to fish'),nl
                     )
@@ -379,7 +379,7 @@ chicken:-
                     write('Come back here later after you have some spaced'),nl
                 ;
                     (product_to_produce(Qst) -> 
-                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        NewQst is Qst - NewQ, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
                     ),
                     store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
@@ -387,7 +387,7 @@ chicken:-
                     displayEgg,nl,nl,
                     write('You gained '), write(NewExp), write(' Exp'),nl,
                     objectTimeA(chicken,Tm),
-                    retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm)),isQuestFinished
+                    retract(animalTime(chicken,_)),asserta(animalTime(chicken,Tm)),is_quest_finished
                 )
                 ;
                 write('Your chicken did not produce anything, come back later'),nl
@@ -421,7 +421,7 @@ cow:-
                     write('Come back here later after you have some spaced'),nl
                 ;
                     (product_to_produce(Qst) -> 
-                        NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                        NewQst is Qst - NewQ, retract(product_to_produce(Qst)),
                         asserta(product_to_produce(NewQst))
                     ),
                     store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
@@ -429,7 +429,7 @@ cow:-
                     displayMilk,nl,nl,
                     write('You gained '), write(NewExp), write(' Exp'),nl,
                     objectTimeA(cow,Tm),
-                    retract(animalTime(cow,_)), asserta(animalTime(cow,Tm)),isQuestFinished
+                    retract(animalTime(cow,_)), asserta(animalTime(cow,Tm)),is_quest_finished
                 )
                 ;
                 write('Your cow did not produce anything, come back later'),nl
@@ -463,7 +463,7 @@ sheep:-
                         write('Come back here later after you have some spaced'),nl
                     ;
                         (product_to_produce(Qst) -> 
-                            NewQst is Qst - 1, retract(product_to_produce(Qst)),
+                            NewQst is Qst - NewQ, retract(product_to_produce(Qst)),
                             asserta(product_to_produce(NewQst))
                         ),
                         store_many_item(Res,NewQ), addRanchingExp(Uname,NewExp),
@@ -471,7 +471,7 @@ sheep:-
                         displayWool,nl,nl,
                         write('You gained '), write(NewExp), write(' Exp'),nl,
                         objectTimeA(sheep,Tm),
-                        retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm)),isQuestFinished
+                        retract(animalTime(sheep,_)), asserta(animalTime(sheep,Tm)),is_quest_finished
                     )
                 ;
                 write('Your sheep did not produce anything, come back later'),nl
