@@ -38,8 +38,8 @@ displayFish1:-
             write('     /¸...¸`:·'),nl,
             write(' ¸.·´  ¸   `·.¸.·´)'), nl,
             write(': © ):´;      ¸  {'),nl,
-            write(' `·.¸ `·  ¸.·´\`·¸)'),nl,
-            write('     `\`´´/¸.·´'),nl.
+            write(' `·.¸ `·  ¸.·´\\`·¸)'),nl,
+            write('     `\\`´´/¸.·´'),nl.
 
 
 displayFish2:-

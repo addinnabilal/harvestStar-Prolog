@@ -177,12 +177,12 @@ plant :-
 
 
 harvest :- 
-    position(SX,SY), farmingLevel(Uname,Lv), job(_,X),
+    position(SX,SY), farmingLevel(Uname,Lv), job(_,Class),
     (digged(SX, SY) -> 
         (plant(SX,SY,_,_) -> 
             plant(SX,SY,X,Y), objectExp(X,Exp2),
-            (X = farmer ->
-                Exp is (Exp2 + round(Exp/2))
+            (Class = farmer ->
+                Exp is (Exp2 + round(Exp2/2))
             ;
                 Exp is Exp2
             ),
@@ -197,7 +197,7 @@ harvest :-
                     asserta(stored_item(X,NewQty)),addFarmingExp(Uname,NewExp), addOverallExp(Uname,NewExp),
                     retract(isSoilTaken(SX,SY)),
                     displayPlant,nl,
-                    write('You got '), write(NewQty), write(X), write(' congrats'),nl,
+                    write('You got '), write(NewQty), write(' '),write(X), write(' congrats'),nl,
                     write('You gained '), write(NewExp), write(' Exp'), nl,
                     retract(plant(SX,SY,X,Y)),
                     (crop_to_harvest(Qst) -> 
@@ -206,13 +206,13 @@ harvest :-
                     )
                 )
             ;
-            write('Your plant are not ready to be harvested')
+            write('Your plant are not ready to be harvested'), nl
             )
         ;
-        write('You did not plant anything here, the soil is empty')
+        write('You did not plant anything here, the soil is empty'), nl
         )
     ;
-    write('You are not in the right spot to harvest')).
+    write('You are not in the right spot to harvest'), nl).
 
 updatePlant:- 
     forall(plant(A,B,C,T),
