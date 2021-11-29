@@ -34,7 +34,8 @@ levelUp(X) :-   overallLevel(X, CurrLevel),
                 update_item_price_per_char_level(egg, NewLevel),
                 update_item_price_per_char_level(wheat, NewLevel),
                 update_item_price_per_char_level(rice, NewLevel),
-                update_item_price_per_char_level(corn, NewLevel)
+                update_item_price_per_char_level(corn, NewLevel);
+                !
                 ).
 
 
@@ -57,7 +58,8 @@ ranchingLevelUp(X) :-   ranchingLevel(X, CurrLevel),
 
                         retract(targetRanchingExp(X, CurrTargetExp)),
                         NewTargetExp is CurrTargetExp+20,
-                        asserta(targetRanchingExp(X, NewTargetExp))
+                        asserta(targetRanchingExp(X, NewTargetExp));
+                        !
                     ).
 
 addFarmingExp(X, Value):-   farmingExp(X,Prev), retract(farmingExp(X,Prev)),
@@ -80,7 +82,8 @@ farmingLevelUp(X) :-    farmingLevel(X, CurrLevel),
 
                         retract(targetFarmingExp(X, CurrTargetExp)),
                         NewTargetExp is CurrTargetExp+20,
-                        asserta(targetFarmingExp(X, NewTargetExp))
+                        asserta(targetFarmingExp(X, NewTargetExp));
+                        !
                     ).
 
 addFishingExp(X, Value):-   fishingExp(X,Prev), retract(fishingExp(X,Prev)),
@@ -102,5 +105,6 @@ fishingLevelUp(X) :-    fishingLevel(X, CurrLevel),
 
                         retract(targetFishingExp(X, CurrTargetExp)),
                         NewTargetExp is CurrTargetExp+20,
-                        asserta(targetFishingExp(X, NewTargetExp))
-                    ).
+                        asserta(targetFishingExp(X, NewTargetExp));
+                        !
+                        ).
